@@ -1,3 +1,7 @@
+const supabaseUrl = "PASTE_SUPABASE_URL";
+const supabaseKey = "PASTE_ANON_PUBLIC_KEY";
+
+const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 const dictionaries = {
   ro: {
     brand_subtitle: "Organizare interna",
@@ -49,8 +53,13 @@ const dictionaries = {
     cars_admin_title: "Auto participanti",
     cars_admin_subtitle: "Lista masinilor si soferilor pentru evenimentele interne.",
     add_car: "Adauga auto",
+    import_cars: "Import fisier",
+    clear_cars: "Sterge toti",
+    cars_import_hint: "CSV/XLSX: nume, masina, telefon, numar, zona, categorie, status. Cu header, coloanele sunt detectate automat.",
+    cars_import_error: "Nu am gasit participanti valizi in fisier.",
+    clear_cars_confirm: "Sigur vrei sa stergi toti participantii auto?",
     cars_search_label: "Cauta participant",
-    cars_search_placeholder: "Cauta dupa auto, sofer, numar, zona, categorie sau status",
+    cars_search_placeholder: "Cauta dupa auto, sofer, telefon, numar, zona, categorie sau status",
     cars_empty: "Nu a fost gasit niciun participant.",
     tasks_admin_title: "Sarcine operationale",
     tasks_admin_subtitle: "Task-uri, responsabili si prioritate.",
@@ -76,10 +85,10 @@ const dictionaries = {
       ["Retro Auto Picnic", "Parcul Valea Morilor", "Expozitie", "Mihai", "Cu risc", 43],
     ],
     cars: [
-      ["BMW E36", "Alexei Rusu", "KLT 036", "Zona A", "Drift", "Confirmat"],
-      ["Toyota Supra MK4", "Dumitru Ceban", "KLT 404", "Zona B", "Show car", "In verificare"],
-      ["Nissan Silvia S15", "Maxim Moraru", "KLT 015", "Zona A", "Track", "Confirmat"],
-      ["Audi RS3", "Cristina Lungu", "KLT 303", "Zona C", "Expo", "Asteapta acte"],
+      ["BMW E36", "Alexei Rusu", "+373 69 000 001", "KLT 036", "Zona A", "Drift", "Invitat"],
+      ["Toyota Supra MK4", "Dumitru Ceban", "+373 69 000 002", "KLT 404", "Zona B", "Show car", "Sosit"],
+      ["Nissan Silvia S15", "Maxim Moraru", "+373 69 000 003", "KLT 015", "Zona A", "Track", "Invitat"],
+      ["Audi RS3", "Cristina Lungu", "+373 69 000 004", "KLT 303", "Zona C", "Expo", "Plecat"],
     ],
     tasks: [
       ["Confirmare securitate si ambulanta", "Ana", "Urgent"],
@@ -150,8 +159,13 @@ const dictionaries = {
     cars_admin_title: "Авто участников",
     cars_admin_subtitle: "Список машин и водителей для внутренних событий.",
     add_car: "Добавить авто",
+    import_cars: "Импорт файла",
+    clear_cars: "Удалить всех",
+    cars_import_hint: "CSV/XLSX: имя, машина, телефон, номер, зона, категория, статус. Если есть заголовки, колонки определяются автоматически.",
+    cars_import_error: "В файле не найдены корректные участники.",
+    clear_cars_confirm: "Точно удалить всех авто участников?",
     cars_search_label: "Поиск участника",
-    cars_search_placeholder: "Искать по авто, водителю, номеру, зоне, категории или статусу",
+    cars_search_placeholder: "Искать по авто, водителю, телефону, номеру, зоне, категории или статусу",
     cars_empty: "Участники не найдены.",
     tasks_admin_title: "Операционные задачи",
     tasks_admin_subtitle: "Задачи, ответственные и приоритет.",
@@ -177,10 +191,10 @@ const dictionaries = {
       ["Retro Auto Picnic", "Парк Valea Morilor", "Выставка", "Михаил", "Есть риск", 43],
     ],
     cars: [
-      ["BMW E36", "Алексей Русу", "KLT 036", "Зона A", "Дрифт", "Подтверждено"],
-      ["Toyota Supra MK4", "Дмитрий Чебан", "KLT 404", "Зона B", "Show car", "На проверке"],
-      ["Nissan Silvia S15", "Максим Морару", "KLT 015", "Зона A", "Track", "Подтверждено"],
-      ["Audi RS3", "Кристина Лунгу", "KLT 303", "Зона C", "Expo", "Ждет документы"],
+      ["BMW E36", "Алексей Русу", "+373 69 000 001", "KLT 036", "Зона A", "Дрифт", "Invitat"],
+      ["Toyota Supra MK4", "Дмитрий Чебан", "+373 69 000 002", "KLT 404", "Зона B", "Show car", "Sosit"],
+      ["Nissan Silvia S15", "Максим Морару", "+373 69 000 003", "KLT 015", "Зона A", "Track", "Invitat"],
+      ["Audi RS3", "Кристина Лунгу", "+373 69 000 004", "KLT 303", "Зона C", "Expo", "Plecat"],
     ],
     tasks: [
       ["Подтвердить охрану и скорую помощь", "Анна", "Срочно"],
@@ -251,8 +265,13 @@ const dictionaries = {
     cars_admin_title: "Participant cars",
     cars_admin_subtitle: "List of cars and drivers for internal events.",
     add_car: "Add car",
+    import_cars: "Import file",
+    clear_cars: "Delete all",
+    cars_import_hint: "CSV/XLSX: name, car, phone, plate, zone, category, status. With headers, columns are detected automatically.",
+    cars_import_error: "No valid participants were found in the file.",
+    clear_cars_confirm: "Are you sure you want to delete all participant cars?",
     cars_search_label: "Search participant",
-    cars_search_placeholder: "Search by car, driver, plate, zone, category or status",
+    cars_search_placeholder: "Search by car, driver, phone, plate, zone, category or status",
     cars_empty: "No participants found.",
     tasks_admin_title: "Operational tasks",
     tasks_admin_subtitle: "Tasks, owners and priority.",
@@ -278,10 +297,10 @@ const dictionaries = {
       ["Retro Auto Picnic", "Valea Morilor Park", "Exhibition", "Mihai", "At risk", 43],
     ],
     cars: [
-      ["BMW E36", "Alexei Rusu", "KLT 036", "Zone A", "Drift", "Confirmed"],
-      ["Toyota Supra MK4", "Dumitru Ceban", "KLT 404", "Zone B", "Show car", "In review"],
-      ["Nissan Silvia S15", "Maxim Moraru", "KLT 015", "Zone A", "Track", "Confirmed"],
-      ["Audi RS3", "Cristina Lungu", "KLT 303", "Zone C", "Expo", "Waiting docs"],
+      ["BMW E36", "Alexei Rusu", "+373 69 000 001", "KLT 036", "Zone A", "Drift", "Invitat"],
+      ["Toyota Supra MK4", "Dumitru Ceban", "+373 69 000 002", "KLT 404", "Zone B", "Show car", "Sosit"],
+      ["Nissan Silvia S15", "Maxim Moraru", "+373 69 000 003", "KLT 015", "Zone A", "Track", "Invitat"],
+      ["Audi RS3", "Cristina Lungu", "+373 69 000 004", "KLT 303", "Zone C", "Expo", "Plecat"],
     ],
     tasks: [
       ["Confirm security and ambulance", "Ana", "Urgent"],
@@ -353,6 +372,274 @@ function normalizeTeamRows() {
 
 normalizeTeamRows();
 
+function normalizeCarStatuses() {
+  const allowed = ["Invitat", "Sosit", "Plecat"];
+  Object.values(dictionaries).forEach((dictionary) => {
+    dictionary.cars = dictionary.cars.map((car) => {
+      if (car.length === 6) {
+        return [car[0], car[1], "-", car[2], car[3], car[4], allowed.includes(car[5]) ? car[5] : "Invitat"];
+      }
+      if (allowed.includes(car[6])) return car;
+      return [car[0], car[1], car[2] || "-", car[3], car[4], car[5], "Invitat"];
+    });
+  });
+}
+
+normalizeCarStatuses();
+
+function splitCsvLine(line, separator) {
+  const values = [];
+  let current = "";
+  let quoted = false;
+
+  for (const char of line) {
+    if (char === '"') {
+      quoted = !quoted;
+      continue;
+    }
+    if (char === separator && !quoted) {
+      values.push(current.trim());
+      current = "";
+      continue;
+    }
+    current += char;
+  }
+
+  values.push(current.trim());
+  return values;
+}
+
+function parseCarsCsv(text, fallbackName = "") {
+  const lines = text
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  return carsFromTableRows(
+    lines.map((line) => splitCsvLine(line, line.includes(";") ? ";" : ",")),
+    fallbackName,
+  );
+}
+
+function normalizeHeader(value) {
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zа-я0-9]/gi, "");
+}
+
+function fileBaseName(fileName) {
+  return String(fileName || "")
+    .replace(/\.[^.]+$/, "")
+    .replace(/[_-]+/g, " ")
+    .trim();
+}
+
+function carFromFields({ name, car, phone, plate, zone, category, status }, fallbackName = "") {
+  const participantName = name || fallbackName;
+  if (!participantName) return null;
+  const statusKey = normalizeHeader(status);
+  const statusMap = {
+    invitat: "Invitat",
+    invitata: "Invitat",
+    invited: "Invitat",
+    sosit: "Sosit",
+    arrived: "Sosit",
+    venit: "Sosit",
+    plecat: "Plecat",
+    left: "Plecat",
+  };
+  const normalizedStatus = statusMap[statusKey] || "Invitat";
+  return [car || "-", participantName, phone || "-", plate || "-", zone || "Zona A", category || "-", normalizedStatus];
+}
+
+function carsFromTableRows(rows, fallbackName = "") {
+  const cleanRows = rows.map((row) => row.map((cell) => String(cell || "").trim())).filter((row) => row.some(Boolean));
+  if (cleanRows.length === 0) return [];
+
+  const aliases = {
+    name: ["nume", "numeprenume", "prenumenume", "sofer", "participant", "driver", "name", "fullname", "fio", "водитель", "участник", "имя"],
+    car: ["masina", "marca", "model", "marcaauto", "autovehicul", "auto", "automobil", "vehicle", "car", "machine", "машина", "авто"],
+    phone: ["telefon", "tel", "mobil", "phone", "phonenumber", "mobile", "contact", "телефон", "номерphone"],
+    plate: ["numar", "nr", "numarul", "numarinmatriculare", "nrinmatriculare", "inmatriculare", "registration", "plate", "licenseplate", "номер", "госномер"],
+    zone: ["zona", "zone", "зона"],
+    category: ["categorie", "clasa", "tip", "category", "type", "тип", "категория"],
+    status: ["status", "statut", "stare", "state", "статус"],
+  };
+
+  function mapHeaders(row) {
+    const headers = row.map(normalizeHeader);
+    const indexFor = (key) => headers.findIndex((header) => aliases[key].includes(header));
+    return {
+    name: indexFor("name"),
+    car: indexFor("car"),
+    phone: indexFor("phone"),
+    plate: indexFor("plate"),
+      zone: indexFor("zone"),
+      category: indexFor("category"),
+      status: indexFor("status"),
+    };
+  }
+
+  function headerScore(columnMap) {
+    return Object.values(columnMap).filter((index) => index !== -1).length;
+  }
+
+  let headerRowIndex = -1;
+  let columnMap = null;
+  let bestScore = 0;
+
+  cleanRows.slice(0, 10).forEach((row, index) => {
+    const candidateMap = mapHeaders(row);
+    const score = headerScore(candidateMap);
+    const hasIdentity = candidateMap.name !== -1 || candidateMap.car !== -1;
+    if (hasIdentity && score > bestScore) {
+      bestScore = score;
+      headerRowIndex = index;
+      columnMap = candidateMap;
+    }
+  });
+
+  const hasHeader = Boolean(columnMap) && bestScore >= 2;
+  const sourceRows = hasHeader ? cleanRows.slice(headerRowIndex + 1) : cleanRows;
+
+  return sourceRows
+    .map((row) => {
+      if (hasHeader) {
+        return carFromFields(
+          {
+            name: columnMap.name === -1 ? "" : row[columnMap.name],
+            car: columnMap.car === -1 ? "" : row[columnMap.car],
+            phone: columnMap.phone === -1 ? "" : row[columnMap.phone],
+            plate: columnMap.plate === -1 ? "" : row[columnMap.plate],
+            zone: columnMap.zone === -1 ? "" : row[columnMap.zone],
+            category: columnMap.category === -1 ? "" : row[columnMap.category],
+            status: columnMap.status === -1 ? "" : row[columnMap.status],
+          },
+          fallbackName,
+        );
+      }
+      return carFromFields(
+        {
+          name: row[0],
+          car: row[1],
+          phone: row[2],
+          plate: row[3],
+          zone: row[4],
+          category: row[5],
+          status: row[6],
+        },
+        fallbackName,
+      );
+    })
+    .filter(Boolean);
+}
+
+function readZipUInt16(bytes, offset) {
+  return bytes[offset] | (bytes[offset + 1] << 8);
+}
+
+function readZipUInt32(bytes, offset) {
+  return (bytes[offset] | (bytes[offset + 1] << 8) | (bytes[offset + 2] << 16) | (bytes[offset + 3] << 24)) >>> 0;
+}
+
+async function inflateZipEntry(bytes, entry) {
+  if (entry.method === 0) return entry.data;
+  const stream = new Blob([entry.data]).stream().pipeThrough(new DecompressionStream("deflate-raw"));
+  return new Uint8Array(await new Response(stream).arrayBuffer());
+}
+
+async function unzipXlsxEntries(buffer) {
+  const bytes = new Uint8Array(buffer);
+  let eocd = -1;
+  for (let index = bytes.length - 22; index >= 0; index -= 1) {
+    if (readZipUInt32(bytes, index) === 0x06054b50) {
+      eocd = index;
+      break;
+    }
+  }
+  if (eocd === -1) return {};
+
+  const decoder = new TextDecoder();
+  const entries = {};
+  const total = readZipUInt16(bytes, eocd + 10);
+  let offset = readZipUInt32(bytes, eocd + 16);
+
+  for (let i = 0; i < total; i += 1) {
+    const nameLength = readZipUInt16(bytes, offset + 28);
+    const extraLength = readZipUInt16(bytes, offset + 30);
+    const commentLength = readZipUInt16(bytes, offset + 32);
+    const method = readZipUInt16(bytes, offset + 10);
+    const compressedSize = readZipUInt32(bytes, offset + 20);
+    const localOffset = readZipUInt32(bytes, offset + 42);
+    const name = decoder.decode(bytes.slice(offset + 46, offset + 46 + nameLength));
+    const localNameLength = readZipUInt16(bytes, localOffset + 26);
+    const localExtraLength = readZipUInt16(bytes, localOffset + 28);
+    const dataStart = localOffset + 30 + localNameLength + localExtraLength;
+    const data = bytes.slice(dataStart, dataStart + compressedSize);
+
+    entries[name] = await inflateZipEntry(bytes, { method, data });
+    offset += 46 + nameLength + extraLength + commentLength;
+  }
+
+  return entries;
+}
+
+function xmlText(node) {
+  return node ? node.textContent || "" : "";
+}
+
+function columnIndexFromCell(reference) {
+  const letters = String(reference || "").match(/[A-Z]+/i)?.[0] || "A";
+  return letters
+    .toUpperCase()
+    .split("")
+    .reduce((total, letter) => total * 26 + letter.charCodeAt(0) - 64, 0) - 1;
+}
+
+async function parseCarsXlsx(buffer, fallbackName = "") {
+  const entries = await unzipXlsxEntries(buffer);
+  const decoder = new TextDecoder();
+  const parser = new DOMParser();
+  const sharedXml = entries["xl/sharedStrings.xml"] ? decoder.decode(entries["xl/sharedStrings.xml"]) : "";
+  const shared = sharedXml
+    ? Array.from(parser.parseFromString(sharedXml, "application/xml").querySelectorAll("si")).map((node) =>
+        Array.from(node.querySelectorAll("t")).map(xmlText).join(""),
+      )
+    : [];
+  const sheetNames = Object.keys(entries).filter((name) => /^xl\/worksheets\/sheet\d+\.xml$/.test(name));
+  let bestCars = [];
+
+  sheetNames.forEach((sheetName) => {
+    const sheet = parser.parseFromString(decoder.decode(entries[sheetName]), "application/xml");
+    const rows = Array.from(sheet.querySelectorAll("sheetData row")).map((row) => {
+      const values = [];
+      Array.from(row.querySelectorAll("c")).forEach((cell) => {
+        const type = cell.getAttribute("t");
+        const index = columnIndexFromCell(cell.getAttribute("r"));
+        if (type === "s") {
+          values[index] = shared[Number(xmlText(cell.querySelector("v")))] || "";
+          return;
+        }
+        if (type === "inlineStr") {
+          values[index] = xmlText(cell.querySelector("is t"));
+          return;
+        }
+        values[index] = xmlText(cell.querySelector("v"));
+      });
+      return values;
+    });
+    const cars = carsFromTableRows(rows, fallbackName);
+    if (cars.length > bestCars.length) {
+      bestCars = cars;
+    }
+  });
+
+  return bestCars;
+}
+
 const modalText = {
   ro: { add: "Adauga", edit: "Editeaza", save: "Salveaza", cancel: "Anuleaza", close: "Inchide" },
   ru: { add: "Добавить", edit: "Изменить", save: "Сохранить", cancel: "Отмена", close: "Закрыть" },
@@ -374,12 +661,13 @@ const formConfigs = {
   cars: {
     title: { ro: "auto", ru: "авто", en: "car" },
     fields: [
-      { label: { ro: "Masina", ru: "Машина", en: "Car" }, placeholder: "BMW E36" },
       { label: { ro: "Sofer", ru: "Водитель", en: "Driver" }, placeholder: "Alexei Rusu" },
+      { label: { ro: "Masina", ru: "Машина", en: "Car" }, placeholder: "BMW E36" },
+      { label: { ro: "Numar de telefon", ru: "Номер телефона", en: "Phone number" }, placeholder: "+373 69 000 000", type: "tel" },
       { label: { ro: "Numarul de inmatriculare", ru: "Регистрационный номер", en: "License plate" }, placeholder: "KLT 036" },
       { label: { ro: "Zona", ru: "Зона", en: "Zone" }, placeholder: "Zona A / B / C" },
       { label: { ro: "Categorie", ru: "Категория", en: "Category" }, placeholder: "Drift" },
-      { label: { ro: "Status", ru: "Статус", en: "Status" }, placeholder: "Confirmat" },
+      { label: { ro: "Status", ru: "Статус", en: "Status" }, placeholder: "Invitat", type: "select", options: ["Invitat", "Sosit", "Plecat"] },
     ],
   },
   tasks: {
@@ -421,6 +709,9 @@ const currentUserRole = document.querySelector("#current-user-role");
 const eventList = document.querySelector("#event-list");
 const carsTable = document.querySelector("#cars-table");
 const carsSearch = document.querySelector("#cars-search");
+const carsImportButton = document.querySelector("#cars-import-button");
+const carsImportFile = document.querySelector("#cars-import-file");
+const carsClearButton = document.querySelector("#cars-clear-button");
 const eventsTable = document.querySelector("#events-table");
 const priorityList = document.querySelector("#priority-list");
 const tasksTable = document.querySelector("#tasks-table");
@@ -585,6 +876,14 @@ function applyPermissions() {
   document.querySelectorAll("[data-delete]").forEach((button) => {
     button.hidden = !canManage(button.dataset.delete);
   });
+
+  if (carsImportButton) {
+    carsImportButton.hidden = !canManage("cars");
+  }
+
+  if (carsClearButton) {
+    carsClearButton.hidden = !canManage("cars");
+  }
 }
 
 function renderEvents() {
@@ -629,18 +928,18 @@ function renderCars() {
 
   carsTable.innerHTML = cars
     .map((row) => {
-      const [car, driver, third, fourth, fifth, sixth] = row;
-      const hasZoneData = row.length >= 6;
-      const plate = hasZoneData ? third : "-";
-      const zone = hasZoneData ? fourth : "Zona A";
-      const category = hasZoneData ? fifth : third;
-      const status = hasZoneData ? sixth : fourth;
+      const normalizedRow = row.length === 6 ? [row[0], row[1], "-", row[2], row[3], row[4], row[5]] : row;
+      const [car, driver, phone, plate, zone, category, status] = normalizedRow;
       const index = t().cars.findIndex((item) => item[0] === car && item[1] === driver);
       return `
       <article class="table-row">
-        <div><strong>${escapeHtml(car)}</strong><span>${escapeHtml(driver)} - ${escapeHtml(plate)} - ${escapeHtml(zone)}</span></div>
+        <div><strong>${escapeHtml(car)}</strong><span>${escapeHtml(driver)} - ${escapeHtml(phone)} - ${escapeHtml(plate)} - ${escapeHtml(zone)}</span></div>
         <span>${escapeHtml(category)}</span>
-        <span class="status-pill status-progress">${escapeHtml(status)}</span>
+        <select class="status-select" data-car-status="${index}">
+          ${["Invitat", "Sosit", "Plecat"]
+            .map((option) => `<option value="${escapeHtml(option)}" ${option === status ? "selected" : ""}>${escapeHtml(option)}</option>`)
+            .join("")}
+        </select>
         <div class="row-actions">
           <button class="small-action" type="button" data-edit="cars" data-index="${index}">${t().edit}</button>
           <button class="small-action danger-action" type="button" data-delete="cars" data-index="${index}">${t().delete}</button>
@@ -736,7 +1035,20 @@ function closeModal() {
 
 function editorValues(kind, values) {
   if (kind === "cars" && values.length === 4) {
-    return [values[0], values[1], "", "Zona A", values[2], values[3]];
+    return [values[1], values[0], "", "", "Zona A", values[2], values[3]];
+  }
+  if (kind === "cars" && values.length === 6) {
+    return [values[1], values[0], "", values[2], values[3], values[4], values[5]];
+  }
+  if (kind === "cars" && values.length === 7) {
+    return [values[1], values[0], values[2], values[3], values[4], values[5], values[6]];
+  }
+  return values;
+}
+
+function storageValues(kind, values) {
+  if (kind === "cars") {
+    return [values[1], values[0], values[2], values[3], values[4], values[5], values[6]];
   }
   return values;
 }
@@ -805,10 +1117,12 @@ function openEditor(kind, index = null) {
       return input.value.trim();
     });
 
+    const storedValues = storageValues(kind, nextValues);
+
     if (isEdit) {
-      collection[index] = nextValues;
+      collection[index] = storedValues;
     } else {
-      collection.unshift(nextValues);
+      collection.unshift(storedValues);
     }
 
     saveData();
@@ -909,6 +1223,56 @@ if (carsSearch) {
   carsSearch.addEventListener("input", renderCars);
 }
 
+if (carsImportButton && carsImportFile) {
+  carsImportButton.addEventListener("click", () => {
+    if (!canManage("cars")) return;
+    carsImportFile.click();
+  });
+
+  carsImportFile.addEventListener("change", async () => {
+    const files = Array.from(carsImportFile.files);
+    if (files.length === 0) return;
+
+    try {
+      const importedCars = [];
+      for (const file of files) {
+        const fallbackName = fileBaseName(file.name);
+        const parsed = file.name.toLowerCase().endsWith(".xlsx")
+          ? await parseCarsXlsx(await file.arrayBuffer(), fallbackName)
+          : parseCarsCsv(await file.text(), fallbackName);
+        importedCars.push(...parsed);
+      }
+      if (importedCars.length === 0) {
+        window.alert(t().cars_import_error);
+        carsImportFile.value = "";
+        return;
+      }
+
+      t().cars.unshift(...importedCars);
+      saveData();
+      renderCars();
+      renderMetrics();
+      applyPermissions();
+      carsImportFile.value = "";
+    } catch (error) {
+      window.alert(t().cars_import_error);
+      carsImportFile.value = "";
+    }
+  });
+}
+
+if (carsClearButton) {
+  carsClearButton.addEventListener("click", () => {
+    if (!canManage("cars")) return;
+    if (!window.confirm(t().clear_cars_confirm)) return;
+
+    t().cars = [];
+    saveData();
+    renderCars();
+    renderMetrics();
+  });
+}
+
 if (profileForm) {
   profileForm.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -935,6 +1299,20 @@ if (profileForm) {
     profileSuccess.classList.add("visible");
   });
 }
+
+document.addEventListener("change", (event) => {
+  const statusSelect = event.target.closest("[data-car-status]");
+  if (!statusSelect || !canManage("cars")) return;
+
+  const index = Number(statusSelect.dataset.carStatus);
+  const car = t().cars[index];
+  if (!car) return;
+
+  car[5] = statusSelect.value;
+  saveData();
+  renderCars();
+  applyPermissions();
+});
 
 document.querySelectorAll("[data-add]").forEach((button) => {
   button.addEventListener("click", () => openEditor(button.dataset.add));
