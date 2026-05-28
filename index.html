@@ -132,11 +132,17 @@
                 <h2 data-i18n="cars_admin_title">Auto participanti</h2>
                 <p data-i18n="cars_admin_subtitle">Lista masinilor si soferilor pentru evenimentele interne.</p>
               </div>
-              <button class="primary-action" type="button" data-add="cars" data-i18n="add_car">Adauga auto</button>
+              <div class="panel-actions">
+                <button class="ghost-action" type="button" id="cars-import-button" data-i18n="import_cars">Import fisier</button>
+                <button class="ghost-action danger-action" type="button" id="cars-clear-button" data-i18n="clear_cars">Sterge toti</button>
+                <button class="primary-action" type="button" data-add="cars" data-i18n="add_car">Adauga auto</button>
+                <input class="file-input" id="cars-import-file" type="file" accept=".csv,.xlsx,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" multiple />
+              </div>
             </div>
+            <p class="import-hint" data-i18n="cars_import_hint">CSV/XLSX: nume, masina, telefon, numar, zona, categorie, status. Cu header, coloanele sunt detectate automat.</p>
             <label class="search-box" for="cars-search">
               <span data-i18n="cars_search_label">Cauta participant</span>
-              <input id="cars-search" type="search" data-i18n-placeholder="cars_search_placeholder" placeholder="Cauta dupa auto, sofer, numar, zona, categorie sau status" />
+              <input id="cars-search" type="search" data-i18n-placeholder="cars_search_placeholder" placeholder="Cauta dupa auto, sofer, telefon, numar, zona, categorie sau status" />
             </label>
             <div class="table-list" id="cars-table"></div>
           </div>
