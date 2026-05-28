@@ -1,56 +1,169 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="ro">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AutoCrew</title>
+    <title>AutoCrew Admin</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <div class="app-shell">
+    <section class="login-screen" id="login-screen">
+      <div class="login-panel">
+        <div class="brand compact">
+          <div class="brand-mark">AC</div>
+          <div>
+            <strong>AutoCrew</strong>
+            <span data-i18n="brand_subtitle">Organizare interna</span>
+          </div>
+        </div>
+
+        <div class="login-copy">
+          <p class="eyebrow" data-i18n="login_eyebrow">Acces echipa</p>
+          <h1 data-i18n="login_title">Logare in panoul organizatorilor</h1>
+          <p data-i18n="login_subtitle">Gestioneaza evenimente, task-uri, membri si resurse dintr-un singur loc.</p>
+        </div>
+
+        <form class="login-form" id="login-form">
+          <label>
+            <span data-i18n="email_label">Email</span>
+            <input id="email" type="email" value="admin@autocrew.md" autocomplete="username" required />
+          </label>
+          <label>
+            <span data-i18n="password_label">Parola</span>
+            <input id="password" type="password" value="admin123" autocomplete="current-password" required />
+          </label>
+          <p class="login-hint" data-i18n="login_hint">Demo: admin@autocrew.md / admin123</p>
+          <button class="primary-action full" type="submit" data-i18n="login_button">Intra in admin panel</button>
+          <p class="form-error" id="form-error" data-i18n="login_error">Email sau parola incorecta.</p>
+        </form>
+      </div>
+    </section>
+
+    <div class="app-shell is-hidden" id="admin-app">
       <aside class="sidebar" aria-label="Navigare">
         <div class="brand">
           <div class="brand-mark">AC</div>
-          <div><strong>AutoCrew</strong><span data-i18n="brand_subtitle">Organizare interna</span></div>
+          <div>
+            <strong>AutoCrew</strong>
+            <span data-i18n="admin_label">Admin panel</span>
+          </div>
         </div>
+
         <nav class="nav-list">
-          <button class="nav-item active" type="button"><span>⌂</span><span data-i18n="nav_dashboard">Dashboard</span></button>
-          <button class="nav-item" type="button"><span>▣</span><span data-i18n="nav_events">Evenimente</span></button>
-          <button class="nav-item" type="button"><span>✓</span><span data-i18n="nav_tasks">Checklist</span></button>
-          <button class="nav-item" type="button"><span>◉</span><span data-i18n="nav_team">Echipa</span></button>
-          <button class="nav-item" type="button"><span>◇</span><span data-i18n="nav_resources">Resurse</span></button>
+          <button class="nav-item active" type="button" data-view="dashboard">
+            <span>⌂</span><span data-i18n="nav_dashboard">Dashboard</span>
+          </button>
+          <button class="nav-item" type="button" data-view="events">
+            <span>▣</span><span data-i18n="nav_events">Evenimente</span>
+          </button>
+          <button class="nav-item" type="button" data-view="tasks">
+            <span>✓</span><span data-i18n="nav_tasks">Checklist</span>
+          </button>
+          <button class="nav-item" type="button" data-view="team">
+            <span>◉</span><span data-i18n="nav_team">Echipa</span>
+          </button>
+          <button class="nav-item" type="button" data-view="settings">
+            <span>⚙</span><span data-i18n="nav_settings">Setari</span>
+          </button>
         </nav>
-        <div class="sidebar-note">
-          <span data-i18n="sidebar_label">Urmatorul eveniment</span>
-          <strong>Night Drive Meetup</strong>
-          <small data-i18n="sidebar_date">12 iulie, Chisinau Arena</small>
-        </div>
+
+        <button class="logout-button" id="logout-button" type="button" data-i18n="logout">Iesire</button>
       </aside>
+
       <main class="workspace">
         <header class="topbar">
           <div>
             <p class="eyebrow" data-i18n="eyebrow">Panou intern pentru organizatori</p>
-            <h1 data-i18n="page_title">Centrul de comanda al evenimentelor auto</h1>
+            <h1 id="view-title" data-i18n="page_title">Centrul de comanda al evenimentelor auto</h1>
           </div>
+
           <div class="topbar-actions">
-            <label class="language-switcher" for="language"><span data-i18n="language_label">Limba</span><select id="language" aria-label="Language"><option value="ro">RO</option><option value="ru">RU</option><option value="en">EN</option></select></label>
+            <label class="language-switcher" for="language">
+              <span data-i18n="language_label">Limba</span>
+              <select id="language" aria-label="Language">
+                <option value="ro">RO</option>
+                <option value="ru">RU</option>
+                <option value="en">EN</option>
+              </select>
+            </label>
             <button class="primary-action" type="button" data-i18n="new_event">Eveniment nou</button>
           </div>
         </header>
+
         <section class="metrics-grid" aria-label="Indicatori">
           <article class="metric-card"><span data-i18n="metric_events">Evenimente active</span><strong>4</strong><small data-i18n="metric_events_note">2 in pregatire intensiva</small></article>
           <article class="metric-card"><span data-i18n="metric_tasks">Task-uri deschise</span><strong>28</strong><small data-i18n="metric_tasks_note">7 au termen saptamana aceasta</small></article>
           <article class="metric-card"><span data-i18n="metric_team">Membri implicati</span><strong>16</strong><small data-i18n="metric_team_note">5 roluri operationale</small></article>
           <article class="metric-card warning"><span data-i18n="metric_risks">Blocaje</span><strong>3</strong><small data-i18n="metric_risks_note">Necesita decizie rapida</small></article>
         </section>
-        <section class="content-grid">
-          <div class="panel wide"><div class="panel-header"><div><h2 data-i18n="events_title">Evenimente in lucru</h2><p data-i18n="events_subtitle">Status, responsabil si progres pentru fiecare eveniment.</p></div><button class="ghost-action" type="button" data-i18n="view_all">Vezi tot</button></div><div class="event-list" id="event-list"></div></div>
-          <div class="panel"><div class="panel-header compact"><h2 data-i18n="priority_title">Prioritati azi</h2></div><div class="task-list" id="priority-list"></div></div>
-          <div class="panel"><div class="panel-header compact"><h2 data-i18n="team_title">Echipa de tura</h2></div><div class="team-list" id="team-list"></div></div>
-          <div class="panel wide"><div class="panel-header"><div><h2 data-i18n="resources_title">Resurse si documente</h2><p data-i18n="resources_subtitle">Elementele critice pentru organizare.</p></div></div><div class="resource-grid" id="resource-list"></div></div>
+
+        <section class="admin-view active" data-view-panel="dashboard">
+          <div class="content-grid">
+            <div class="panel wide">
+              <div class="panel-header">
+                <div>
+                  <h2 data-i18n="events_title">Evenimente in lucru</h2>
+                  <p data-i18n="events_subtitle">Status, responsabil si progres pentru fiecare eveniment.</p>
+                </div>
+                <button class="ghost-action" type="button" data-i18n="view_all">Vezi tot</button>
+              </div>
+              <div class="event-list" id="event-list"></div>
+            </div>
+            <div class="panel">
+              <div class="panel-header compact"><h2 data-i18n="priority_title">Prioritati azi</h2></div>
+              <div class="task-list" id="priority-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="admin-view" data-view-panel="events">
+          <div class="panel">
+            <div class="panel-header">
+              <div><h2 data-i18n="events_admin_title">Administrare evenimente</h2><p data-i18n="events_admin_subtitle">Lista pentru creare, editare si urmarire.</p></div>
+              <button class="primary-action" type="button" data-i18n="add_event">Adauga eveniment</button>
+            </div>
+            <div class="table-list" id="events-table"></div>
+          </div>
+        </section>
+
+        <section class="admin-view" data-view-panel="tasks">
+          <div class="panel">
+            <div class="panel-header">
+              <div><h2 data-i18n="tasks_admin_title">Checklist operational</h2><p data-i18n="tasks_admin_subtitle">Task-uri, responsabili si prioritate.</p></div>
+              <button class="primary-action" type="button" data-i18n="add_task">Adauga task</button>
+            </div>
+            <div class="task-list" id="tasks-table"></div>
+          </div>
+        </section>
+
+        <section class="admin-view" data-view-panel="team">
+          <div class="panel">
+            <div class="panel-header">
+              <div><h2 data-i18n="team_admin_title">Membrii echipei</h2><p data-i18n="team_admin_subtitle">Roluri, acces si responsabilitati.</p></div>
+              <button class="primary-action" type="button" data-i18n="add_member">Adauga membru</button>
+            </div>
+            <div class="team-grid" id="team-list"></div>
+          </div>
+        </section>
+
+        <section class="admin-view" data-view-panel="settings">
+          <div class="settings-grid">
+            <article class="panel">
+              <h2 data-i18n="settings_access">Acces si roluri</h2>
+              <p data-i18n="settings_access_text">Activeaza roluri pentru coordonator, logistica, media si securitate.</p>
+              <label class="toggle-row"><input type="checkbox" checked /><span data-i18n="setting_login">Login obligatoriu</span></label>
+              <label class="toggle-row"><input type="checkbox" checked /><span data-i18n="setting_roles">Roluri pentru membri</span></label>
+            </article>
+            <article class="panel">
+              <h2 data-i18n="settings_lang">Limbi</h2>
+              <p data-i18n="settings_lang_text">Interfata este pregatita pentru romana, rusa si engleza.</p>
+              <div class="language-tags"><span>RO</span><span>RU</span><span>EN</span></div>
+            </article>
+          </div>
         </section>
       </main>
     </div>
+
     <script src="./script.js"></script>
   </body>
 </html>
