@@ -1,0 +1,56 @@
+﻿<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AutoCrew</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Navigare">
+        <div class="brand">
+          <div class="brand-mark">AC</div>
+          <div><strong>AutoCrew</strong><span data-i18n="brand_subtitle">Organizare interna</span></div>
+        </div>
+        <nav class="nav-list">
+          <button class="nav-item active" type="button"><span>⌂</span><span data-i18n="nav_dashboard">Dashboard</span></button>
+          <button class="nav-item" type="button"><span>▣</span><span data-i18n="nav_events">Evenimente</span></button>
+          <button class="nav-item" type="button"><span>✓</span><span data-i18n="nav_tasks">Checklist</span></button>
+          <button class="nav-item" type="button"><span>◉</span><span data-i18n="nav_team">Echipa</span></button>
+          <button class="nav-item" type="button"><span>◇</span><span data-i18n="nav_resources">Resurse</span></button>
+        </nav>
+        <div class="sidebar-note">
+          <span data-i18n="sidebar_label">Urmatorul eveniment</span>
+          <strong>Night Drive Meetup</strong>
+          <small data-i18n="sidebar_date">12 iulie, Chisinau Arena</small>
+        </div>
+      </aside>
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow" data-i18n="eyebrow">Panou intern pentru organizatori</p>
+            <h1 data-i18n="page_title">Centrul de comanda al evenimentelor auto</h1>
+          </div>
+          <div class="topbar-actions">
+            <label class="language-switcher" for="language"><span data-i18n="language_label">Limba</span><select id="language" aria-label="Language"><option value="ro">RO</option><option value="ru">RU</option><option value="en">EN</option></select></label>
+            <button class="primary-action" type="button" data-i18n="new_event">Eveniment nou</button>
+          </div>
+        </header>
+        <section class="metrics-grid" aria-label="Indicatori">
+          <article class="metric-card"><span data-i18n="metric_events">Evenimente active</span><strong>4</strong><small data-i18n="metric_events_note">2 in pregatire intensiva</small></article>
+          <article class="metric-card"><span data-i18n="metric_tasks">Task-uri deschise</span><strong>28</strong><small data-i18n="metric_tasks_note">7 au termen saptamana aceasta</small></article>
+          <article class="metric-card"><span data-i18n="metric_team">Membri implicati</span><strong>16</strong><small data-i18n="metric_team_note">5 roluri operationale</small></article>
+          <article class="metric-card warning"><span data-i18n="metric_risks">Blocaje</span><strong>3</strong><small data-i18n="metric_risks_note">Necesita decizie rapida</small></article>
+        </section>
+        <section class="content-grid">
+          <div class="panel wide"><div class="panel-header"><div><h2 data-i18n="events_title">Evenimente in lucru</h2><p data-i18n="events_subtitle">Status, responsabil si progres pentru fiecare eveniment.</p></div><button class="ghost-action" type="button" data-i18n="view_all">Vezi tot</button></div><div class="event-list" id="event-list"></div></div>
+          <div class="panel"><div class="panel-header compact"><h2 data-i18n="priority_title">Prioritati azi</h2></div><div class="task-list" id="priority-list"></div></div>
+          <div class="panel"><div class="panel-header compact"><h2 data-i18n="team_title">Echipa de tura</h2></div><div class="team-list" id="team-list"></div></div>
+          <div class="panel wide"><div class="panel-header"><div><h2 data-i18n="resources_title">Resurse si documente</h2><p data-i18n="resources_subtitle">Elementele critice pentru organizare.</p></div></div><div class="resource-grid" id="resource-list"></div></div>
+        </section>
+      </main>
+    </div>
+    <script src="./script.js"></script>
+  </body>
+</html>
