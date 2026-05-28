@@ -3,16 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AutoCrew Admin</title>
+    <title>Kultura Admins</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <section class="login-screen" id="login-screen">
       <div class="login-panel">
         <div class="brand compact">
-          <div class="brand-mark">AC</div>
+          <img class="brand-logo" src="./kultura_1_15.png" alt="Kultura" />
           <div>
-            <strong>AutoCrew</strong>
+            <strong>Kultura Admins</strong>
             <span data-i18n="brand_subtitle">Organizare interna</span>
           </div>
         </div>
@@ -26,13 +26,13 @@
         <form class="login-form" id="login-form">
           <label>
             <span data-i18n="email_label">Email</span>
-            <input id="email" type="email" value="admin@autocrew.md" autocomplete="username" required />
+            <input id="email" type="email" value="admin@kultura.md" autocomplete="username" required />
           </label>
           <label>
             <span data-i18n="password_label">Parola</span>
             <input id="password" type="password" value="admin123" autocomplete="current-password" required />
           </label>
-          <p class="login-hint" data-i18n="login_hint">Demo: admin@autocrew.md / admin123</p>
+          <p class="login-hint" data-i18n="login_hint">Introdu emailul si parola primite de la admin.</p>
           <button class="primary-action full" type="submit" data-i18n="login_button">Intra in admin panel</button>
           <p class="form-error" id="form-error" data-i18n="login_error">Email sau parola incorecta.</p>
         </form>
@@ -42,9 +42,9 @@
     <div class="app-shell is-hidden" id="admin-app">
       <aside class="sidebar" aria-label="Navigare">
         <div class="brand">
-          <div class="brand-mark">AC</div>
+          <img class="brand-logo" src="./kultura_1_15.png" alt="Kultura" />
           <div>
-            <strong>AutoCrew</strong>
+            <strong>Kultura Admins</strong>
             <span data-i18n="admin_label">Admin panel</span>
           </div>
         </div>
@@ -53,11 +53,14 @@
           <button class="nav-item active" type="button" data-view="dashboard">
             <span>⌂</span><span data-i18n="nav_dashboard">Dashboard</span>
           </button>
+          <button class="nav-item" type="button" data-view="cars">
+            <span>▤</span><span data-i18n="nav_cars">Auto participanti</span>
+          </button>
           <button class="nav-item" type="button" data-view="events">
             <span>▣</span><span data-i18n="nav_events">Evenimente</span>
           </button>
           <button class="nav-item" type="button" data-view="tasks">
-            <span>✓</span><span data-i18n="nav_tasks">Checklist</span>
+            <span>✓</span><span data-i18n="nav_tasks">Sarcine</span>
           </button>
           <button class="nav-item" type="button" data-view="team">
             <span>◉</span><span data-i18n="nav_team">Echipa</span>
@@ -67,7 +70,6 @@
           </button>
         </nav>
 
-        <button class="logout-button" id="logout-button" type="button" data-i18n="logout">Iesire</button>
       </aside>
 
       <main class="workspace">
@@ -86,18 +88,25 @@
                 <option value="en">EN</option>
               </select>
             </label>
-            <button class="primary-action" type="button" data-i18n="new_event">Eveniment nou</button>
+            <button class="primary-action" type="button" data-view-shortcut="profile" data-i18n="profile_button">Profil</button>
+            <button class="logout-button" id="logout-button" type="button" aria-label="Iesire">
+              <img src="./logout-icon.png" alt="" aria-hidden="true" />
+            </button>
+            <div class="current-user" id="current-user">
+              <span id="current-user-name">Victor</span>
+              <strong id="current-user-role">Admin</strong>
+            </div>
           </div>
         </header>
 
-        <section class="metrics-grid" aria-label="Indicatori">
-          <article class="metric-card"><span data-i18n="metric_events">Evenimente active</span><strong>4</strong><small data-i18n="metric_events_note">2 in pregatire intensiva</small></article>
-          <article class="metric-card"><span data-i18n="metric_tasks">Task-uri deschise</span><strong>28</strong><small data-i18n="metric_tasks_note">7 au termen saptamana aceasta</small></article>
-          <article class="metric-card"><span data-i18n="metric_team">Membri implicati</span><strong>16</strong><small data-i18n="metric_team_note">5 roluri operationale</small></article>
-          <article class="metric-card warning"><span data-i18n="metric_risks">Blocaje</span><strong>3</strong><small data-i18n="metric_risks_note">Necesita decizie rapida</small></article>
-        </section>
-
         <section class="admin-view active" data-view-panel="dashboard">
+          <section class="metrics-grid" aria-label="Indicatori">
+            <article class="metric-card"><span data-i18n="metric_events">Evenimente active</span><strong data-count="events">4</strong><small data-i18n="metric_events_note">2 in pregatire intensiva</small></article>
+            <article class="metric-card"><span data-i18n="metric_tasks">Task-uri deschise</span><strong data-count="tasks">28</strong><small data-i18n="metric_tasks_note">7 au termen saptamana aceasta</small></article>
+            <article class="metric-card"><span data-i18n="metric_team">Membri implicati</span><strong data-count="team">16</strong><small data-i18n="metric_team_note">5 roluri operationale</small></article>
+            <article class="metric-card warning"><span data-i18n="metric_risks">Blocaje</span><strong data-count="risks">3</strong><small data-i18n="metric_risks_note">Necesita decizie rapida</small></article>
+          </section>
+
           <div class="content-grid">
             <div class="panel wide">
               <div class="panel-header">
@@ -116,11 +125,28 @@
           </div>
         </section>
 
+        <section class="admin-view" data-view-panel="cars">
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <h2 data-i18n="cars_admin_title">Auto participanti</h2>
+                <p data-i18n="cars_admin_subtitle">Lista masinilor si soferilor pentru evenimentele interne.</p>
+              </div>
+              <button class="primary-action" type="button" data-add="cars" data-i18n="add_car">Adauga auto</button>
+            </div>
+            <label class="search-box" for="cars-search">
+              <span data-i18n="cars_search_label">Cauta participant</span>
+              <input id="cars-search" type="search" data-i18n-placeholder="cars_search_placeholder" placeholder="Cauta dupa auto, sofer, numar, zona, categorie sau status" />
+            </label>
+            <div class="table-list" id="cars-table"></div>
+          </div>
+        </section>
+
         <section class="admin-view" data-view-panel="events">
           <div class="panel">
             <div class="panel-header">
               <div><h2 data-i18n="events_admin_title">Administrare evenimente</h2><p data-i18n="events_admin_subtitle">Lista pentru creare, editare si urmarire.</p></div>
-              <button class="primary-action" type="button" data-i18n="add_event">Adauga eveniment</button>
+              <button class="primary-action" type="button" data-add="events" data-i18n="add_event">Adauga eveniment</button>
             </div>
             <div class="table-list" id="events-table"></div>
           </div>
@@ -129,8 +155,8 @@
         <section class="admin-view" data-view-panel="tasks">
           <div class="panel">
             <div class="panel-header">
-              <div><h2 data-i18n="tasks_admin_title">Checklist operational</h2><p data-i18n="tasks_admin_subtitle">Task-uri, responsabili si prioritate.</p></div>
-              <button class="primary-action" type="button" data-i18n="add_task">Adauga task</button>
+              <div><h2 data-i18n="tasks_admin_title">Sarcine operationale</h2><p data-i18n="tasks_admin_subtitle">Task-uri, responsabili si prioritate.</p></div>
+              <button class="primary-action" type="button" data-add="tasks" data-i18n="add_task">Adauga task</button>
             </div>
             <div class="task-list" id="tasks-table"></div>
           </div>
@@ -140,7 +166,7 @@
           <div class="panel">
             <div class="panel-header">
               <div><h2 data-i18n="team_admin_title">Membrii echipei</h2><p data-i18n="team_admin_subtitle">Roluri, acces si responsabilitati.</p></div>
-              <button class="primary-action" type="button" data-i18n="add_member">Adauga membru</button>
+              <button class="primary-action" type="button" data-add="team" data-i18n="add_member">Adauga membru</button>
             </div>
             <div class="team-grid" id="team-list"></div>
           </div>
@@ -153,9 +179,39 @@
                 <h2 data-i18n="resources_admin_title">Resurse si documente</h2>
                 <p data-i18n="resources_admin_subtitle">Echipamente, furnizori si acte necesare pentru evenimente.</p>
               </div>
-              <button class="primary-action" type="button" data-i18n="add_resource">Adauga resursa</button>
+              <button class="primary-action" type="button" data-add="resources" data-i18n="add_resource">Adauga resursa</button>
             </div>
             <div class="resource-grid" id="resource-list"></div>
+          </div>
+        </section>
+
+        <section class="admin-view" data-view-panel="profile">
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <h2 data-i18n="profile_title">Profilul meu</h2>
+                <p data-i18n="profile_subtitle">Datele de acces pentru contul tau de organizator.</p>
+              </div>
+            </div>
+            <div class="profile-layout">
+              <div class="profile-card">
+                <div class="profile-avatar" id="profile-avatar">V</div>
+                <strong id="profile-name">Victor</strong>
+                <span id="profile-role">Admin general</span>
+              </div>
+              <form class="profile-form" id="profile-form">
+                <label>
+                  <span data-i18n="email_label">Email</span>
+                  <input id="profile-email" type="email" required />
+                </label>
+                <label>
+                  <span data-i18n="password_label">Parola</span>
+                  <input id="profile-password" type="text" required />
+                </label>
+                <button class="primary-action" type="submit" data-i18n="profile_save">Salveaza profilul</button>
+                <p class="profile-success" id="profile-success" data-i18n="profile_saved">Profilul a fost salvat.</p>
+              </form>
+            </div>
           </div>
         </section>
       </main>
