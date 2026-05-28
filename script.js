@@ -14,10 +14,9 @@ const dictionaries = {
     nav_events: "Evenimente",
     nav_tasks: "Checklist",
     nav_team: "Echipa",
-    nav_settings: "Setari",
+    nav_resources: "Resurse",
     logout: "Iesire",
     eyebrow: "Panou intern pentru organizatori",
-    page_title: "Centrul de comanda al evenimentelor auto",
     language_label: "Limba",
     new_event: "Eveniment nou",
     metric_events: "Evenimente active",
@@ -45,18 +44,15 @@ const dictionaries = {
     team_admin_title: "Membrii echipei",
     team_admin_subtitle: "Roluri, acces si responsabilitati.",
     add_member: "Adauga membru",
-    settings_access: "Acces si roluri",
-    settings_access_text: "Activeaza roluri pentru coordonator, logistica, media si securitate.",
-    setting_login: "Login obligatoriu",
-    setting_roles: "Roluri pentru membri",
-    settings_lang: "Limbi",
-    settings_lang_text: "Interfata este pregatita pentru romana, rusa si engleza.",
+    resources_admin_title: "Resurse si documente",
+    resources_admin_subtitle: "Echipamente, furnizori si acte necesare pentru evenimente.",
+    add_resource: "Adauga resursa",
     views: {
       dashboard: "Centrul de comanda al evenimentelor auto",
       events: "Administrare evenimente",
       tasks: "Checklist operational",
       team: "Administrare echipa",
-      settings: "Setari admin",
+      resources: "Resurse si documente",
     },
     events: [
       ["Night Drive Meetup", "Chisinau Arena", "Logistica", "Victor", "Aproape gata", 82],
@@ -75,6 +71,12 @@ const dictionaries = {
       ["Irina", "Media si comunicare", "Editor"],
       ["Mihai", "Parteneri si autorizatii", "Viewer"],
     ],
+    resources: [
+      ["Autorizatii", "Permise de locatie, acces public si siguranta", "In lucru"],
+      ["Echipamente", "Statii radio, garduri, conuri, cort staff", "Pregatit"],
+      ["Furnizori", "Sunet, catering, securitate, ambulanta", "Confirmare"],
+      ["Documente", "Plan acces, schema locatiei, lista contacte", "Actualizat"],
+    ],
   },
   ru: {
     brand_subtitle: "Внутренняя организация",
@@ -91,10 +93,9 @@ const dictionaries = {
     nav_events: "События",
     nav_tasks: "Чеклист",
     nav_team: "Команда",
-    nav_settings: "Настройки",
+    nav_resources: "Ресурсы",
     logout: "Выход",
     eyebrow: "Внутренняя панель организаторов",
-    page_title: "Центр управления авто событиями",
     language_label: "Язык",
     new_event: "Новое событие",
     metric_events: "Активные события",
@@ -122,18 +123,15 @@ const dictionaries = {
     team_admin_title: "Участники команды",
     team_admin_subtitle: "Роли, доступ и обязанности.",
     add_member: "Добавить участника",
-    settings_access: "Доступ и роли",
-    settings_access_text: "Включите роли для координатора, логистики, медиа и безопасности.",
-    setting_login: "Обязательный вход",
-    setting_roles: "Роли для участников",
-    settings_lang: "Языки",
-    settings_lang_text: "Интерфейс готов для румынского, русского и английского.",
+    resources_admin_title: "Ресурсы и документы",
+    resources_admin_subtitle: "Оборудование, поставщики и документы для событий.",
+    add_resource: "Добавить ресурс",
     views: {
       dashboard: "Центр управления авто событиями",
       events: "Управление событиями",
       tasks: "Операционный чеклист",
       team: "Управление командой",
-      settings: "Настройки администратора",
+      resources: "Ресурсы и документы",
     },
     events: [
       ["Night Drive Meetup", "Chisinau Arena", "Логистика", "Виктор", "Почти готово", 82],
@@ -152,6 +150,12 @@ const dictionaries = {
       ["Ирина", "Медиа и коммуникация", "Editor"],
       ["Михаил", "Партнеры и разрешения", "Viewer"],
     ],
+    resources: [
+      ["Разрешения", "Локация, публичный доступ и безопасность", "В работе"],
+      ["Оборудование", "Рации, ограждения, конусы, шатер команды", "Готово"],
+      ["Поставщики", "Звук, кейтеринг, охрана, скорая помощь", "Подтвердить"],
+      ["Документы", "План доступа, схема локации, список контактов", "Обновлено"],
+    ],
   },
   en: {
     brand_subtitle: "Internal operations",
@@ -168,10 +172,9 @@ const dictionaries = {
     nav_events: "Events",
     nav_tasks: "Checklist",
     nav_team: "Team",
-    nav_settings: "Settings",
+    nav_resources: "Resources",
     logout: "Logout",
     eyebrow: "Internal organizer workspace",
-    page_title: "Command center for auto events",
     language_label: "Language",
     new_event: "New event",
     metric_events: "Active events",
@@ -199,18 +202,15 @@ const dictionaries = {
     team_admin_title: "Team members",
     team_admin_subtitle: "Roles, access and responsibilities.",
     add_member: "Add member",
-    settings_access: "Access and roles",
-    settings_access_text: "Enable roles for coordinator, logistics, media and safety.",
-    setting_login: "Required login",
-    setting_roles: "Member roles",
-    settings_lang: "Languages",
-    settings_lang_text: "The interface is prepared for Romanian, Russian and English.",
+    resources_admin_title: "Resources and documents",
+    resources_admin_subtitle: "Equipment, vendors and documents needed for events.",
+    add_resource: "Add resource",
     views: {
       dashboard: "Command center for auto events",
       events: "Event management",
       tasks: "Operational checklist",
       team: "Team management",
-      settings: "Admin settings",
+      resources: "Resources and documents",
     },
     events: [
       ["Night Drive Meetup", "Chisinau Arena", "Logistics", "Victor", "Almost ready", 82],
@@ -228,6 +228,12 @@ const dictionaries = {
       ["Ana", "Safety and track", "Editor"],
       ["Irina", "Media and comms", "Editor"],
       ["Mihai", "Partners and permits", "Viewer"],
+    ],
+    resources: [
+      ["Permits", "Venue, public access and safety permits", "In progress"],
+      ["Equipment", "Radios, barriers, cones, staff tent", "Ready"],
+      ["Vendors", "Sound, catering, security, ambulance", "Confirm"],
+      ["Documents", "Access plan, venue map, contact list", "Updated"],
     ],
   },
 };
@@ -248,6 +254,7 @@ const eventsTable = document.querySelector("#events-table");
 const priorityList = document.querySelector("#priority-list");
 const tasksTable = document.querySelector("#tasks-table");
 const teamList = document.querySelector("#team-list");
+const resourceList = document.querySelector("#resource-list");
 
 function t() {
   return dictionaries[state.language];
@@ -284,7 +291,7 @@ function renderEvents() {
   eventList.innerHTML = t().events
     .map(([name, location, type, owner, status, percent]) => `
       <article class="event-row">
-        <div class="event-main"><strong>${name}</strong><span>${location} · ${type}</span></div>
+        <div class="event-main"><strong>${name}</strong><span>${location} - ${type}</span></div>
         <div class="event-meta">${t().responsible}: <strong>${owner}</strong></div>
         <span class="status-pill ${statusClass(status)}">${status}</span>
         <div class="progress" aria-label="${percent}%"><small>${percent}%</small><div class="progress-track"><div class="progress-fill" style="width: ${percent}%"></div></div></div>
@@ -323,8 +330,20 @@ function renderTeam() {
     .map(([name, role, access]) => `
       <article class="team-member">
         <div class="avatar">${initials(name)}</div>
-        <div><strong>${name}</strong><span>${role} · ${access}</span></div>
+        <div><strong>${name}</strong><span>${role} - ${access}</span></div>
         <button class="small-action" type="button">${t().edit}</button>
+      </article>
+    `)
+    .join("");
+}
+
+function renderResources() {
+  resourceList.innerHTML = t().resources
+    .map(([title, description, status]) => `
+      <article class="resource-card">
+        <strong>${title}</strong>
+        <span>${description}</span>
+        <span class="status-pill status-progress">${status}</span>
       </article>
     `)
     .join("");
@@ -335,6 +354,7 @@ function render() {
   renderEvents();
   renderTasks();
   renderTeam();
+  renderResources();
 }
 
 function showAdmin() {

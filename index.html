@@ -62,8 +62,8 @@
           <button class="nav-item" type="button" data-view="team">
             <span>◉</span><span data-i18n="nav_team">Echipa</span>
           </button>
-          <button class="nav-item" type="button" data-view="settings">
-            <span>⚙</span><span data-i18n="nav_settings">Setari</span>
+          <button class="nav-item" type="button" data-view="resources">
+            <span>◇</span><span data-i18n="nav_resources">Resurse</span>
           </button>
         </nav>
 
@@ -146,19 +146,16 @@
           </div>
         </section>
 
-        <section class="admin-view" data-view-panel="settings">
-          <div class="settings-grid">
-            <article class="panel">
-              <h2 data-i18n="settings_access">Acces si roluri</h2>
-              <p data-i18n="settings_access_text">Activeaza roluri pentru coordonator, logistica, media si securitate.</p>
-              <label class="toggle-row"><input type="checkbox" checked /><span data-i18n="setting_login">Login obligatoriu</span></label>
-              <label class="toggle-row"><input type="checkbox" checked /><span data-i18n="setting_roles">Roluri pentru membri</span></label>
-            </article>
-            <article class="panel">
-              <h2 data-i18n="settings_lang">Limbi</h2>
-              <p data-i18n="settings_lang_text">Interfata este pregatita pentru romana, rusa si engleza.</p>
-              <div class="language-tags"><span>RO</span><span>RU</span><span>EN</span></div>
-            </article>
+        <section class="admin-view" data-view-panel="resources">
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <h2 data-i18n="resources_admin_title">Resurse si documente</h2>
+                <p data-i18n="resources_admin_subtitle">Echipamente, furnizori si acte necesare pentru evenimente.</p>
+              </div>
+              <button class="primary-action" type="button" data-i18n="add_resource">Adauga resursa</button>
+            </div>
+            <div class="resource-grid" id="resource-list"></div>
           </div>
         </section>
       </main>
