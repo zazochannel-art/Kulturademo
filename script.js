@@ -893,7 +893,7 @@ function escapeHtml(value) {
     .replaceAll('"', "&quot;");
 }
 
-function saveData() {
+function buildDataPayload() {
   const payload = {};
   Object.keys(dictionaries).forEach((language) => {
     payload[language] = {};
@@ -901,6 +901,11 @@ function saveData() {
       payload[language][key] = dictionaries[language][key];
     });
   });
+  return payload;
+}
+
+function saveData() {
+  const payload = buildDataPayload();
   localStorage.setItem("kultura_admin_data", JSON.stringify(payload));
   saveDataToSupabase(payload);
 }
@@ -936,7 +941,10 @@ async function loadDataFromSupabase() {
   if (data?.data) {
     applyStoredData(data.data);
     localStorage.setItem("kultura_admin_data", JSON.stringify(data.data));
+    return;
   }
+
+  await saveDataToSupabase(buildDataPayload());
 }
 
 function findTeamUser(email, password) {
