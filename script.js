@@ -1570,16 +1570,7 @@ async function initializeApp() {
   normalizeTeamRows();
   normalizeCarStatuses();
   renderTranslations();
-
-  if (localStorage.getItem("autocrew_logged_in") === "yes") {
-    if (!getCurrentUser()) {
-      const [name, , access, email] = t().team[0];
-      localStorage.setItem("kultura_current_user", JSON.stringify({ name, email, role: access }));
-    }
-    showAdmin();
-  } else {
-    showHome();
-  }
+  showHome();
 }
 
 initializeApp();
