@@ -850,6 +850,7 @@ const profileRole = document.querySelector("#profile-role");
 const profileEmail = document.querySelector("#profile-email");
 const profilePassword = document.querySelector("#profile-password");
 const profileSuccess = document.querySelector("#profile-success");
+const syncStatus = document.querySelector("#sync-status");
 
 function t() {
   return dictionaries[state.language];
@@ -893,6 +894,13 @@ function escapeHtml(value) {
     .replaceAll('"', "&quot;");
 }
 
+function setSyncStatus(message, state = "") {
+  if (!syncStatus) return;
+  syncStatus.textContent = message;
+  syncStatus.classList.toggle("ok", state === "ok");
+  syncStatus.classList.toggle("error", state === "error");
+}
+
 function buildDataPayload() {
   const payload = {};
   Object.keys(dictionaries).forEach((language) => {
@@ -911,26 +919,44 @@ function saveData() {
 }
 
 async function saveDataToSupabase(payload) {
-  if (!supabaseClient) return;
+  if (!supabaseClient) {
+    setSyncStatus("Supabase: neconfigurat", "error");
+    return;
+  }
 
-  const { error } = await supabaseClient
+  setSyncStatus("Supabase: salvez...");
+
+  const { data, error } = await supabaseClient
     .from(supabaseConfig.table)
     .update({
       data: payload,
       updated_at: new Date().toISOString(),
     })
-    .eq("id", supabaseConfig.rowId);
+    .eq("id", supabaseConfig.rowId)
+    .select("id");
 
   if (error) {
     console.warn("Datele nu au fost salvate in Supabase.", error);
+    setSyncStatus(`Supabase: eroare ${error.code || ""}`.trim(), "error");
     return;
   }
 
+  if (!data || data.length === 0) {
+    setSyncStatus("Supabase: randul main lipseste", "error");
+    return;
+  }
+
+  setSyncStatus("Supabase: salvat", "ok");
   console.info("Datele au fost salvate in Supabase.");
 }
 
 async function loadDataFromSupabase() {
-  if (!supabaseClient) return;
+  if (!supabaseClient) {
+    setSyncStatus("Supabase: neconfigurat", "error");
+    return;
+  }
+
+  setSyncStatus("Supabase: citesc...");
 
   const { data, error } = await supabaseClient
     .from(supabaseConfig.table)
@@ -940,15 +966,18 @@ async function loadDataFromSupabase() {
 
   if (error) {
     console.warn("Datele nu au putut fi citite din Supabase.", error);
+    setSyncStatus(`Supabase: eroare ${error.code || ""}`.trim(), "error");
     return;
   }
 
   if (data?.data) {
     applyStoredData(data.data);
     localStorage.setItem("kultura_admin_data", JSON.stringify(data.data));
+    setSyncStatus("Supabase: conectat", "ok");
     return;
   }
 
+  setSyncStatus("Supabase: creez main...");
   await saveDataToSupabase(buildDataPayload());
 }
 

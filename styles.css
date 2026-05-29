@@ -259,6 +259,27 @@ button {
   line-height: 1.1;
 }
 
+.sync-status {
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.sync-status.ok {
+  border-color: rgba(47, 157, 132, 0.42);
+  color: #9af0d9;
+}
+
+.sync-status.error {
+  border-color: rgba(185, 65, 52, 0.42);
+  color: #ffb4ad;
+}
+
 .workspace {
   min-width: 0;
   padding: 28px;
