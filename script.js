@@ -824,6 +824,8 @@ const formConfigs = {
   },
 };
 
+const publicHome = document.querySelector("#public-home");
+const adminEntry = document.querySelector("#admin-entry");
 const loginScreen = document.querySelector("#login-screen");
 const adminApp = document.querySelector("#admin-app");
 const navMenu = document.querySelector(".nav-menu");
@@ -1375,15 +1377,31 @@ function showView(view) {
 }
 
 function showAdmin() {
+  publicHome?.classList.add("is-hidden");
   loginScreen.classList.add("is-hidden");
   adminApp.classList.remove("is-hidden");
   render();
 }
 
+function showHome() {
+  adminApp.classList.add("is-hidden");
+  loginScreen.classList.add("is-hidden");
+  publicHome?.classList.remove("is-hidden");
+}
+
 function showLogin() {
+  publicHome?.classList.add("is-hidden");
   adminApp.classList.add("is-hidden");
   loginScreen.classList.remove("is-hidden");
 }
+
+adminEntry?.addEventListener("click", showLogin);
+
+document.querySelectorAll(".ticket-action").forEach((button) => {
+  button.addEventListener("click", () => {
+    window.alert("In curand aici vom conecta formularul pentru participanti si bilete.");
+  });
+});
 
 loginForm.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -1402,7 +1420,7 @@ loginForm.addEventListener("submit", (event) => {
 document.querySelector("#logout-button").addEventListener("click", () => {
   localStorage.removeItem("autocrew_logged_in");
   localStorage.removeItem("kultura_current_user");
-  showLogin();
+  showHome();
 });
 
 document.querySelectorAll(".nav-item").forEach((button) => {
@@ -1560,7 +1578,7 @@ async function initializeApp() {
     }
     showAdmin();
   } else {
-    showLogin();
+    showHome();
   }
 }
 

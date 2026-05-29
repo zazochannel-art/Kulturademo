@@ -21,6 +21,7 @@
 body {
   margin: 0;
   min-height: 100vh;
+  scroll-behavior: smooth;
   background:
     radial-gradient(circle at top right, rgba(47, 157, 132, 0.18), transparent 32rem),
     linear-gradient(135deg, #050505 0%, #0d0f0e 55%, #050505 100%);
@@ -40,6 +41,250 @@ button {
 
 .is-hidden {
   display: none !important;
+}
+
+.public-home {
+  min-height: 100vh;
+  background: #050505;
+  color: #ffffff;
+}
+
+.public-nav {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 24px;
+  min-height: 58px;
+  padding: 0 11vw;
+  background: rgba(5, 5, 5, 0.92);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.public-logo {
+  width: 78px;
+  height: 34px;
+  object-fit: contain;
+}
+
+.public-nav nav {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.public-nav a {
+  color: #ffffff;
+  font-size: 0.92rem;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.public-actions,
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ticket-action,
+.admin-entry {
+  min-height: 38px;
+  border: 0;
+  border-radius: 999px;
+  padding: 0 18px;
+  font-weight: 900;
+}
+
+.ticket-action.yellow {
+  background: #d7ef19;
+  color: #1c1d10;
+}
+
+.ticket-action.light {
+  background: #dfeaf6;
+  color: #26313b;
+}
+
+.admin-entry {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: transparent;
+  color: #ffffff;
+}
+
+.public-hero {
+  min-height: 100vh;
+  display: grid;
+  align-items: center;
+  padding: 110px 11vw 72px;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.62) 0%, rgba(0, 0, 0, 0.28) 46%, rgba(0, 0, 0, 0.1) 100%),
+    url("./hero-bavaria.jpg") center/cover no-repeat;
+}
+
+.hero-copy {
+  max-width: 680px;
+  display: grid;
+  gap: 18px;
+  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.56);
+}
+
+.hero-copy p {
+  margin: 0;
+  color: #ffffff;
+  font-weight: 900;
+}
+
+.hero-logo {
+  width: min(560px, 78vw);
+  max-height: 260px;
+  object-fit: contain;
+  object-position: left center;
+  filter: drop-shadow(0 18px 35px rgba(0, 0, 0, 0.62));
+}
+
+.hero-copy h1 {
+  display: none;
+}
+
+.hero-text {
+  max-width: 560px;
+  line-height: 1.65;
+}
+
+.public-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 560px);
+  gap: 36px;
+  align-items: center;
+  padding: 78px 11vw;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: #050505;
+}
+
+.public-section h2 {
+  margin: 0;
+  max-width: 680px;
+  font-size: clamp(2rem, 4vw, 4.4rem);
+  line-height: 0.95;
+}
+
+.public-section p {
+  margin: 0;
+  color: #d9dedb;
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.7;
+}
+
+.section-kicker {
+  margin-bottom: 16px !important;
+  color: #d7ef19 !important;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.program-list {
+  display: grid;
+  gap: 12px;
+}
+
+.program-list span {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 18px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  font-weight: 900;
+}
+
+@media (max-width: 980px) {
+  .public-nav {
+    grid-template-columns: auto 1fr;
+    padding: 10px 24px;
+  }
+
+  .public-nav nav {
+    grid-column: 1 / -1;
+    order: 3;
+    justify-content: flex-start;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .public-actions {
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+
+  .public-hero {
+    padding: 158px 24px 48px;
+    background-position: 58% center;
+  }
+
+  .public-section {
+    grid-template-columns: 1fr;
+    padding: 58px 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .public-nav {
+    position: absolute;
+    gap: 12px;
+  }
+
+  .public-logo {
+    width: 66px;
+  }
+
+  .public-nav a {
+    font-size: 0.82rem;
+    white-space: nowrap;
+  }
+
+  .public-actions {
+    gap: 8px;
+  }
+
+  .ticket-action,
+  .admin-entry {
+    min-height: 34px;
+    padding: 0 12px;
+    font-size: 0.82rem;
+  }
+
+  .public-actions .ticket-action {
+    display: none;
+  }
+
+  .public-hero {
+    align-items: end;
+    min-height: 100svh;
+    padding: 148px 18px 42px;
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, 0.22) 0%, rgba(0, 0, 0, 0.82) 72%),
+      url("./hero-bavaria.jpg") center/cover no-repeat;
+  }
+
+  .hero-copy {
+    gap: 14px;
+  }
+
+  .hero-logo {
+    width: min(100%, 440px);
+  }
+
+  .hero-text {
+    line-height: 1.5;
+  }
+
+  .hero-actions {
+    flex-wrap: wrap;
+  }
 }
 
 .login-screen {
