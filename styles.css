@@ -118,7 +118,7 @@ button {
 
 .app-shell {
   display: grid;
-  grid-template-columns: 292px minmax(0, 1fr);
+  grid-template-columns: 180px minmax(0, 1fr);
   min-height: 100vh;
 }
 
@@ -135,9 +135,9 @@ button {
 }
 
 .brand {
-  display: flex;
+  display: grid;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   min-height: 48px;
 }
 
@@ -146,8 +146,8 @@ button {
 }
 
 .brand-logo {
-  width: 92px;
-  height: 54px;
+  width: 120px;
+  height: 70px;
   object-fit: contain;
   border-radius: 8px;
   background: #050505;
@@ -171,8 +171,44 @@ button {
 }
 
 .nav-list {
-  display: grid;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 5;
+  display: none;
+  width: min(260px, calc(100vw - 32px));
   gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px;
+  background: rgba(5, 5, 5, 0.96);
+  box-shadow: var(--shadow);
+}
+
+.nav-menu {
+  position: relative;
+}
+
+.nav-menu.open .nav-list {
+  display: grid;
+}
+
+.menu-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid rgba(47, 157, 132, 0.36);
+  border-radius: 8px;
+  background: rgba(47, 157, 132, 0.14);
+  color: #ffffff;
+  font-weight: 900;
+}
+
+.menu-toggle span {
+  color: #f2c14e;
 }
 
 .nav-item {
@@ -886,8 +922,12 @@ h2 {
   }
 
   .nav-list {
-    display: flex;
+    display: none;
     min-width: max-content;
+  }
+
+  .nav-menu.open .nav-list {
+    display: grid;
   }
 
   .logout-button {

@@ -826,6 +826,8 @@ const formConfigs = {
 
 const loginScreen = document.querySelector("#login-screen");
 const adminApp = document.querySelector("#admin-app");
+const navMenu = document.querySelector(".nav-menu");
+const menuToggle = document.querySelector("#menu-toggle");
 const loginForm = document.querySelector("#login-form");
 const formError = document.querySelector("#form-error");
 const languageSelect = document.querySelector("#language");
@@ -1406,8 +1408,16 @@ document.querySelector("#logout-button").addEventListener("click", () => {
 document.querySelectorAll(".nav-item").forEach((button) => {
   button.addEventListener("click", () => {
     showView(button.dataset.view);
+    navMenu?.classList.remove("open");
   });
 });
+
+if (menuToggle && navMenu) {
+  menuToggle.addEventListener("click", (event) => {
+    event.stopPropagation();
+    navMenu.classList.toggle("open");
+  });
+}
 
 document.querySelectorAll("[data-view-shortcut]").forEach((button) => {
   button.addEventListener("click", () => {
@@ -1522,6 +1532,10 @@ document.querySelectorAll("[data-add]").forEach((button) => {
 });
 
 document.addEventListener("click", (event) => {
+  if (navMenu && !event.target.closest(".nav-menu")) {
+    navMenu.classList.remove("open");
+  }
+
   const deleteButton = event.target.closest("[data-delete]");
   if (deleteButton) {
     deleteItem(deleteButton.dataset.delete, Number(deleteButton.dataset.index));
