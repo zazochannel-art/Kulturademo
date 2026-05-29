@@ -58,6 +58,10 @@ const dictionaries = {
     view_all: "Vezi tot",
     priority_title: "Prioritati azi",
     responsible: "Responsabil",
+    take_task: "Iau sarcina",
+    task_taken_by: "Luata de",
+    task_in_progress: "In lucru",
+    task_taken_mine: "Luata de mine",
     ready: "Aproape gata",
     risk: "Cu risc",
     edit: "Editeaza",
@@ -164,6 +168,10 @@ const dictionaries = {
     view_all: "Все",
     priority_title: "Приоритеты сегодня",
     responsible: "Ответственный",
+    take_task: "Беру задачу",
+    task_taken_by: "Взял",
+    task_in_progress: "В работе",
+    task_taken_mine: "Взята мной",
     ready: "Почти готово",
     risk: "Есть риск",
     edit: "Изменить",
@@ -270,6 +278,10 @@ const dictionaries = {
     view_all: "View all",
     priority_title: "Today priorities",
     responsible: "Owner",
+    take_task: "Take task",
+    task_taken_by: "Taken by",
+    task_in_progress: "In progress",
+    task_taken_mine: "Taken by me",
     ready: "Almost ready",
     risk: "At risk",
     edit: "Edit",
@@ -1160,21 +1172,44 @@ function renderCars() {
 function renderTasks() {
   if (!priorityList || !tasksTable) return;
 
+  const currentUser = getCurrentUser();
   const taskMarkup = t().tasks
-    .map(([task, owner, priority], index) => `
-      <article class="task-item">
-        <div class="task-top"><strong>${escapeHtml(task)}</strong><span class="priority">${escapeHtml(priority)}</span></div>
-        <span>${t().responsible}: ${escapeHtml(owner)}</span>
-        <div class="row-actions">
-          <button class="small-action" type="button" data-edit="tasks" data-index="${index}">${t().edit}</button>
-          <button class="small-action danger-action" type="button" data-delete="tasks" data-index="${index}">${t().delete}</button>
-        </div>
-      </article>
-    `)
+    .map(([task, owner, priority, status, takenBy], index) => {
+      const taken = Boolean(takenBy);
+      const takenByCurrentUser = takenBy && currentUser?.name === takenBy;
+      const takeLabel = takenByCurrentUser ? t().task_taken_mine : taken ? `${t().task_taken_by} ${takenBy}` : t().take_task;
+      return `
+        <article class="task-item">
+          <div class="task-top"><strong>${escapeHtml(task)}</strong><span class="priority">${escapeHtml(priority)}</span></div>
+          <span>${t().responsible}: ${escapeHtml(owner)}</span>
+          ${
+            taken
+              ? `<span class="task-owner">${escapeHtml(t().task_taken_by)}: ${escapeHtml(takenBy)} · ${escapeHtml(status || t().task_in_progress)}</span>`
+              : ""
+          }
+          <div class="row-actions">
+            <button class="small-action take-action" type="button" data-take-task="${index}" ${taken || !currentUser ? "disabled" : ""}>${escapeHtml(takeLabel)}</button>
+            <button class="small-action" type="button" data-edit="tasks" data-index="${index}">${t().edit}</button>
+            <button class="small-action danger-action" type="button" data-delete="tasks" data-index="${index}">${t().delete}</button>
+          </div>
+        </article>
+      `;
+    })
     .join("");
 
   priorityList.innerHTML = taskMarkup;
   tasksTable.innerHTML = taskMarkup;
+}
+
+function takeTask(index) {
+  const user = getCurrentUser();
+  const task = t().tasks[index];
+  if (!user || !task || task[4]) return;
+
+  task[3] = t().task_in_progress;
+  task[4] = user.name;
+  saveData();
+  renderTasks();
 }
 
 function renderTeam() {
@@ -1324,7 +1359,10 @@ function openEditor(kind, index = null) {
       return input.value.trim();
     });
 
-    const storedValues = storageValues(kind, nextValues);
+    let storedValues = storageValues(kind, nextValues);
+    if (isEdit && kind === "tasks") {
+      storedValues = [...storedValues, ...collection[index].slice(config.fields.length)];
+    }
 
     if (isEdit) {
       collection[index] = storedValues;
@@ -1557,6 +1595,12 @@ document.addEventListener("click", (event) => {
   const deleteButton = event.target.closest("[data-delete]");
   if (deleteButton) {
     deleteItem(deleteButton.dataset.delete, Number(deleteButton.dataset.index));
+    return;
+  }
+
+  const takeTaskButton = event.target.closest("[data-take-task]");
+  if (takeTaskButton) {
+    takeTask(Number(takeTaskButton.dataset.takeTask));
     return;
   }
 
