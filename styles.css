@@ -627,6 +627,22 @@ h2 {
   gap: 18px;
 }
 
+.content-grid .wide {
+  grid-column: 1 / -1;
+}
+
+.dashboard-focus {
+  margin-bottom: 18px;
+  border-color: rgba(215, 239, 25, 0.28);
+  background:
+    linear-gradient(135deg, rgba(215, 239, 25, 0.08), rgba(47, 157, 132, 0.04)),
+    var(--surface);
+}
+
+.task-list-featured {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
 .panel {
   min-width: 0;
   padding: 18px;

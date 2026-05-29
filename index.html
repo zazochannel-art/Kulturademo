@@ -124,6 +124,17 @@
         </header>
 
         <section class="admin-view active" data-view-panel="dashboard">
+          <div class="panel dashboard-focus">
+            <div class="panel-header">
+              <div>
+                <h2 data-i18n="tasks_admin_title">Sarcine operationale</h2>
+                <p data-i18n="tasks_admin_subtitle">Task-uri, responsabili si prioritate.</p>
+              </div>
+              <button class="primary-action" type="button" data-add="tasks" data-i18n="add_task">Adauga task</button>
+            </div>
+            <div class="task-list task-list-featured" id="priority-list"></div>
+          </div>
+
           <section class="metrics-grid" aria-label="Indicatori">
             <article class="metric-card"><span data-i18n="metric_events">Evenimente active</span><strong data-count="events">4</strong><small data-i18n="metric_events_note">2 in pregatire intensiva</small></article>
             <article class="metric-card"><span data-i18n="metric_tasks">Task-uri deschise</span><strong data-count="tasks">28</strong><small data-i18n="metric_tasks_note">7 au termen saptamana aceasta</small></article>
@@ -141,10 +152,6 @@
                 <button class="ghost-action" type="button" data-i18n="view_all">Vezi tot</button>
               </div>
               <div class="event-list" id="event-list"></div>
-            </div>
-            <div class="panel">
-              <div class="panel-header compact"><h2 data-i18n="priority_title">Prioritati azi</h2></div>
-              <div class="task-list" id="priority-list"></div>
             </div>
           </div>
         </section>
