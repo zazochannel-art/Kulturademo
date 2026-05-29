@@ -550,6 +550,7 @@ h2 {
   align-items: center;
   gap: 10px;
   min-height: 42px;
+  min-width: 126px;
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 999px;
   padding: 0 42px 0 18px;
@@ -572,8 +573,14 @@ h2 {
 }
 
 .language-switcher select {
+  position: absolute;
+  inset: 0;
   appearance: none;
   border: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0 42px 0 64px;
+  border-radius: 999px;
   background: transparent;
   color: #ffffff;
   font-weight: 900;
