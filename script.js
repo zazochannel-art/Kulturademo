@@ -913,15 +913,20 @@ function saveData() {
 async function saveDataToSupabase(payload) {
   if (!supabaseClient) return;
 
-  const { error } = await supabaseClient.from(supabaseConfig.table).upsert({
-    id: supabaseConfig.rowId,
-    data: payload,
-    updated_at: new Date().toISOString(),
-  });
+  const { error } = await supabaseClient
+    .from(supabaseConfig.table)
+    .update({
+      data: payload,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", supabaseConfig.rowId);
 
   if (error) {
     console.warn("Datele nu au fost salvate in Supabase.", error);
+    return;
   }
+
+  console.info("Datele au fost salvate in Supabase.");
 }
 
 async function loadDataFromSupabase() {
