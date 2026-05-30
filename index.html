@@ -58,12 +58,12 @@
 
     <div class="app-shell is-hidden" id="admin-app">
       <aside class="sidebar" aria-label="Navigare">
-        <div class="brand">
+        <button class="brand dashboard-brand" type="button" data-view-shortcut="dashboard" aria-label="Dashboard">
           <img class="brand-logo" src="./kultura_1_15.png" alt="Kultura" />
           <div>
             <strong>Kultura Admins</strong>
           </div>
-        </div>
+        </button>
 
         <div class="nav-menu">
           <button class="menu-toggle" id="menu-toggle" type="button">
@@ -92,6 +92,18 @@
           </nav>
         </div>
 
+        <div class="topbar-actions admin-bar-actions">
+          <button class="primary-action" type="button" data-view-shortcut="profile" data-i18n="profile_button">Profil</button>
+          <button class="logout-button" id="logout-button" type="button" aria-label="Iesire">
+            <img src="./logout-icon.png" alt="" aria-hidden="true" />
+          </button>
+          <div class="current-user" id="current-user">
+            <span id="current-user-name">Victor</span>
+            <strong id="current-user-role">Admin</strong>
+          </div>
+          <div class="sync-status" id="sync-status">Supabase: verificare</div>
+        </div>
+
       </aside>
 
       <main class="workspace">
@@ -99,18 +111,6 @@
           <div>
             <p class="eyebrow" data-i18n="eyebrow">Panou intern pentru organizatori</p>
             <h1 id="view-title" data-i18n="page_title">Centrul de comanda al evenimentelor auto</h1>
-          </div>
-
-          <div class="topbar-actions">
-            <button class="primary-action" type="button" data-view-shortcut="profile" data-i18n="profile_button">Profil</button>
-            <button class="logout-button" id="logout-button" type="button" aria-label="Iesire">
-              <img src="./logout-icon.png" alt="" aria-hidden="true" />
-            </button>
-            <div class="current-user" id="current-user">
-              <span id="current-user-name">Victor</span>
-              <strong id="current-user-role">Admin</strong>
-            </div>
-            <div class="sync-status" id="sync-status">Supabase: verificare</div>
           </div>
         </header>
 
