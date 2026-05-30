@@ -862,7 +862,7 @@ const formConfigs = {
 };
 
 const publicHome = document.querySelector("#public-home");
-const adminEntries = document.querySelectorAll("[data-admin-entry]");
+const adminEntry = document.querySelector("#admin-entry");
 const loginScreen = document.querySelector("#login-screen");
 const adminApp = document.querySelector("#admin-app");
 const navMenu = document.querySelector(".nav-menu");
@@ -1497,7 +1497,7 @@ function showLogin() {
   loginScreen.classList.remove("is-hidden");
 }
 
-adminEntries.forEach((button) => button.addEventListener("click", showLogin));
+adminEntry?.addEventListener("click", showLogin);
 
 document.querySelectorAll(".ticket-action").forEach((button) => {
   button.addEventListener("click", () => {
