@@ -21,6 +21,7 @@
 body {
   margin: 0;
   min-height: 100vh;
+  overflow-x: hidden;
   scroll-behavior: smooth;
   background:
     radial-gradient(circle at top right, rgba(47, 157, 132, 0.18), transparent 32rem),
@@ -1115,17 +1116,21 @@ h2 {
   .sidebar {
     position: sticky;
     top: 0;
-    z-index: 2;
+    z-index: 12;
     flex-direction: row;
     align-items: center;
     gap: 14px;
     overflow-x: auto;
     padding: 14px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
   }
 
   .nav-list {
     display: none;
     min-width: max-content;
+    left: 0;
+    right: auto;
   }
 
   .nav-menu.open .nav-list {
@@ -1154,21 +1159,127 @@ h2 {
 }
 
 @media (max-width: 720px) {
+  body {
+    background: #050505;
+  }
+
+  .public-nav {
+    min-height: 52px;
+    padding: 8px 16px;
+    background: rgba(5, 5, 5, 0.62);
+  }
+
+  .public-language {
+    font-size: 0.88rem;
+  }
+
+  .hero-actions {
+    width: min(100%, 320px);
+    gap: 10px;
+  }
+
+  .hero-actions .ticket-action,
+  .hero-actions .admin-entry {
+    width: 100%;
+    min-height: 50px;
+    font-size: 1rem;
+  }
+
+  .public-hero {
+    padding: 88px 18px 34px;
+    background-position: 58% center;
+  }
+
+  .sidebar {
+    gap: 10px;
+    padding: 10px 12px;
+  }
+
+  .sidebar .brand {
+    min-width: 132px;
+  }
+
+  .sidebar .brand-logo {
+    width: 62px;
+    height: 40px;
+  }
+
+  .sidebar .brand strong {
+    font-size: 0.92rem;
+  }
+
+  .sidebar .brand span {
+    font-size: 0.74rem;
+  }
+
+  .menu-toggle {
+    min-width: 118px;
+    min-height: 40px;
+    padding: 0 14px;
+  }
+
+  .nav-list {
+    top: calc(100% + 8px);
+    min-width: min(88vw, 280px);
+  }
+
   .workspace,
   .login-screen {
-    padding: 18px;
+    padding: 14px;
   }
 
   .login-panel {
-    padding: 22px;
+    padding: 20px;
   }
 
   .topbar {
     display: grid;
+    gap: 14px;
+    margin-bottom: 18px;
   }
 
   .topbar-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     justify-content: flex-start;
+    width: 100%;
+  }
+
+  .language-switcher,
+  .topbar-actions .primary-action,
+  .logout-button,
+  .current-user {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .language-switcher {
+    grid-column: 1 / -1;
+  }
+
+  .logout-button {
+    min-width: 0;
+    border-radius: 999px;
+  }
+
+  .current-user {
+    grid-column: 1 / -1;
+    order: 4;
+  }
+
+  .panel {
+    padding: 14px;
+  }
+
+  .panel-header {
+    display: grid;
+    gap: 12px;
+  }
+
+  .panel-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
   }
 
   .metrics-grid,
@@ -1181,26 +1292,77 @@ h2 {
   .event-row,
   .table-row {
     grid-template-columns: 1fr;
+    gap: 10px;
   }
 
   .team-member {
     grid-template-columns: 40px minmax(0, 1fr);
+    align-items: flex-start;
+  }
+
+  .team-member .row-actions {
+    grid-column: 1 / -1;
+  }
+
+  .task-top {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .small-action {
     grid-column: 1 / -1;
+    min-height: 40px;
   }
 
   .row-actions {
+    display: grid;
+    grid-template-columns: 1fr;
     justify-content: stretch;
   }
 
   .row-actions .small-action {
-    flex: 1;
+    width: 100%;
   }
 
   h1,
   .login-copy h1 {
     font-size: 2rem;
+  }
+
+  .modal-backdrop {
+    align-items: stretch;
+    padding: 10px;
+  }
+
+  .modal {
+    max-height: calc(100svh - 20px);
+  }
+
+  .modal-header {
+    padding: 16px;
+  }
+
+  .modal-form {
+    padding: 14px 16px 16px;
+  }
+
+  .modal-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 420px) {
+  .topbar-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .metric-card strong {
+    font-size: 1.72rem;
+  }
+
+  .login-copy h1,
+  h1 {
+    font-size: 1.74rem;
   }
 }
