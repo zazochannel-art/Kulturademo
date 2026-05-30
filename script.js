@@ -862,6 +862,7 @@ const formConfigs = {
 };
 
 const publicHome = document.querySelector("#public-home");
+const publicNav = document.querySelector(".public-nav");
 const adminEntry = document.querySelector("#admin-entry");
 const loginScreen = document.querySelector("#login-screen");
 const adminApp = document.querySelector("#admin-app");
@@ -1496,6 +1497,13 @@ function showLogin() {
   adminApp.classList.add("is-hidden");
   loginScreen.classList.remove("is-hidden");
 }
+
+function updatePublicNavState() {
+  publicNav?.classList.toggle("is-solid", window.scrollY > 20);
+}
+
+window.addEventListener("scroll", updatePublicNavState, { passive: true });
+updatePublicNavState();
 
 adminEntry?.addEventListener("click", showLogin);
 
