@@ -194,7 +194,7 @@ button:hover {
   display: block;
   margin: 0;
   max-width: 720px;
-  font-size: 6.8rem;
+  font-size: 5.9rem;
   line-height: 0.86;
   text-transform: uppercase;
   letter-spacing: 0;
@@ -246,7 +246,7 @@ button:hover {
   }
 
   .hero-copy h1 {
-    font-size: 5.2rem;
+    font-size: 4.45rem;
   }
 
 }
@@ -274,13 +274,13 @@ button:hover {
   }
 
   .hero-copy {
-    gap: 14px;
+    gap: 12px;
     justify-items: center;
     text-align: center;
   }
 
   .hero-copy h1 {
-    font-size: 3.35rem;
+    font-size: 2.95rem;
   }
 
   .hero-showcase {
@@ -318,7 +318,7 @@ button:hover {
 }
 
 .login-copy h1 {
-  font-size: 2.15rem;
+  font-size: 1.9rem;
 }
 
 .login-copy p:last-child {
@@ -378,8 +378,9 @@ button:hover {
   top: 0;
   z-index: 12;
   align-items: center;
-  gap: 14px;
-  padding: 12px 24px;
+  gap: 12px;
+  min-height: 58px;
+  padding: 8px 22px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   background:
     linear-gradient(90deg, rgba(255, 214, 0, 0.10), transparent 42%),
@@ -393,15 +394,30 @@ button:hover {
   display: flex;
   align-items: center;
   gap: 10px;
-  min-height: 48px;
+  min-height: 40px;
 }
 
-.dashboard-brand {
+.dashboard-brand,
+.dashboard-logo {
   border: 0;
   padding: 0;
   background: transparent;
   color: inherit;
   text-align: left;
+}
+
+.dashboard-logo {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+}
+
+.admin-brand {
+  align-self: center;
+}
+
+.admin-brand strong {
+  line-height: 1;
 }
 
 .brand.compact {
@@ -449,6 +465,11 @@ button:hover {
   backdrop-filter: blur(18px);
 }
 
+.sidebar .brand-logo {
+  width: 78px;
+  height: 38px;
+}
+
 .nav-menu {
   position: relative;
   flex: 0 0 auto;
@@ -464,7 +485,7 @@ button:hover {
   justify-content: center;
   gap: 8px;
   width: 100%;
-  min-height: 40px;
+  min-height: 36px;
   border: 0;
   border-radius: 999px;
   background: var(--accent);
@@ -481,7 +502,7 @@ button:hover {
   align-items: center;
   gap: 10px;
   width: 100%;
-  min-height: 40px;
+  min-height: 36px;
   border: 0;
   border-radius: 999px;
   padding: 8px 11px;
@@ -507,8 +528,8 @@ button:hover {
 
 .logout-button {
   display: grid;
-  width: 38px;
-  height: 38px;
+  width: 34px;
+  height: 34px;
   place-items: center;
   min-height: 38px;
   border: 1px solid rgba(185, 65, 52, 0.2);
@@ -528,8 +549,8 @@ button:hover {
 }
 
 .logout-button img {
-  width: 27px;
-  height: 27px;
+  width: 24px;
+  height: 24px;
   object-fit: contain;
   border-radius: 50%;
 }
@@ -562,10 +583,10 @@ button:hover {
 }
 
 .sync-status {
-  min-height: 42px;
+  min-height: 36px;
   border: 1px solid var(--line);
   border-radius: 18px;
-  padding: 10px 12px;
+  padding: 8px 11px;
   background: var(--glass);
   color: var(--muted);
   font-size: 0.82rem;
@@ -584,7 +605,9 @@ button:hover {
 
 .workspace {
   min-width: 0;
-  padding: 24px 28px 28px;
+  display: grid;
+  justify-items: center;
+  padding: 18px 24px 24px;
   background:
     radial-gradient(circle at top right, rgba(255, 214, 0, 0.12), transparent 28rem),
     radial-gradient(circle at bottom left, rgba(255, 255, 255, 0.04), transparent 30rem),
@@ -593,7 +616,8 @@ button:hover {
 
 .topbar {
   display: block;
-  margin-bottom: 22px;
+  width: min(100%, 1180px);
+  margin-bottom: 16px;
 }
 
 .admin-bar-actions {
@@ -616,17 +640,17 @@ p {
 }
 
 h1 {
-  max-width: 760px;
+  max-width: 700px;
   margin-bottom: 0;
-  font-size: 3.35rem;
-  line-height: 0.92;
+  font-size: 2.9rem;
+  line-height: 0.96;
   letter-spacing: 0;
   text-transform: uppercase;
 }
 
 h2 {
   margin-bottom: 0;
-  font-size: 1.08rem;
+  font-size: 0.98rem;
 }
 
 .topbar-actions {
@@ -697,9 +721,9 @@ h2 {
 
 .primary-action,
 .ghost-action {
-  min-height: 38px;
+  min-height: 34px;
   border-radius: 999px;
-  padding: 0 15px;
+  padding: 0 14px;
   font-weight: 900;
   font-size: 0.92rem;
   letter-spacing: 0;
@@ -734,8 +758,9 @@ h2 {
 .metrics-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
-  margin-bottom: 18px;
+  width: min(100%, 1180px);
+  gap: 12px;
+  margin: 0 auto 14px;
 }
 
 .metric-card,
@@ -762,9 +787,9 @@ h2 {
 
 .metric-card {
   display: grid;
-  gap: 8px;
-  min-height: 132px;
-  padding: 18px;
+  gap: 7px;
+  min-height: 112px;
+  padding: 15px;
 }
 
 .metric-card span,
@@ -773,7 +798,7 @@ h2 {
 }
 
 .metric-card strong {
-  font-size: 2.1rem;
+  font-size: 1.82rem;
 }
 
 .metric-card.warning {
@@ -787,13 +812,16 @@ h2 {
 
 .admin-view.active {
   display: block;
+  width: min(100%, 1180px);
+  margin-inline: auto;
   animation: fadeUp 420ms ease both;
 }
 
 .content-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.55fr) minmax(320px, 0.9fr);
-  gap: 18px;
+  gap: 14px;
+  justify-content: center;
 }
 
 .content-grid .wide {
@@ -801,7 +829,7 @@ h2 {
 }
 
 .dashboard-focus {
-  margin-bottom: 18px;
+  margin-bottom: 14px;
   border-color: rgba(255, 214, 0, 0.30);
   background:
     linear-gradient(135deg, rgba(255, 214, 0, 0.10), rgba(255, 255, 255, 0.03)),
@@ -814,15 +842,15 @@ h2 {
 
 .panel {
   min-width: 0;
-  padding: 18px;
+  padding: 15px;
 }
 
 .panel-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
 .panel-header p,
@@ -838,7 +866,7 @@ h2 {
 .panel-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
   justify-content: flex-end;
 }
 
@@ -894,11 +922,11 @@ h2 {
 .table-row {
   display: grid;
   grid-template-columns: minmax(190px, 1.1fr) minmax(120px, 0.7fr) minmax(150px, 0.9fr) minmax(150px, auto);
-  gap: 12px;
+  gap: 10px;
   align-items: center;
   border: 1px solid var(--line);
   border-radius: 22px;
-  padding: 14px;
+  padding: 12px;
   background: var(--surface-muted);
   transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease;
 }
@@ -989,7 +1017,7 @@ h2 {
 .resource-card {
   border: 1px solid var(--line);
   border-radius: 22px;
-  padding: 12px;
+  padding: 10px;
   background: var(--surface-muted);
   transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease;
 }
@@ -1004,7 +1032,7 @@ h2 {
 .profile-form {
   border: 1px solid var(--line);
   border-radius: 24px;
-  padding: 16px;
+  padding: 14px;
   background: var(--surface-muted);
   backdrop-filter: blur(14px);
 }
@@ -1134,10 +1162,10 @@ h2 {
 }
 
 .small-action {
-  min-height: 32px;
+  min-height: 30px;
   border: 0;
   border-radius: 999px;
-  padding: 0 12px;
+  padding: 0 11px;
   background: #dfeaf6;
   color: #26313b;
   font-weight: 900;
@@ -1302,7 +1330,7 @@ h2 {
     align-items: center;
     gap: 14px;
     overflow-x: auto;
-    padding: 14px;
+    padding: 9px 14px;
     border-right: 0;
     border-bottom: 1px solid var(--line);
   }
@@ -1320,12 +1348,7 @@ h2 {
 
   .logout-button {
     margin-top: 0;
-    min-width: 38px;
-  }
-
-  .current-user {
-    margin-top: 0;
-    min-width: 150px;
+    min-width: 34px;
   }
 
   .metrics-grid,
@@ -1372,9 +1395,9 @@ h2 {
   }
 
   .sidebar {
-    gap: 10px;
+    gap: 8px;
     flex-wrap: wrap;
-    padding: 8px 11px;
+    padding: 7px 10px;
   }
 
   .sidebar .brand {
@@ -1382,8 +1405,8 @@ h2 {
   }
 
   .sidebar .brand-logo {
-    width: 62px;
-    height: 40px;
+    width: 58px;
+    height: 34px;
   }
 
   .sidebar .brand strong {
@@ -1396,8 +1419,8 @@ h2 {
 
   .menu-toggle {
     min-width: 118px;
-    min-height: 38px;
-    padding: 0 14px;
+    min-height: 34px;
+    padding: 0 12px;
   }
 
   .nav-list {
@@ -1407,7 +1430,7 @@ h2 {
 
   .workspace,
   .login-screen {
-    padding: 14px;
+    padding: 12px;
   }
 
   .login-panel {
@@ -1416,8 +1439,8 @@ h2 {
 
   .topbar {
     display: grid;
-    gap: 14px;
-    margin-bottom: 18px;
+    gap: 10px;
+    margin-bottom: 14px;
   }
 
   .topbar-actions {
@@ -1433,8 +1456,7 @@ h2 {
   }
 
   .topbar-actions .primary-action,
-  .logout-button,
-  .current-user {
+  .logout-button {
     width: 100%;
     min-width: 0;
   }
@@ -1444,18 +1466,13 @@ h2 {
     border-radius: 999px;
   }
 
-  .current-user {
-    grid-column: 1 / -1;
-    order: 4;
-  }
-
   .panel {
-    padding: 14px;
+    padding: 13px;
   }
 
   .panel-header {
     display: grid;
-    gap: 12px;
+    gap: 10px;
   }
 
   .panel-actions {
@@ -1508,7 +1525,7 @@ h2 {
 
   h1,
   .login-copy h1 {
-    font-size: 2rem;
+    font-size: 1.78rem;
   }
 
   .modal-backdrop {
@@ -1549,6 +1566,6 @@ h2 {
   }
 
   .hero-copy h1 {
-    font-size: 2.65rem;
+    font-size: 2.35rem;
   }
 }

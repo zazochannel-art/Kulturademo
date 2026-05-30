@@ -60,12 +60,14 @@
 
     <div class="app-shell is-hidden" id="admin-app">
       <aside class="sidebar" aria-label="Navigare">
-        <button class="brand dashboard-brand" type="button" data-view-shortcut="dashboard" aria-label="Dashboard">
+        <div class="brand admin-brand">
+        <button class="dashboard-logo" type="button" data-view-shortcut="dashboard" aria-label="Dashboard">
           <img class="brand-logo" src="./kultura_1_15.png" alt="Kultura" />
+        </button>
           <div>
             <strong>Kultura Admins</strong>
           </div>
-        </button>
+        </div>
 
         <div class="nav-menu">
           <button class="menu-toggle" id="menu-toggle" type="button">
@@ -99,10 +101,6 @@
           <button class="logout-button" id="logout-button" type="button" aria-label="Iesire">
             <img src="./logout-icon.png" alt="" aria-hidden="true" />
           </button>
-          <div class="current-user" id="current-user">
-            <span id="current-user-name">Victor</span>
-            <strong id="current-user-role">Admin</strong>
-          </div>
           <div class="sync-status" id="sync-status">Supabase: verificare</div>
         </div>
 
