@@ -1443,6 +1443,7 @@ function render() {
 
 function showView(view) {
   state.view = view;
+  localStorage.setItem("kultura_last_view", view);
   if (profileSuccess) profileSuccess.classList.remove("visible");
   document.querySelectorAll(".nav-item").forEach((item) => {
     item.classList.toggle("active", item.dataset.view === view);
@@ -1498,6 +1499,7 @@ loginForm.addEventListener("submit", (event) => {
 document.querySelector("#logout-button").addEventListener("click", () => {
   localStorage.removeItem("autocrew_logged_in");
   localStorage.removeItem("kultura_current_user");
+  localStorage.removeItem("kultura_last_view");
   showHome();
 });
 
@@ -1666,6 +1668,14 @@ async function initializeApp() {
   normalizeTeamRows();
   normalizeCarStatuses();
   renderTranslations();
+
+  if (localStorage.getItem("autocrew_logged_in") === "yes" && getCurrentUser()) {
+    state.view = localStorage.getItem("kultura_last_view") || "dashboard";
+    showAdmin();
+    showView(state.view);
+    return;
+  }
+
   showHome();
 }
 
