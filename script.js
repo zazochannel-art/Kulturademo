@@ -57,6 +57,7 @@ const dictionaries = {
     view_all: "Vezi tot",
     priority_title: "Prioritati azi",
     responsible: "Responsabil",
+    task_due: "Termen",
     take_task: "Iau sarcina",
     task_taken_by: "Luata de",
     task_in_progress: "In lucru",
@@ -168,6 +169,7 @@ const dictionaries = {
     view_all: "Все",
     priority_title: "Приоритеты сегодня",
     responsible: "Ответственный",
+    task_due: "Срок",
     take_task: "Беру задачу",
     task_taken_by: "Взял",
     task_in_progress: "В работе",
@@ -279,6 +281,7 @@ const dictionaries = {
     view_all: "View all",
     priority_title: "Today priorities",
     responsible: "Owner",
+    task_due: "Due",
     take_task: "Take task",
     task_taken_by: "Taken by",
     task_in_progress: "In progress",
@@ -421,6 +424,24 @@ function normalizeCarStatuses() {
 }
 
 normalizeCarStatuses();
+
+function isDateValue(value) {
+  return /^\d{4}-\d{2}-\d{2}$/.test(String(value || ""));
+}
+
+function normalizeTaskRows() {
+  Object.values(dictionaries).forEach((dictionary) => {
+    dictionary.tasks = dictionary.tasks.map((task) => {
+      if (task.length >= 6) return task;
+      if (task.length === 5) return [task[0], task[1], task[2], "", task[3], task[4]];
+      if (task.length === 4 && isDateValue(task[3])) return [task[0], task[1], task[2], task[3], "", ""];
+      if (task.length === 4) return [task[0], task[1], task[2], "", task[3], ""];
+      return [task[0], task[1], task[2], "", "", ""];
+    });
+  });
+}
+
+normalizeTaskRows();
 
 function splitCsvLine(line, separator) {
   const values = [];
@@ -817,6 +838,7 @@ const formConfigs = {
       { label: { ro: "Task", ru: "Задача", en: "Task" }, placeholder: "Confirmare securitate" },
       { label: { ro: "Responsabil", ru: "Ответственный", en: "Owner" }, placeholder: "Ana" },
       { label: { ro: "Prioritate", ru: "Приоритет", en: "Priority" }, placeholder: "Urgent" },
+      { label: { ro: "Termen", ru: "Срок", en: "Due date" }, placeholder: "", type: "date" },
     ],
   },
   team: {
@@ -1185,7 +1207,7 @@ function renderTasks() {
 
   const currentUser = getCurrentUser();
   const taskMarkup = t().tasks
-    .map(([task, owner, priority, status, takenBy], index) => {
+    .map(([task, owner, priority, dueDate, status, takenBy], index) => {
       const taken = Boolean(takenBy);
       const takenByCurrentUser = takenBy && currentUser?.name === takenBy;
       const done = status === t().task_done;
@@ -1194,6 +1216,7 @@ function renderTasks() {
         <article class="task-item">
           <div class="task-top"><strong>${escapeHtml(task)}</strong><span class="priority">${escapeHtml(priority)}</span></div>
           <span>${t().responsible}: ${escapeHtml(owner)}</span>
+          ${dueDate ? `<span class="task-due">${escapeHtml(t().task_due)}: ${escapeHtml(dueDate)}</span>` : ""}
           ${
             taken
               ? `<span class="task-owner">${escapeHtml(t().task_taken_by)}: ${escapeHtml(takenBy)} - ${escapeHtml(status || t().task_in_progress)}</span>`
@@ -1223,10 +1246,10 @@ function renderTasks() {
 function takeTask(index) {
   const user = getCurrentUser();
   const task = t().tasks[index];
-  if (!user || !task || task[4]) return;
+  if (!user || !task || task[5]) return;
 
-  task[3] = t().task_in_progress;
-  task[4] = user.name;
+  task[4] = t().task_in_progress;
+  task[5] = user.name;
   saveData();
   renderTasks();
 }
@@ -1234,9 +1257,9 @@ function takeTask(index) {
 function finishTask(index) {
   const user = getCurrentUser();
   const task = t().tasks[index];
-  if (!user || !task || task[4] !== user.name) return;
+  if (!user || !task || task[5] !== user.name) return;
 
-  task[3] = t().task_done;
+  task[4] = t().task_done;
   saveData();
   renderTasks();
 }
@@ -1244,10 +1267,10 @@ function finishTask(index) {
 function cancelTaskTake(index) {
   const user = getCurrentUser();
   const task = t().tasks[index];
-  if (!user || !task || task[4] !== user.name) return;
+  if (!user || !task || task[5] !== user.name) return;
 
-  task[3] = "";
   task[4] = "";
+  task[5] = "";
   saveData();
   renderTasks();
 }
@@ -1667,6 +1690,7 @@ async function initializeApp() {
   await loadDataFromSupabase();
   normalizeTeamRows();
   normalizeCarStatuses();
+  normalizeTaskRows();
   renderTranslations();
 
   if (localStorage.getItem("autocrew_logged_in") === "yes" && getCurrentUser()) {
