@@ -972,6 +972,11 @@ h2 {
   color: #1c1d10;
 }
 
+.finish-action {
+  background: #2f9d84;
+  color: #ffffff;
+}
+
 .row-actions {
   display: flex;
   flex-wrap: wrap;

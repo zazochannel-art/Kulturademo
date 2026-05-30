@@ -62,6 +62,9 @@ const dictionaries = {
     task_taken_by: "Luata de",
     task_in_progress: "In lucru",
     task_taken_mine: "Luata de mine",
+    finish_task: "Finisata",
+    cancel_task_take: "Anuleaza",
+    task_done: "Finisata",
     ready: "Aproape gata",
     risk: "Cu risc",
     edit: "Editeaza",
@@ -172,6 +175,9 @@ const dictionaries = {
     task_taken_by: "Взял",
     task_in_progress: "В работе",
     task_taken_mine: "Взята мной",
+    finish_task: "Готово",
+    cancel_task_take: "Отменить",
+    task_done: "Готово",
     ready: "Почти готово",
     risk: "Есть риск",
     edit: "Изменить",
@@ -282,6 +288,9 @@ const dictionaries = {
     task_taken_by: "Taken by",
     task_in_progress: "In progress",
     task_taken_mine: "Taken by me",
+    finish_task: "Done",
+    cancel_task_take: "Cancel",
+    task_done: "Done",
     ready: "Almost ready",
     risk: "At risk",
     edit: "Edit",
@@ -1177,6 +1186,7 @@ function renderTasks() {
     .map(([task, owner, priority, status, takenBy], index) => {
       const taken = Boolean(takenBy);
       const takenByCurrentUser = takenBy && currentUser?.name === takenBy;
+      const done = status === t().task_done;
       const takeLabel = takenByCurrentUser ? t().task_taken_mine : taken ? `${t().task_taken_by} ${takenBy}` : t().take_task;
       return `
         <article class="task-item">
@@ -1184,11 +1194,18 @@ function renderTasks() {
           <span>${t().responsible}: ${escapeHtml(owner)}</span>
           ${
             taken
-              ? `<span class="task-owner">${escapeHtml(t().task_taken_by)}: ${escapeHtml(takenBy)} · ${escapeHtml(status || t().task_in_progress)}</span>`
+              ? `<span class="task-owner">${escapeHtml(t().task_taken_by)}: ${escapeHtml(takenBy)} - ${escapeHtml(status || t().task_in_progress)}</span>`
               : ""
           }
           <div class="row-actions">
-            <button class="small-action take-action" type="button" data-take-task="${index}" ${taken || !currentUser ? "disabled" : ""}>${escapeHtml(takeLabel)}</button>
+            ${
+              takenByCurrentUser && !done
+                ? `
+                  <button class="small-action finish-action" type="button" data-finish-task="${index}">${escapeHtml(t().finish_task)}</button>
+                  <button class="small-action" type="button" data-cancel-task="${index}">${escapeHtml(t().cancel_task_take)}</button>
+                `
+                : `<button class="small-action take-action" type="button" data-take-task="${index}" ${taken || !currentUser ? "disabled" : ""}>${escapeHtml(done ? t().task_done : takeLabel)}</button>`
+            }
             <button class="small-action" type="button" data-edit="tasks" data-index="${index}">${t().edit}</button>
             <button class="small-action danger-action" type="button" data-delete="tasks" data-index="${index}">${t().delete}</button>
           </div>
@@ -1208,6 +1225,27 @@ function takeTask(index) {
 
   task[3] = t().task_in_progress;
   task[4] = user.name;
+  saveData();
+  renderTasks();
+}
+
+function finishTask(index) {
+  const user = getCurrentUser();
+  const task = t().tasks[index];
+  if (!user || !task || task[4] !== user.name) return;
+
+  task[3] = t().task_done;
+  saveData();
+  renderTasks();
+}
+
+function cancelTaskTake(index) {
+  const user = getCurrentUser();
+  const task = t().tasks[index];
+  if (!user || !task || task[4] !== user.name) return;
+
+  task[3] = "";
+  task[4] = "";
   saveData();
   renderTasks();
 }
@@ -1601,6 +1639,18 @@ document.addEventListener("click", (event) => {
   const takeTaskButton = event.target.closest("[data-take-task]");
   if (takeTaskButton) {
     takeTask(Number(takeTaskButton.dataset.takeTask));
+    return;
+  }
+
+  const finishTaskButton = event.target.closest("[data-finish-task]");
+  if (finishTaskButton) {
+    finishTask(Number(finishTaskButton.dataset.finishTask));
+    return;
+  }
+
+  const cancelTaskButton = event.target.closest("[data-cancel-task]");
+  if (cancelTaskButton) {
+    cancelTaskTake(Number(cancelTaskButton.dataset.cancelTask));
     return;
   }
 
