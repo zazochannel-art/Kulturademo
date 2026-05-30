@@ -1007,26 +1007,34 @@ async function loadDataFromSupabase() {
 }
 
 function findTeamUser(email, password) {
-  const normalizedEmail = email.trim().toLowerCase();
+  const normalizedEmail = String(email).trim().toLowerCase();
+  const normalizedPassword = String(password);
+  const dictionariesToSearch = [t(), ...Object.values(dictionaries).filter((dictionary) => dictionary !== t())];
   let member = null;
 
-  Object.values(dictionaries).some((dictionary) => {
+  dictionariesToSearch.some((dictionary) => {
     member = dictionary.team.find(([, , , memberEmail, memberPassword]) => {
-      return String(memberEmail).trim().toLowerCase() === normalizedEmail && String(memberPassword) === password;
+      return String(memberEmail).trim().toLowerCase() === normalizedEmail && String(memberPassword) === normalizedPassword;
     });
     return Boolean(member);
   });
 
   if (!member) return null;
   const [name, roleDescription, access, memberEmail] = member;
-  return { name, email: memberEmail, role: access, roleDescription };
+  return { name, email: String(memberEmail).trim(), role: access, roleDescription };
 }
 
 function findCurrentTeamMember() {
   const user = getCurrentUser();
   if (!user) return null;
   const email = String(user.email).trim().toLowerCase();
-  return t().team.find((member) => String(member[3]).trim().toLowerCase() === email) || null;
+  return (
+    t().team.find((member) => String(member[3]).trim().toLowerCase() === email) ||
+    Object.values(dictionaries)
+      .flatMap((dictionary) => dictionary.team)
+      .find((member) => String(member[3]).trim().toLowerCase() === email) ||
+    null
+  );
 }
 
 function loginUser(user) {
