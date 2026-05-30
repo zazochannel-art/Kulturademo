@@ -79,11 +79,11 @@ button {
 
 .ticket-action,
 .admin-entry {
-  min-height: 50px;
+  min-height: 44px;
   border: 0;
   border-radius: 999px;
-  padding: 0 28px;
-  font-size: 1.05rem;
+  padding: 0 22px;
+  font-size: 0.98rem;
   font-weight: 900;
 }
 
@@ -328,7 +328,7 @@ button {
   justify-content: center;
   gap: 8px;
   width: 100%;
-  min-height: 44px;
+  min-height: 40px;
   border: 0;
   border-radius: 999px;
   background: #d7ef19;
@@ -345,10 +345,10 @@ button {
   align-items: center;
   gap: 10px;
   width: 100%;
-  min-height: 44px;
+  min-height: 40px;
   border: 0;
   border-radius: 999px;
-  padding: 10px 12px;
+  padding: 8px 11px;
   border: 1px solid transparent;
   background: transparent;
   color: #dce6df;
@@ -371,10 +371,10 @@ button {
 
 .logout-button {
   display: grid;
-  width: 42px;
-  height: 42px;
+  width: 38px;
+  height: 38px;
   place-items: center;
-  min-height: 42px;
+  min-height: 38px;
   border: 1px solid rgba(185, 65, 52, 0.2);
   border-radius: 999px;
   padding: 0;
@@ -392,8 +392,8 @@ button {
 }
 
 .logout-button img {
-  width: 30px;
-  height: 30px;
+  width: 27px;
+  height: 27px;
   object-fit: contain;
   border-radius: 50%;
 }
@@ -502,7 +502,7 @@ h2 {
   display: flex;
   align-items: center;
   gap: 10px;
-  min-height: 42px;
+  min-height: 38px;
   min-width: 126px;
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 999px;
@@ -548,15 +548,16 @@ h2 {
 
 .profile-form .language-switcher {
   width: 100%;
-  min-height: 44px;
+  min-height: 40px;
 }
 
 .primary-action,
 .ghost-action {
-  min-height: 42px;
+  min-height: 38px;
   border-radius: 999px;
-  padding: 0 18px;
+  padding: 0 15px;
   font-weight: 900;
+  font-size: 0.92rem;
 }
 
 .primary-action {
@@ -968,10 +969,10 @@ h2 {
 }
 
 .small-action {
-  min-height: 34px;
+  min-height: 32px;
   border: 0;
   border-radius: 999px;
-  padding: 0 14px;
+  padding: 0 12px;
   background: #dfeaf6;
   color: #26313b;
   font-weight: 900;
@@ -1043,8 +1044,8 @@ h2 {
 
 .modal-close {
   display: grid;
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   place-items: center;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -1195,8 +1196,8 @@ h2 {
   .hero-actions .ticket-action,
   .hero-actions .admin-entry {
     width: 100%;
-    min-height: 50px;
-    font-size: 1rem;
+    min-height: 46px;
+    font-size: 0.96rem;
   }
 
   .public-hero {
@@ -1206,7 +1207,7 @@ h2 {
 
   .sidebar {
     gap: 10px;
-    padding: 10px 12px;
+    padding: 8px 11px;
   }
 
   .sidebar .brand {
@@ -1228,7 +1229,7 @@ h2 {
 
   .menu-toggle {
     min-width: 118px;
-    min-height: 40px;
+    min-height: 38px;
     padding: 0 14px;
   }
 
@@ -1320,7 +1321,7 @@ h2 {
 
   .small-action {
     grid-column: 1 / -1;
-    min-height: 40px;
+    min-height: 36px;
   }
 
   .row-actions {
