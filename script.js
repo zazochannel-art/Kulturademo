@@ -1693,7 +1693,9 @@ async function initializeApp() {
   normalizeTaskRows();
   renderTranslations();
 
-  if (localStorage.getItem("autocrew_logged_in") === "yes" && getCurrentUser()) {
+  const savedUser = getCurrentUser();
+  if (savedUser) {
+    localStorage.setItem("autocrew_logged_in", "yes");
     state.view = localStorage.getItem("kultura_last_view") || "dashboard";
     showAdmin();
     showView(state.view);
