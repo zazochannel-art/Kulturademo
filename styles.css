@@ -546,6 +546,11 @@ h2 {
   color: #ffffff;
 }
 
+.profile-form .language-switcher {
+  width: 100%;
+  min-height: 44px;
+}
+
 .primary-action,
 .ghost-action {
   min-height: 42px;
@@ -1245,16 +1250,11 @@ h2 {
     width: 100%;
   }
 
-  .language-switcher,
   .topbar-actions .primary-action,
   .logout-button,
   .current-user {
     width: 100%;
     min-width: 0;
-  }
-
-  .language-switcher {
-    grid-column: 1 / -1;
   }
 
   .logout-button {

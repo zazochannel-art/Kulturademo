@@ -102,14 +102,6 @@
           </div>
 
           <div class="topbar-actions">
-            <label class="language-switcher" for="language">
-              <span data-i18n="language_label">Limba</span>
-              <select id="language" aria-label="Language">
-                <option value="ro">RO</option>
-                <option value="ru">RU</option>
-                <option value="en">EN</option>
-              </select>
-            </label>
             <button class="primary-action" type="button" data-view-shortcut="profile" data-i18n="profile_button">Profil</button>
             <button class="logout-button" id="logout-button" type="button" aria-label="Iesire">
               <img src="./logout-icon.png" alt="" aria-hidden="true" />
@@ -235,6 +227,14 @@
                 <span id="profile-role">Admin general</span>
               </div>
               <form class="profile-form" id="profile-form">
+                <label class="language-switcher" for="language">
+                  <span data-i18n="language_label">Limba</span>
+                  <select id="language" aria-label="Language">
+                    <option value="ro">RO</option>
+                    <option value="ru">RU</option>
+                    <option value="en">EN</option>
+                  </select>
+                </label>
                 <label>
                   <span data-i18n="email_label">Email</span>
                   <input id="profile-email" type="email" required />
