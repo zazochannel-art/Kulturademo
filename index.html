@@ -70,10 +70,6 @@
         </div>
 
         <div class="nav-menu">
-          <button class="menu-toggle" id="menu-toggle" type="button">
-            <span>☰</span>
-            <strong>Meniu</strong>
-          </button>
           <nav class="nav-list" id="nav-list">
           <button class="nav-item active" type="button" data-view="dashboard">
             <span>⌂</span><span data-i18n="nav_dashboard">Dashboard</span>
@@ -97,11 +93,22 @@
         </div>
 
         <div class="topbar-actions admin-bar-actions">
-          <button class="primary-action" type="button" data-view-shortcut="profile" data-i18n="profile_button">Profil</button>
-          <button class="logout-button" id="logout-button" type="button" aria-label="Iesire">
-            <img src="./logout-icon.png" alt="" aria-hidden="true" />
+          <button class="ghost-action notifications-button" id="notifications-button" type="button" aria-label="Notificari" aria-haspopup="true" aria-expanded="false">
+            <span aria-hidden="true">🔔</span>
+            <span class="notification-badge" id="notification-badge"></span>
           </button>
-          <div class="sync-status" id="sync-status">Supabase: verificare</div>
+          <button class="primary-action" type="button" data-view-shortcut="profile" data-i18n="profile_button">Profil</button>
+          <button class="logout-button" id="logout-button" type="button" aria-label="Iesire" title="Iesire">
+            <img src="./logout-icon.png" alt="Iesire" aria-hidden="true" />
+            <span>Iesire</span>
+          </button>
+          <div class="notifications-panel" id="notifications-panel" aria-label="Notificari" aria-hidden="true">
+            <div class="notifications-panel-header">
+              <strong>Notificari</strong>
+              <button class="ghost-action small" type="button" id="clear-notifications-button">Goleste</button>
+            </div>
+            <div class="notifications-list" id="notifications-list"></div>
+          </div>
         </div>
 
       </aside>
@@ -251,6 +258,7 @@
         </section>
       </main>
     </div>
+    <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="./script.js"></script>
   </body>

@@ -360,6 +360,7 @@ const dictionaries = {
 const state = {
   language: localStorage.getItem("autocrew_language") || "ro",
   view: "dashboard",
+  notifications: [],
 };
 
 const roleLabels = {
@@ -893,6 +894,84 @@ const profileEmail = document.querySelector("#profile-email");
 const profilePassword = document.querySelector("#profile-password");
 const profileSuccess = document.querySelector("#profile-success");
 const syncStatus = document.querySelector("#sync-status");
+const toastContainer = document.querySelector("#toast-container");
+const notificationsButton = document.querySelector("#notifications-button");
+const notificationsPanel = document.querySelector("#notifications-panel");
+const notificationsList = document.querySelector("#notifications-list");
+const clearNotificationsButton = document.querySelector("#clear-notifications-button");
+const notificationBadge = document.querySelector("#notification-badge");
+
+function updateNotificationBadge() {
+  if (!notificationBadge) return;
+  const unreadCount = state.notifications.filter((item) => !item.read).length;
+  notificationBadge.textContent = unreadCount > 0 ? String(unreadCount) : "";
+  notificationBadge.classList.toggle("visible", unreadCount > 0);
+}
+
+function renderNotifications() {
+  if (!notificationsList || !notificationsPanel) return;
+  const items = state.notifications
+    .map((item) => `
+      <article class="notification-item ${item.read ? "" : "unread"}">
+        <div>${escapeHtml(item.message)}</div>
+        <small>${escapeHtml(item.time)}</small>
+      </article>
+    `)
+    .join("");
+
+  notificationsList.innerHTML = items || `<div class="empty-state">Nu exista notificari recente.</div>`;
+  updateNotificationBadge();
+}
+
+function addNotification(message, type = "info") {
+  const date = new Date();
+  state.notifications.unshift({
+    id: date.getTime(),
+    message,
+    type,
+    read: false,
+    time: date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+  });
+  renderNotifications();
+  updateNotificationBadge();
+  showToast(message, type);
+}
+
+function toggleNotificationsPanel() {
+  if (!notificationsPanel || !notificationsButton) return;
+  const opened = !notificationsPanel.classList.contains("open");
+  notificationsPanel.classList.toggle("open", opened);
+  notificationsPanel.setAttribute("aria-hidden", String(!opened));
+  notificationsButton.setAttribute("aria-expanded", String(opened));
+  if (opened) {
+    state.notifications.forEach((item) => { item.read = true; });
+    renderNotifications();
+  }
+}
+
+function closeNotificationsPanel() {
+  if (!notificationsPanel || !notificationsButton) return;
+  notificationsPanel.classList.remove("open");
+  notificationsPanel.setAttribute("aria-hidden", "true");
+  notificationsButton.setAttribute("aria-expanded", "false");
+}
+
+function showToast(message, type = "info", duration = 3200) {
+  if (!toastContainer) return;
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  toastContainer.appendChild(toast);
+  requestAnimationFrame(() => toast.classList.add("visible"));
+  setTimeout(() => {
+    toast.classList.remove("visible");
+    toast.addEventListener(
+      "transitionend",
+      () => toast.remove(),
+      { once: true }
+    );
+  }, duration);
+}
 
 function t() {
   return dictionaries[state.language];
@@ -1463,6 +1542,9 @@ function openEditor(kind, index = null) {
       collection[index] = storedValues;
     } else {
       collection.unshift(storedValues);
+      if (kind === "tasks") {
+        addNotification(`Sarcina "${storedValues[0]}" a fost creata.`);
+      }
     }
 
     saveData();
@@ -1540,7 +1622,7 @@ adminEntry?.addEventListener("click", showLogin);
 
 document.querySelectorAll(".ticket-action").forEach((button) => {
   button.addEventListener("click", () => {
-    window.alert("In curand aici vom conecta formularul pentru participanti si bilete.");
+    showToast("In curand aici vom conecta formularul pentru participanti si bilete.", "info");
   });
 });
 
@@ -1569,6 +1651,7 @@ document.querySelectorAll(".nav-item").forEach((button) => {
   button.addEventListener("click", () => {
     showView(button.dataset.view);
     navMenu?.classList.remove("open");
+    closeNotificationsPanel();
   });
 });
 
@@ -1596,6 +1679,23 @@ if (carsSearch) {
   carsSearch.addEventListener("input", renderCars);
 }
 
+notificationsButton?.addEventListener("click", (event) => {
+  event.stopPropagation();
+  toggleNotificationsPanel();
+});
+
+clearNotificationsButton?.addEventListener("click", () => {
+  state.notifications = [];
+  renderNotifications();
+  closeNotificationsPanel();
+});
+
+document.addEventListener("click", (event) => {
+  if (!notificationsPanel?.contains(event.target) && !notificationsButton?.contains(event.target)) {
+    closeNotificationsPanel();
+  }
+});
+
 if (carsImportButton && carsImportFile) {
   carsImportButton.addEventListener("click", () => {
     if (!canManage("cars")) return;
@@ -1616,7 +1716,7 @@ if (carsImportButton && carsImportFile) {
         importedCars.push(...parsed);
       }
       if (importedCars.length === 0) {
-        window.alert(t().cars_import_error);
+        showToast(t().cars_import_error, "warning");
         carsImportFile.value = "";
         return;
       }
@@ -1628,7 +1728,7 @@ if (carsImportButton && carsImportFile) {
       applyPermissions();
       carsImportFile.value = "";
     } catch (error) {
-      window.alert(t().cars_import_error);
+      showToast(t().cars_import_error, "error");
       carsImportFile.value = "";
     }
   });
