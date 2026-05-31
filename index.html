@@ -155,6 +155,59 @@
         </header>
 
         <section class="admin-view active" data-view-panel="dashboard">
+          <div class="panel home-hero">
+            <div class="home-hero-copy">
+              <p class="eyebrow" data-i18n="home_eyebrow">Pagina principala</p>
+              <h2 data-i18n="home_title">Centrul principal Kultura</h2>
+              <p data-i18n="home_subtitle">Tot ce conteaza pentru organizarea evenimentului: participanti, sarcini, zone, echipa si resurse.</p>
+            </div>
+            <div class="quick-actions">
+              <button class="primary-action" type="button" data-add="cars" data-i18n="quick_add_car">Adauga participant</button>
+              <button class="primary-action" type="button" data-add="tasks" data-i18n="quick_add_task">Adauga sarcina</button>
+              <button class="ghost-action" type="button" data-view-shortcut="cars" data-i18n="quick_view_cars">Vezi auto</button>
+              <button class="ghost-action" type="button" data-view-shortcut="tasks" data-i18n="quick_view_tasks">Vezi sarcini</button>
+            </div>
+          </div>
+
+          <div class="operations-grid">
+            <div class="panel compact-panel">
+              <div class="panel-header compact">
+                <div>
+                  <h2 data-i18n="ops_alerts_title">Alerte organizare</h2>
+                  <p data-i18n="ops_alerts_subtitle">Ce necesita atentie rapida.</p>
+                </div>
+              </div>
+              <div class="ops-list" id="ops-alerts"></div>
+            </div>
+            <div class="panel compact-panel">
+              <div class="panel-header compact">
+                <div>
+                  <h2 data-i18n="zone_status_title">Zone auto</h2>
+                  <p data-i18n="zone_status_subtitle">Ocupare si sosiri pe zone.</p>
+                </div>
+              </div>
+              <div class="zone-grid" id="zone-status"></div>
+            </div>
+            <div class="panel compact-panel">
+              <div class="panel-header compact">
+                <div>
+                  <h2 data-i18n="timeline_title">Plan zi eveniment</h2>
+                  <p data-i18n="timeline_subtitle">Repere rapide pentru echipa.</p>
+                </div>
+              </div>
+              <div class="timeline-list" id="event-timeline"></div>
+            </div>
+            <div class="panel compact-panel">
+              <div class="panel-header compact">
+                <div>
+                  <h2 data-i18n="contacts_title">Contacte rapide</h2>
+                  <p data-i18n="contacts_subtitle">Persoane cheie pentru coordonare.</p>
+                </div>
+              </div>
+              <div class="contact-list" id="quick-contacts"></div>
+            </div>
+          </div>
+
           <div class="panel dashboard-focus">
             <div class="panel-header">
               <div>
@@ -180,7 +233,7 @@
                   <h2 data-i18n="events_title">Evenimente in lucru</h2>
                   <p data-i18n="events_subtitle">Status, responsabil si progres pentru fiecare eveniment.</p>
                 </div>
-                <button class="ghost-action" type="button" data-i18n="view_all">Vezi tot</button>
+                <button class="ghost-action" type="button" data-view-shortcut="events" data-i18n="view_all">Vezi tot</button>
               </div>
               <div class="event-list" id="event-list"></div>
             </div>

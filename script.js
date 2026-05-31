@@ -67,6 +67,38 @@ const dictionaries = {
     profile_photo_invalid: "Alege o imagine JPG, PNG sau WEBP.",
     profile_photo_too_large: "Imaginea trebuie sa fie maximum 5MB.",
     profile_photo_upload_error: "Poza nu a putut fi incarcata in Storage. Am salvat-o in datele aplicatiei.",
+    home_eyebrow: "Pagina principala",
+    home_title: "Centrul principal Kultura",
+    home_subtitle: "Tot ce conteaza pentru organizarea evenimentului: participanti, sarcini, zone, echipa si resurse.",
+    quick_add_car: "Adauga participant",
+    quick_add_task: "Adauga sarcina",
+    quick_view_cars: "Vezi auto",
+    quick_view_tasks: "Vezi sarcini",
+    ops_alerts_title: "Alerte organizare",
+    ops_alerts_subtitle: "Ce necesita atentie rapida.",
+    zone_status_title: "Zone auto",
+    zone_status_subtitle: "Ocupare si sosiri pe zone.",
+    timeline_title: "Plan zi eveniment",
+    timeline_subtitle: "Repere rapide pentru echipa.",
+    contacts_title: "Contacte rapide",
+    contacts_subtitle: "Persoane cheie pentru coordonare.",
+    alert_overdue: "sarcini au depasit termenul",
+    alert_due_soon: "sarcini au termen in 48h",
+    alert_missing_phone: "participanti fara telefon",
+    alert_missing_plate: "participanti fara numar",
+    alert_resources: "resurse asteapta confirmare",
+    alert_all_good: "Totul arata bine pentru moment.",
+    zone_arrived: "sosite",
+    zone_invited: "invitate",
+    no_zone: "Fara zona",
+    empty_contacts: "Adauga membri in echipa pentru contacte rapide.",
+    event_plan: [
+      ["08:00", "Acces echipa", "Briefing si verificare locatie"],
+      ["09:30", "Primire participanti", "Control lista auto si zone"],
+      ["11:00", "Deschidere public", "Coordonare acces si media"],
+      ["14:00", "Activitati principale", "Monitorizare sarcini urgente"],
+      ["18:00", "Inchidere", "Verificare resurse si plecari"],
+    ],
     metric_events: "Evenimente active",
     metric_events_note: "2 in pregatire intensiva",
     metric_tasks: "Task-uri deschise",
@@ -201,6 +233,38 @@ const dictionaries = {
     profile_photo_invalid: "Выберите изображение JPG, PNG или WEBP.",
     profile_photo_too_large: "Изображение должно быть максимум 5MB.",
     profile_photo_upload_error: "Фото не удалось загрузить в Storage. Оно сохранено в данных приложения.",
+    home_eyebrow: "Glavnaya",
+    home_title: "Glavnyy centr Kultura",
+    home_subtitle: "Uchastniki, zadachi, zony, komanda i resursy dlya organizacii sobytiya.",
+    quick_add_car: "Dobavit uchastnika",
+    quick_add_task: "Dobavit zadachu",
+    quick_view_cars: "Avto",
+    quick_view_tasks: "Zadachi",
+    ops_alerts_title: "Organizacionnye alerty",
+    ops_alerts_subtitle: "Chto nuzhno proverit bistro.",
+    zone_status_title: "Avto zony",
+    zone_status_subtitle: "Zanyatost i pribytie po zonam.",
+    timeline_title: "Plan dnya",
+    timeline_subtitle: "Bystrye orientiry dlya komandy.",
+    contacts_title: "Bystrye kontakty",
+    contacts_subtitle: "Klyuchevye lyudi dlya koordinacii.",
+    alert_overdue: "zadachi prosrochili srok",
+    alert_due_soon: "zadachi so srokom do 48h",
+    alert_missing_phone: "uchastniki bez telefona",
+    alert_missing_plate: "uchastniki bez nomera",
+    alert_resources: "resursy zhduut podtverzhdeniya",
+    alert_all_good: "Na dannyy moment vse v poryadke.",
+    zone_arrived: "pribyli",
+    zone_invited: "priglasheny",
+    no_zone: "Bez zony",
+    empty_contacts: "Dobavte uchastnikov komandy dlya bystryh kontaktov.",
+    event_plan: [
+      ["08:00", "Dostup komandy", "Briefing i proverka lokacii"],
+      ["09:30", "Priem uchastnikov", "Kontrol spiska avto i zon"],
+      ["11:00", "Otkrytie dlya publichnosti", "Koordinaciya dostupa i media"],
+      ["14:00", "Glavnye aktivnosti", "Kontrol srochnyh zadach"],
+      ["18:00", "Zakrytie", "Proverka resursov i vyezdov"],
+    ],
     metric_events: "Активные события",
     metric_events_note: "2 в активной подготовке",
     metric_tasks: "Открытые задачи",
@@ -335,6 +399,38 @@ const dictionaries = {
     profile_photo_invalid: "Choose a JPG, PNG or WEBP image.",
     profile_photo_too_large: "Image must be maximum 5MB.",
     profile_photo_upload_error: "The photo could not be uploaded to Storage. It was saved in app data.",
+    home_eyebrow: "Main page",
+    home_title: "Kultura main control center",
+    home_subtitle: "Everything that matters for event operations: participants, tasks, zones, team and resources.",
+    quick_add_car: "Add participant",
+    quick_add_task: "Add task",
+    quick_view_cars: "View cars",
+    quick_view_tasks: "View tasks",
+    ops_alerts_title: "Operations alerts",
+    ops_alerts_subtitle: "What needs quick attention.",
+    zone_status_title: "Auto zones",
+    zone_status_subtitle: "Capacity and arrivals by zone.",
+    timeline_title: "Event day plan",
+    timeline_subtitle: "Quick checkpoints for the team.",
+    contacts_title: "Quick contacts",
+    contacts_subtitle: "Key people for coordination.",
+    alert_overdue: "tasks are overdue",
+    alert_due_soon: "tasks are due in 48h",
+    alert_missing_phone: "participants without phone",
+    alert_missing_plate: "participants without plate",
+    alert_resources: "resources need confirmation",
+    alert_all_good: "Everything looks good for now.",
+    zone_arrived: "arrived",
+    zone_invited: "invited",
+    no_zone: "No zone",
+    empty_contacts: "Add team members for quick contacts.",
+    event_plan: [
+      ["08:00", "Team access", "Briefing and venue check"],
+      ["09:30", "Participant arrival", "Check car list and zones"],
+      ["11:00", "Public opening", "Coordinate access and media"],
+      ["14:00", "Main activities", "Monitor urgent tasks"],
+      ["18:00", "Closing", "Check resources and departures"],
+    ],
     metric_events: "Active events",
     metric_events_note: "2 in intensive preparation",
     metric_tasks: "Open tasks",
@@ -981,6 +1077,10 @@ const carsImportFile = document.querySelector("#cars-import-file");
 const carsClearButton = document.querySelector("#cars-clear-button");
 const eventsTable = document.querySelector("#events-table");
 const priorityList = document.querySelector("#priority-list");
+const opsAlerts = document.querySelector("#ops-alerts");
+const zoneStatus = document.querySelector("#zone-status");
+const eventTimeline = document.querySelector("#event-timeline");
+const quickContacts = document.querySelector("#quick-contacts");
 const tasksTable = document.querySelector("#tasks-table");
 const teamList = document.querySelector("#team-list");
 const resourceList = document.querySelector("#resource-list");
@@ -1612,19 +1712,24 @@ function renderEvents() {
     .join("");
 }
 
+function normalizedCarRow(row) {
+  return row.length === 6 ? [row[0], row[1], "-", row[2], row[3], row[4], row[5]] : row;
+}
+
 function renderCars() {
   if (!carsTable) return;
 
   const query = carsSearch ? carsSearch.value.trim().toLowerCase() : "";
   const cars = t().cars
     .map((row, originalIndex) => ({
-      data: row.length === 6 ? [row[0], row[1], "-", row[2], row[3], row[4], row[5]] : row,
+      data: normalizedCarRow(row),
       index: originalIndex,
     }))
     .filter((item) => item.data.join(" ").toLowerCase().includes(query));
 
   if (cars.length === 0) {
     carsTable.innerHTML = `<div class="empty-state">${t().cars_empty}</div>`;
+    renderDashboardHome();
     return;
   }
 
@@ -1648,6 +1753,7 @@ function renderCars() {
     `;
     })
     .join("");
+  renderDashboardHome();
 }
 
 function renderPriorityTasks() {
@@ -1714,6 +1820,7 @@ function buildTaskMarkup(task, owner, priority, dueDate, status, takenBy, index)
 function renderTasks() {
   renderPriorityTasks();
   renderTaskList();
+  renderDashboardHome();
 }
 
 function takeTask(index) {
@@ -1787,6 +1894,108 @@ function renderResources() {
     .join("");
 }
 
+function taskDaysUntil(dueDate) {
+  if (!dueDate) return null;
+  const due = new Date(`${dueDate}T00:00:00`);
+  if (Number.isNaN(due.getTime())) return null;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return Math.ceil((due - today) / 86400000);
+}
+
+function isTaskFinished(task) {
+  return String(task[4] || "").toLowerCase() === String(t().task_done || "").toLowerCase();
+}
+
+function renderDashboardHome() {
+  const dictionary = t();
+  const cars = dictionary.cars.map(normalizedCarRow);
+  const activeTasks = dictionary.tasks.filter((task) => !isTaskFinished(task));
+  const overdueTasks = activeTasks.filter((task) => {
+    const days = taskDaysUntil(task[3]);
+    return days !== null && days < 0;
+  }).length;
+  const dueSoonTasks = activeTasks.filter((task) => {
+    const days = taskDaysUntil(task[3]);
+    return days !== null && days >= 0 && days <= 2;
+  }).length;
+  const missingPhone = cars.filter(([, , phone]) => !phone || phone === "-").length;
+  const missingPlate = cars.filter(([, , , plate]) => !plate || plate === "-").length;
+  const resourceNeeds = dictionary.resources.filter(([, , status]) => {
+    const value = String(status || "").toLowerCase();
+    return ["confirm", "lucru", "risk", "risc"].some((word) => value.includes(word));
+  }).length;
+
+  if (opsAlerts) {
+    const alerts = [
+      [overdueTasks, dictionary.alert_overdue, "danger"],
+      [dueSoonTasks, dictionary.alert_due_soon, "warning"],
+      [missingPhone, dictionary.alert_missing_phone, "info"],
+      [missingPlate, dictionary.alert_missing_plate, "info"],
+      [resourceNeeds, dictionary.alert_resources, "warning"],
+    ].filter(([count]) => count > 0);
+
+    opsAlerts.innerHTML = alerts.length
+      ? alerts.map(([count, label, tone]) => `
+        <article class="ops-alert ${tone}">
+          <strong>${escapeHtml(count)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </article>
+      `).join("")
+      : `<article class="ops-alert good"><strong>OK</strong><span>${escapeHtml(dictionary.alert_all_good)}</span></article>`;
+  }
+
+  if (zoneStatus) {
+    const zones = cars.reduce((acc, row) => {
+      const zone = row[4] || dictionary.no_zone;
+      acc[zone] ||= { total: 0, arrived: 0, invited: 0 };
+      acc[zone].total += 1;
+      if (row[6] === "Sosit") acc[zone].arrived += 1;
+      if (row[6] === "Invitat") acc[zone].invited += 1;
+      return acc;
+    }, {});
+
+    zoneStatus.innerHTML = Object.keys(zones).length
+      ? Object.entries(zones).map(([zone, data]) => `
+        <article class="zone-card">
+          <strong>${escapeHtml(zone)}</strong>
+          <span>${escapeHtml(data.total)} auto</span>
+          <small>${escapeHtml(data.arrived)} ${escapeHtml(dictionary.zone_arrived)} / ${escapeHtml(data.invited)} ${escapeHtml(dictionary.zone_invited)}</small>
+        </article>
+      `).join("")
+      : `<div class="empty-state">${escapeHtml(dictionary.cars_empty)}</div>`;
+  }
+
+  if (eventTimeline) {
+    eventTimeline.innerHTML = dictionary.event_plan
+      .map(([time, title, description]) => `
+        <article class="timeline-item">
+          <strong>${escapeHtml(time)}</strong>
+          <div>
+            <span>${escapeHtml(title)}</span>
+            <small>${escapeHtml(description)}</small>
+          </div>
+        </article>
+      `)
+      .join("");
+  }
+
+  if (quickContacts) {
+    quickContacts.innerHTML = dictionary.team.length
+      ? dictionary.team.slice(0, 4).map(([name, role, access, email]) => `
+        <article class="contact-card">
+          <div class="avatar">${escapeHtml(initials(name))}</div>
+          <div>
+            <strong>${escapeHtml(name)}</strong>
+            <span>${escapeHtml(role)} - ${escapeHtml(access)}</span>
+            <small>${escapeHtml(email)}</small>
+          </div>
+        </article>
+      `).join("")
+      : `<div class="empty-state">${escapeHtml(dictionary.empty_contacts)}</div>`;
+  }
+}
+
 function renderMetrics() {
   const riskWords = ["risc", "risk", "риск"];
   const riskCount = t().events.filter((event) => {
@@ -1796,7 +2005,7 @@ function renderMetrics() {
 
   const counts = {
     events: t().events.length,
-    tasks: t().tasks.length,
+    tasks: t().tasks.filter((task) => !isTaskFinished(task)).length,
     team: t().team.length,
     risks: riskCount,
   };
