@@ -1344,6 +1344,33 @@ h2 {
   padding-bottom: 8px;
 }
 
+.admin-view[data-view-panel="events"] .panel,
+.admin-view[data-view-panel="tasks"] .panel,
+.admin-view[data-view-panel="team"] .panel,
+.admin-view[data-view-panel="resources"] .panel {
+  padding-top: 8px;
+}
+
+.admin-view[data-view-panel="events"] .panel-header,
+.admin-view[data-view-panel="tasks"] .panel-header,
+.admin-view[data-view-panel="team"] .panel-header,
+.admin-view[data-view-panel="resources"] .panel-header {
+  min-height: 48px;
+  gap: 6px;
+  margin-bottom: 6px;
+  padding-bottom: 6px;
+}
+
+.admin-view[data-view-panel="events"] .panel-header > div,
+.admin-view[data-view-panel="tasks"] .panel-header > div,
+.admin-view[data-view-panel="team"] .panel-header > div,
+.admin-view[data-view-panel="resources"] .panel-header > div {
+  display: grid;
+  min-width: 0;
+  gap: 1px;
+  align-content: center;
+}
+
 .admin-view[data-view-panel="cars"] .panel-header h2,
 .admin-view[data-view-panel="events"] .panel-header h2,
 .admin-view[data-view-panel="tasks"] .panel-header h2,
@@ -1351,6 +1378,14 @@ h2 {
 .admin-view[data-view-panel="resources"] .panel-header h2 {
   font-size: 0.88rem;
   line-height: 1.05;
+}
+
+.admin-view[data-view-panel="events"] .panel-header h2,
+.admin-view[data-view-panel="tasks"] .panel-header h2,
+.admin-view[data-view-panel="team"] .panel-header h2,
+.admin-view[data-view-panel="resources"] .panel-header h2 {
+  font-size: 0.8rem;
+  line-height: 1;
 }
 
 .admin-view[data-view-panel="cars"] .panel-header p,
@@ -1363,6 +1398,15 @@ h2 {
   line-height: 1.25;
 }
 
+.admin-view[data-view-panel="events"] .panel-header p,
+.admin-view[data-view-panel="tasks"] .panel-header p,
+.admin-view[data-view-panel="team"] .panel-header p,
+.admin-view[data-view-panel="resources"] .panel-header p {
+  margin-top: 0;
+  font-size: 0.7rem;
+  line-height: 1.12;
+}
+
 .admin-view[data-view-panel="cars"] .panel-header h2::before,
 .admin-view[data-view-panel="events"] .panel-header h2::before,
 .admin-view[data-view-panel="tasks"] .panel-header h2::before,
@@ -1371,6 +1415,15 @@ h2 {
   width: 12px;
   height: 6px;
   margin-right: 6px;
+}
+
+.admin-view[data-view-panel="events"] .panel-header h2::before,
+.admin-view[data-view-panel="tasks"] .panel-header h2::before,
+.admin-view[data-view-panel="team"] .panel-header h2::before,
+.admin-view[data-view-panel="resources"] .panel-header h2::before {
+  width: 10px;
+  height: 5px;
+  margin-right: 5px;
 }
 
 .panel-header h2::before {
@@ -1417,9 +1470,9 @@ h2 {
 .admin-view[data-view-panel="tasks"] .panel-header > .primary-action,
 .admin-view[data-view-panel="team"] .panel-header > .primary-action,
 .admin-view[data-view-panel="resources"] .panel-header > .primary-action {
-  min-height: 34px;
-  padding: 0 13px;
-  font-size: 0.82rem;
+  min-height: 30px;
+  padding: 0 10px;
+  font-size: 0.74rem;
 }
 
 .file-input {
@@ -2341,6 +2394,64 @@ h2 {
     min-height: 30px;
     padding: 0 8px;
     font-size: 0.68rem;
+  }
+
+  .admin-view[data-view-panel="events"] .panel,
+  .admin-view[data-view-panel="tasks"] .panel,
+  .admin-view[data-view-panel="team"] .panel,
+  .admin-view[data-view-panel="resources"] .panel {
+    padding-top: 6px;
+  }
+
+  .admin-view[data-view-panel="events"] .panel-header,
+  .admin-view[data-view-panel="tasks"] .panel-header,
+  .admin-view[data-view-panel="team"] .panel-header,
+  .admin-view[data-view-panel="resources"] .panel-header {
+    min-height: 38px;
+    gap: 4px;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+  }
+
+  .admin-view[data-view-panel="events"] .panel-header > div,
+  .admin-view[data-view-panel="tasks"] .panel-header > div,
+  .admin-view[data-view-panel="team"] .panel-header > div,
+  .admin-view[data-view-panel="resources"] .panel-header > div {
+    gap: 0;
+  }
+
+  .admin-view[data-view-panel="events"] .panel-header h2,
+  .admin-view[data-view-panel="tasks"] .panel-header h2,
+  .admin-view[data-view-panel="team"] .panel-header h2,
+  .admin-view[data-view-panel="resources"] .panel-header h2 {
+    font-size: 0.66rem;
+    line-height: 1;
+  }
+
+  .admin-view[data-view-panel="events"] .panel-header p,
+  .admin-view[data-view-panel="tasks"] .panel-header p,
+  .admin-view[data-view-panel="team"] .panel-header p,
+  .admin-view[data-view-panel="resources"] .panel-header p {
+    font-size: 0.6rem;
+    line-height: 1.05;
+  }
+
+  .admin-view[data-view-panel="events"] .panel-header h2::before,
+  .admin-view[data-view-panel="tasks"] .panel-header h2::before,
+  .admin-view[data-view-panel="team"] .panel-header h2::before,
+  .admin-view[data-view-panel="resources"] .panel-header h2::before {
+    width: 8px;
+    height: 4px;
+    margin-right: 4px;
+  }
+
+  .admin-view[data-view-panel="events"] .panel-header > .primary-action,
+  .admin-view[data-view-panel="tasks"] .panel-header > .primary-action,
+  .admin-view[data-view-panel="team"] .panel-header > .primary-action,
+  .admin-view[data-view-panel="resources"] .panel-header > .primary-action {
+    min-height: 26px;
+    padding: 0 7px;
+    font-size: 0.62rem;
   }
 
   .metrics-grid {
