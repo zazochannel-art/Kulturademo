@@ -38,6 +38,7 @@ const dictionaries = {
     register_error_exists: "Exista deja un cont cu acest email.",
     register_error_password: "Parolele nu coincid.",
     register_error_short: "Parola trebuie sa aiba cel putin 4 caractere.",
+    register_error_supabase: "Contul nu a fost salvat in Supabase. Incearca din nou.",
     public_register: "Inregistreaza-te",
     public_admin: "Admin",
     public_language_label: "Schimba limba",
@@ -162,6 +163,7 @@ const dictionaries = {
     register_error_exists: "Аккаунт с этим email уже существует.",
     register_error_password: "Пароли не совпадают.",
     register_error_short: "Пароль должен быть не короче 4 символов.",
+    register_error_supabase: "Аккаунт не был сохранен в Supabase. Попробуйте еще раз.",
     public_register: "Зарегистрироваться",
     public_admin: "Админ",
     public_language_label: "Сменить язык",
@@ -286,6 +288,7 @@ const dictionaries = {
     register_error_exists: "An account with this email already exists.",
     register_error_password: "Passwords do not match.",
     register_error_short: "Password must be at least 4 characters.",
+    register_error_supabase: "The account was not saved in Supabase. Please try again.",
     public_register: "Register",
     public_admin: "Admin",
     public_language_label: "Change language",
@@ -1105,16 +1108,25 @@ function buildDataPayload() {
   return payload;
 }
 
-function saveData() {
+async function saveData(options = {}) {
+  const { requireSupabase = false } = options;
   const payload = buildDataPayload();
+  if (requireSupabase) {
+    const saved = await saveDataToSupabase(payload);
+    if (!saved) return false;
+    localStorage.setItem("kultura_admin_data", JSON.stringify(payload));
+    return true;
+  }
+
   localStorage.setItem("kultura_admin_data", JSON.stringify(payload));
   saveDataToSupabase(payload);
+  return true;
 }
 
 async function saveDataToSupabase(payload) {
   if (!supabaseClient) {
     setSyncStatus("Supabase: neconfigurat", "error");
-    return;
+    return false;
   }
 
   setSyncStatus("Supabase: salvez...");
@@ -1134,16 +1146,17 @@ async function saveDataToSupabase(payload) {
   if (error) {
     console.warn("Datele nu au fost salvate in Supabase.", error);
     setSyncStatus(`Supabase: eroare ${error.code || ""}`.trim(), "error");
-    return;
+    return false;
   }
 
   if (!data || (Array.isArray(data) && data.length === 0)) {
     setSyncStatus("Supabase: eroare la salvare", "error");
-    return;
+    return false;
   }
 
   setSyncStatus("Supabase: salvat", "ok");
   console.info("Datele au fost salvate in Supabase.");
+  return true;
 }
 
 async function loadDataFromSupabase() {
@@ -1216,8 +1229,14 @@ function addRegisteredUser(name, email, password) {
       password,
     ]);
   });
-  saveData();
   return { name, email, role: "Viewer", roleDescription: roleDescriptions[state.language] || roleDescriptions.ro };
+}
+
+function removeRegisteredUser(email) {
+  const normalizedEmail = String(email).trim().toLowerCase();
+  Object.values(dictionaries).forEach((dictionary) => {
+    dictionary.team = dictionary.team.filter((member) => String(member[3]).trim().toLowerCase() !== normalizedEmail);
+  });
 }
 
 function findCurrentTeamMember() {
@@ -1786,8 +1805,9 @@ loginForm.addEventListener("submit", (event) => {
   formError.classList.add("visible");
 });
 
-registerForm?.addEventListener("submit", (event) => {
+registerForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
+  const submitButton = registerForm.querySelector('button[type="submit"]');
   const name = document.querySelector("#register-name").value.trim();
   const email = document.querySelector("#register-email").value.trim();
   const password = document.querySelector("#register-password").value.trim();
@@ -1812,6 +1832,19 @@ registerForm?.addEventListener("submit", (event) => {
   }
 
   const user = addRegisteredUser(name, email, password);
+  if (submitButton) submitButton.disabled = true;
+  const saved = await saveData({ requireSupabase: true });
+  if (submitButton) submitButton.disabled = false;
+
+  if (!saved) {
+    removeRegisteredUser(email);
+    registerError.textContent = t().register_error_supabase;
+    registerError.classList.add("visible");
+    renderTeam();
+    renderMetrics();
+    return;
+  }
+
   registerForm.reset();
   loginUser(user);
 });
