@@ -970,11 +970,14 @@ async function saveDataToSupabase(payload) {
 
   const { data, error } = await supabaseClient
     .from(supabaseConfig.table)
-    .update({
-      data: payload,
-      updated_at: new Date().toISOString(),
-    })
-    .eq("id", supabaseConfig.rowId)
+    .upsert(
+      {
+        id: supabaseConfig.rowId,
+        data: payload,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: "id" },
+    )
     .select("id");
 
   if (error) {
@@ -983,8 +986,8 @@ async function saveDataToSupabase(payload) {
     return;
   }
 
-  if (!data || data.length === 0) {
-    setSyncStatus("Supabase: randul main lipseste", "error");
+  if (!data || (Array.isArray(data) && data.length === 0)) {
+    setSyncStatus("Supabase: eroare la salvare", "error");
     return;
   }
 
@@ -994,7 +997,7 @@ async function saveDataToSupabase(payload) {
 
 async function loadDataFromSupabase() {
   if (!supabaseClient) {
-    setSyncStatus("Supabase: neconfigurat", "error");
+    setSyncStatus("Supabase: neconfigurat, folosesc date locale");
     return;
   }
 
@@ -1008,7 +1011,7 @@ async function loadDataFromSupabase() {
 
   if (error) {
     console.warn("Datele nu au putut fi citite din Supabase.", error);
-    setSyncStatus(`Supabase: eroare ${error.code || ""}`.trim(), "error");
+    setSyncStatus(`Supabase: eroare, folosesc date locale`.trim(), "error");
     return;
   }
 
@@ -1172,7 +1175,12 @@ function renderCars() {
   if (!carsTable) return;
 
   const query = carsSearch ? carsSearch.value.trim().toLowerCase() : "";
-  const cars = t().cars.filter((car) => car.join(" ").toLowerCase().includes(query));
+  const cars = t().cars
+    .map((row, originalIndex) => ({
+      data: row.length === 6 ? [row[0], row[1], "-", row[2], row[3], row[4], row[5]] : row,
+      index: originalIndex,
+    }))
+    .filter((item) => item.data.join(" ").toLowerCase().includes(query));
 
   if (cars.length === 0) {
     carsTable.innerHTML = `<div class="empty-state">${t().cars_empty}</div>`;
@@ -1180,10 +1188,8 @@ function renderCars() {
   }
 
   carsTable.innerHTML = cars
-    .map((row) => {
-      const normalizedRow = row.length === 6 ? [row[0], row[1], "-", row[2], row[3], row[4], row[5]] : row;
-      const [car, driver, phone, plate, zone, category, status] = normalizedRow;
-      const index = t().cars.findIndex((item) => item[0] === car && item[1] === driver);
+    .map(({ data: row, index }) => {
+      const [car, driver, phone, plate, zone, category, status] = row;
       return `
       <article class="table-row">
         <div><strong>${escapeHtml(car)}</strong><span>${escapeHtml(driver)} - ${escapeHtml(phone)} - ${escapeHtml(plate)} - ${escapeHtml(zone)}</span></div>
@@ -1203,17 +1209,42 @@ function renderCars() {
     .join("");
 }
 
-function renderTasks() {
-  if (!priorityList || !tasksTable) return;
+function renderPriorityTasks() {
+  if (!priorityList) return;
 
+  const tasks = t().tasks
+    .map((task, index) => ({ task, index }))
+    .sort((a, b) => {
+      const order = { urgent: 0, mediu: 1, medium: 1, normal: 2, low: 3 };
+      const aPriority = a.task[2].toString().toLowerCase();
+      const bPriority = b.task[2].toString().toLowerCase();
+      return (order[aPriority] ?? 2) - (order[bPriority] ?? 2);
+    })
+    .slice(0, 5);
+
+  priorityList.innerHTML = tasks
+    .map(({ task: [task, owner, priority, dueDate, status, takenBy], index }) =>
+      buildTaskMarkup(task, owner, priority, dueDate, status, takenBy, index),
+    )
+    .join("");
+}
+
+function renderTaskList() {
+  if (!tasksTable) return;
+
+  tasksTable.innerHTML = t().tasks
+    .map(([task, owner, priority, dueDate, status, takenBy], index) => buildTaskMarkup(task, owner, priority, dueDate, status, takenBy, index))
+    .join("");
+}
+
+function buildTaskMarkup(task, owner, priority, dueDate, status, takenBy, index) {
   const currentUser = getCurrentUser();
-  const taskMarkup = t().tasks
-    .map(([task, owner, priority, dueDate, status, takenBy], index) => {
-      const taken = Boolean(takenBy);
-      const takenByCurrentUser = takenBy && currentUser?.name === takenBy;
-      const done = status === t().task_done;
-      const takeLabel = takenByCurrentUser ? t().task_taken_mine : taken ? `${t().task_taken_by} ${takenBy}` : t().take_task;
-      return `
+  const taken = Boolean(takenBy);
+  const takenByCurrentUser = takenBy && currentUser?.name === takenBy;
+  const done = status === t().task_done;
+  const takeLabel = takenByCurrentUser ? t().task_taken_mine : taken ? `${t().task_taken_by} ${takenBy}` : t().take_task;
+
+  return `
         <article class="task-item">
           <div class="task-top"><strong>${escapeHtml(task)}</strong><span class="priority">${escapeHtml(priority)}</span></div>
           <span>${t().responsible}: ${escapeHtml(owner)}</span>
@@ -1237,11 +1268,11 @@ function renderTasks() {
           </div>
         </article>
       `;
-    })
-    .join("");
+}
 
-  priorityList.innerHTML = taskMarkup;
-  tasksTable.innerHTML = taskMarkup;
+function renderTasks() {
+  renderPriorityTasks();
+  renderTaskList();
 }
 
 function takeTask(index) {
