@@ -61,40 +61,44 @@
     <div class="app-shell is-hidden" id="admin-app">
       <aside class="sidebar" aria-label="Navigare">
         <div class="brand admin-brand">
-        <button class="dashboard-logo" type="button" data-view-shortcut="dashboard" aria-label="Dashboard">
-          <img class="brand-logo" src="./kultura_1_15.png" alt="Kultura" />
-        </button>
+          <button class="dashboard-logo" type="button" data-view-shortcut="dashboard" aria-label="Dashboard">
+            <img class="brand-logo" src="./kultura_1_15.png" alt="Kultura" />
+          </button>
           <div>
             <strong>Kultura Admins</strong>
           </div>
         </div>
 
         <div class="nav-menu">
+          <button class="menu-toggle" id="menu-toggle" type="button">
+            <span>&#9776;</span>
+            <strong>Meniu</strong>
+          </button>
           <nav class="nav-list" id="nav-list">
-          <button class="nav-item active" type="button" data-view="dashboard">
-            <span>⌂</span><span data-i18n="nav_dashboard">Dashboard</span>
-          </button>
-          <button class="nav-item" type="button" data-view="cars">
-            <span>▤</span><span data-i18n="nav_cars">Auto participanti</span>
-          </button>
-          <button class="nav-item" type="button" data-view="events">
-            <span>▣</span><span data-i18n="nav_events">Evenimente</span>
-          </button>
-          <button class="nav-item" type="button" data-view="tasks">
-            <span>✓</span><span data-i18n="nav_tasks">Sarcine</span>
-          </button>
-          <button class="nav-item" type="button" data-view="team">
-            <span>◉</span><span data-i18n="nav_team">Echipa</span>
-          </button>
-          <button class="nav-item" type="button" data-view="resources">
-            <span>◇</span><span data-i18n="nav_resources">Resurse</span>
-          </button>
+            <button class="nav-item active" type="button" data-view="dashboard">
+              <span>&#8962;</span><span data-i18n="nav_dashboard">Dashboard</span>
+            </button>
+            <button class="nav-item" type="button" data-view="cars">
+              <span>&#9636;</span><span data-i18n="nav_cars">Auto participanti</span>
+            </button>
+            <button class="nav-item" type="button" data-view="events">
+              <span>&#9635;</span><span data-i18n="nav_events">Evenimente</span>
+            </button>
+            <button class="nav-item" type="button" data-view="tasks">
+              <span>&#10003;</span><span data-i18n="nav_tasks">Sarcine</span>
+            </button>
+            <button class="nav-item" type="button" data-view="team">
+              <span>&#9673;</span><span data-i18n="nav_team">Echipa</span>
+            </button>
+            <button class="nav-item" type="button" data-view="resources">
+              <span>&#9671;</span><span data-i18n="nav_resources">Resurse</span>
+            </button>
           </nav>
         </div>
 
         <div class="topbar-actions admin-bar-actions">
           <button class="ghost-action notifications-button" id="notifications-button" type="button" aria-label="Notificari" aria-haspopup="true" aria-expanded="false">
-            <span aria-hidden="true">🔔</span>
+            <span aria-hidden="true">&#128276;</span>
             <span class="notification-badge" id="notification-badge"></span>
           </button>
           <button class="primary-action" type="button" data-view-shortcut="profile" data-i18n="profile_button">Profil</button>
@@ -109,6 +113,7 @@
             </div>
             <div class="notifications-list" id="notifications-list"></div>
           </div>
+          <div class="sync-status" id="sync-status">Supabase: verificare</div>
         </div>
 
       </aside>
