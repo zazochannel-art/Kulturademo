@@ -3,6 +3,7 @@ const supabaseConfig = {
   anonKey: "sb_publishable_i9CCh1u2dhO11QMPmTucRA_93UUziQ6",
   table: "kultura_admin_state",
   rowId: "main",
+  profileBucket: "profile-images",
 };
 
 function createSupabaseClient() {
@@ -61,6 +62,11 @@ const dictionaries = {
     profile_save: "Salveaza profilul",
     profile_saved: "Profilul a fost salvat.",
     profile_password_label: "Parola noua",
+    profile_change_photo: "Schimba poza de profil",
+    profile_photo_hint: "JPG, PNG sau WEBP, maximum 5MB.",
+    profile_photo_invalid: "Alege o imagine JPG, PNG sau WEBP.",
+    profile_photo_too_large: "Imaginea trebuie sa fie maximum 5MB.",
+    profile_photo_upload_error: "Poza nu a putut fi incarcata in Storage. Am salvat-o in datele aplicatiei.",
     metric_events: "Evenimente active",
     metric_events_note: "2 in pregatire intensiva",
     metric_tasks: "Task-uri deschise",
@@ -190,6 +196,11 @@ const dictionaries = {
     profile_save: "Сохранить профиль",
     profile_saved: "Профиль сохранен.",
     profile_password_label: "Новый пароль",
+    profile_change_photo: "Изменить фото профиля",
+    profile_photo_hint: "JPG, PNG или WEBP, максимум 5MB.",
+    profile_photo_invalid: "Выберите изображение JPG, PNG или WEBP.",
+    profile_photo_too_large: "Изображение должно быть максимум 5MB.",
+    profile_photo_upload_error: "Фото не удалось загрузить в Storage. Оно сохранено в данных приложения.",
     metric_events: "Активные события",
     metric_events_note: "2 в активной подготовке",
     metric_tasks: "Открытые задачи",
@@ -319,6 +330,11 @@ const dictionaries = {
     profile_save: "Save profile",
     profile_saved: "Profile saved.",
     profile_password_label: "New password",
+    profile_change_photo: "Change profile photo",
+    profile_photo_hint: "JPG, PNG or WEBP, maximum 5MB.",
+    profile_photo_invalid: "Choose a JPG, PNG or WEBP image.",
+    profile_photo_too_large: "Image must be maximum 5MB.",
+    profile_photo_upload_error: "The photo could not be uploaded to Storage. It was saved in app data.",
     metric_events: "Active events",
     metric_events_note: "2 in intensive preparation",
     metric_tasks: "Open tasks",
@@ -412,11 +428,16 @@ const state = {
   language: localStorage.getItem("autocrew_language") || "ro",
   view: "dashboard",
   notifications: [],
+  profileImages: {},
 };
 
 const languageOrder = ["ro", "ru", "en"];
 const generalAdminEmails = ["admin@kultura.md", "igor.gratii.99@mail.ru"];
 let shouldSaveNormalizedTeamRows = false;
+let pendingProfileImageFile = null;
+let pendingProfileImagePreview = "";
+const profileImageMaxSize = 5 * 1024 * 1024;
+const profileImageTypes = ["image/jpeg", "image/png", "image/webp"];
 
 const roleLabels = {
   ro: { admin_general: "Admin general", admin: "Admin", editor: "Coordonator evenimente", viewer: "Observator" },
@@ -427,6 +448,10 @@ const roleLabels = {
 const dataKeys = ["events", "cars", "tasks", "team", "resources"];
 
 function applyStoredData(storedData) {
+  if (storedData?.profileImages && typeof storedData.profileImages === "object") {
+    state.profileImages = { ...storedData.profileImages };
+  }
+
   Object.entries(storedData || {}).forEach(([language, collections]) => {
     if (!dictionaries[language]) return;
     dataKeys.forEach((key) => {
@@ -966,6 +991,10 @@ const profileRole = document.querySelector("#profile-role");
 const profileEmail = document.querySelector("#profile-email");
 const profilePassword = document.querySelector("#profile-password");
 const profileSuccess = document.querySelector("#profile-success");
+const profilePhotoButton = document.querySelector("#profile-photo-button");
+const profilePhotoInput = document.querySelector("#profile-photo-input");
+const profilePhotoHint = document.querySelector("#profile-photo-hint");
+const profileActionPhoto = document.querySelector("#profile-action-photo");
 const syncStatus = document.querySelector("#sync-status");
 const toastContainer = document.querySelector("#toast-container");
 const notificationsButton = document.querySelector("#notifications-button");
@@ -994,6 +1023,9 @@ function renderNotifications() {
 
   notificationsList.innerHTML = items || `<div class="empty-state">Nu exista notificari recente.</div>`;
   updateNotificationBadge();
+  if (notificationsPanel.classList.contains("open")) {
+    requestAnimationFrame(positionNotificationsPanel);
+  }
 }
 
 function addNotification(message, type = "info") {
@@ -1017,6 +1049,7 @@ function toggleNotificationsPanel() {
   notificationsPanel.setAttribute("aria-hidden", String(!opened));
   notificationsButton.setAttribute("aria-expanded", String(opened));
   if (opened) {
+    requestAnimationFrame(positionNotificationsPanel);
     state.notifications.forEach((item) => { item.read = true; });
     renderNotifications();
   }
@@ -1025,8 +1058,28 @@ function toggleNotificationsPanel() {
 function closeNotificationsPanel() {
   if (!notificationsPanel || !notificationsButton) return;
   notificationsPanel.classList.remove("open");
+  notificationsPanel.classList.remove("open-up");
+  notificationsPanel.style.removeProperty("max-height");
+  notificationsList?.style.removeProperty("max-height");
   notificationsPanel.setAttribute("aria-hidden", "true");
   notificationsButton.setAttribute("aria-expanded", "false");
+}
+
+function positionNotificationsPanel() {
+  if (!notificationsPanel || !notificationsButton) return;
+  const buttonRect = notificationsButton.getBoundingClientRect();
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+  const spaceBelow = viewportHeight - buttonRect.bottom;
+  const spaceAbove = buttonRect.top;
+  const shouldOpenUp = spaceBelow < 390 && spaceAbove > spaceBelow;
+  const availableSpace = Math.max(190, Math.floor((shouldOpenUp ? spaceAbove : spaceBelow) - 14));
+  const maxPanelHeight = Math.min(380, availableSpace);
+
+  notificationsPanel.classList.toggle("open-up", shouldOpenUp);
+  notificationsPanel.style.maxHeight = `${maxPanelHeight}px`;
+  if (notificationsList) {
+    notificationsList.style.maxHeight = `${Math.max(120, maxPanelHeight - 62)}px`;
+  }
 }
 
 function showToast(message, type = "info", duration = 3200) {
@@ -1133,7 +1186,7 @@ function setSyncStatus(message, state = "") {
 }
 
 function buildDataPayload() {
-  const payload = {};
+  const payload = { profileImages: state.profileImages };
   Object.keys(dictionaries).forEach((language) => {
     payload[language] = {};
     dataKeys.forEach((key) => {
@@ -1326,6 +1379,88 @@ function initials(name) {
     .toUpperCase();
 }
 
+function profileImageKey(email) {
+  return String(email || "").trim().toLowerCase();
+}
+
+function getProfileImage(email) {
+  return state.profileImages[profileImageKey(email)] || "";
+}
+
+function setProfileImagePreview(name, email, preview = "") {
+  const imageSource = preview || getProfileImage(email);
+  if (profileAvatar) {
+    profileAvatar.innerHTML = "";
+    profileAvatar.classList.toggle("has-image", Boolean(imageSource));
+    if (imageSource) {
+      const image = document.createElement("img");
+      image.src = imageSource;
+      image.alt = "";
+      profileAvatar.append(image);
+    } else {
+      profileAvatar.textContent = initials(name);
+    }
+  }
+
+  const profileAction = document.querySelector(".profile-action");
+  if (profileActionPhoto) {
+    profileActionPhoto.classList.toggle("visible", Boolean(imageSource));
+    profileActionPhoto.hidden = !imageSource;
+    if (imageSource) {
+      profileActionPhoto.src = imageSource;
+    } else {
+      profileActionPhoto.removeAttribute("src");
+    }
+  }
+  profileAction?.classList.toggle("has-photo", Boolean(imageSource));
+}
+
+function validateProfileImage(file) {
+  const hasValidType = profileImageTypes.includes(file?.type);
+  const hasValidExtension = /\.(jpe?g|png|webp)$/i.test(file?.name || "");
+  if (!file || (!hasValidType && !hasValidExtension)) {
+    return t().profile_photo_invalid;
+  }
+  if (file.size > profileImageMaxSize) {
+    return t().profile_photo_too_large;
+  }
+  return "";
+}
+
+function readFileAsDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => resolve(String(reader.result || "")), { once: true });
+    reader.addEventListener("error", () => reject(reader.error), { once: true });
+    reader.readAsDataURL(file);
+  });
+}
+
+async function uploadProfileImageToStorage(file, email) {
+  if (!supabaseClient?.storage) return "";
+  const extension = (file.name.split(".").pop() || file.type.split("/").pop() || "jpg")
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "");
+  const safeEmail = profileImageKey(email).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "user";
+  const path = `${safeEmail}/${Date.now()}.${extension || "jpg"}`;
+
+  const { error } = await supabaseClient.storage
+    .from(supabaseConfig.profileBucket)
+    .upload(path, file, {
+      cacheControl: "3600",
+      contentType: file.type,
+      upsert: true,
+    });
+
+  if (error) throw error;
+
+  const { data } = supabaseClient.storage
+    .from(supabaseConfig.profileBucket)
+    .getPublicUrl(path);
+
+  return data?.publicUrl || "";
+}
+
 function renderTranslations() {
   const dictionary = t();
   document.documentElement.lang = state.language;
@@ -1391,11 +1526,14 @@ function renderProfile() {
   const member = findCurrentTeamMember();
   if (!user || !profileForm || !member) return;
 
-  profileAvatar.textContent = initials(member[0]);
+  setProfileImagePreview(member[0], member[3], pendingProfileImagePreview);
   profileName.textContent = member[0];
   profileRole.textContent = `${member[1]} - ${roleLabel(member[2])}`;
   profileEmail.value = member[3];
   profilePassword.value = "";
+  if (profilePhotoHint) {
+    profilePhotoHint.textContent = pendingProfileImageFile ? pendingProfileImageFile.name : t().profile_photo_hint;
+  }
 }
 
 function applyPermissions() {
@@ -1972,6 +2110,12 @@ notificationsButton?.addEventListener("click", (event) => {
   toggleNotificationsPanel();
 });
 
+window.addEventListener("resize", () => {
+  if (notificationsPanel?.classList.contains("open")) {
+    positionNotificationsPanel();
+  }
+});
+
 clearNotificationsButton?.addEventListener("click", () => {
   state.notifications = [];
   renderNotifications();
@@ -2034,6 +2178,40 @@ if (carsClearButton) {
   });
 }
 
+profilePhotoButton?.addEventListener("click", () => {
+  profilePhotoInput?.click();
+});
+
+profilePhotoInput?.addEventListener("change", async () => {
+  const file = profilePhotoInput.files?.[0];
+  if (!file) return;
+
+  const validationError = validateProfileImage(file);
+  if (validationError) {
+    pendingProfileImageFile = null;
+    pendingProfileImagePreview = "";
+    profilePhotoInput.value = "";
+    showToast(validationError, "error");
+    renderProfile();
+    return;
+  }
+
+  try {
+    pendingProfileImageFile = file;
+    pendingProfileImagePreview = await readFileAsDataUrl(file);
+    const member = findCurrentTeamMember();
+    if (member) {
+      setProfileImagePreview(member[0], member[3], pendingProfileImagePreview);
+    }
+    if (profilePhotoHint) profilePhotoHint.textContent = file.name;
+  } catch (error) {
+    pendingProfileImageFile = null;
+    pendingProfileImagePreview = "";
+    showToast(t().profile_photo_invalid, "error");
+    renderProfile();
+  }
+});
+
 if (profileForm) {
   profileForm.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -2045,6 +2223,7 @@ if (profileForm) {
     const nextPassword = profilePassword.value.trim();
     const authUpdates = {};
     let updatedUser = null;
+    let savedProfileImage = "";
 
     if (nextPassword && nextPassword.length < 6) {
       showToast(t().register_error_short, "error");
@@ -2080,6 +2259,27 @@ if (profileForm) {
     });
 
     if (!updatedUser) return;
+    if (pendingProfileImageFile && pendingProfileImagePreview) {
+      try {
+        savedProfileImage = await uploadProfileImageToStorage(pendingProfileImageFile, nextEmail);
+      } catch (error) {
+        console.warn("Poza de profil nu a putut fi salvata in Supabase Storage.", error);
+        showToast(t().profile_photo_upload_error, "error", 5200);
+      }
+      savedProfileImage ||= pendingProfileImagePreview;
+    }
+
+    if (savedProfileImage) {
+      delete state.profileImages[profileImageKey(oldEmail)];
+      state.profileImages[profileImageKey(nextEmail)] = savedProfileImage;
+      pendingProfileImageFile = null;
+      pendingProfileImagePreview = "";
+      if (profilePhotoInput) profilePhotoInput.value = "";
+    } else if (nextEmail.toLowerCase() !== oldEmail && state.profileImages[profileImageKey(oldEmail)]) {
+      state.profileImages[profileImageKey(nextEmail)] = state.profileImages[profileImageKey(oldEmail)];
+      delete state.profileImages[profileImageKey(oldEmail)];
+    }
+
     localStorage.setItem("kultura_current_user", JSON.stringify(updatedUser));
     saveData();
     profilePassword.value = "";

@@ -121,6 +121,7 @@
             <span class="notification-badge" id="notification-badge"></span>
           </button>
           <button class="primary-action icon-action profile-action" type="button" data-view-shortcut="profile" aria-label="Profil" title="Profil">
+            <img class="profile-action-photo" id="profile-action-photo" alt="" />
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M18 20a6 6 0 0 0-12 0" />
               <circle cx="12" cy="10" r="4" />
@@ -262,6 +263,9 @@
             <div class="profile-layout">
               <div class="profile-card">
                 <div class="profile-avatar" id="profile-avatar">V</div>
+                <button class="ghost-action profile-photo-button" type="button" id="profile-photo-button" data-i18n="profile_change_photo">Schimba poza de profil</button>
+                <input class="file-input" id="profile-photo-input" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" />
+                <small class="profile-photo-hint" id="profile-photo-hint" data-i18n="profile_photo_hint">JPG, PNG sau WEBP, maximum 5MB.</small>
                 <strong id="profile-name">Victor</strong>
                 <span id="profile-role">Admin general</span>
               </div>

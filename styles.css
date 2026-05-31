@@ -931,8 +931,9 @@ h2 {
 .notifications-panel {
   position: absolute;
   top: calc(100% + 10px);
+  bottom: auto;
   right: 0;
-  width: min(100%, 320px);
+  width: min(320px, calc(100vw - 24px));
   max-width: calc(100vw - 24px);
   max-height: 380px;
   overflow: hidden;
@@ -948,6 +949,12 @@ h2 {
   transform: translateY(-8px);
   transition: opacity 220ms ease, transform 220ms ease;
   z-index: 60;
+}
+
+.notifications-panel.open-up {
+  top: auto;
+  bottom: calc(100% + 10px);
+  transform: translateY(8px);
 }
 
 .notifications-panel.open {
@@ -1089,6 +1096,22 @@ h2 {
 
 .profile-action {
   color: var(--muted);
+}
+
+.profile-action.has-photo svg {
+  display: none;
+}
+
+.profile-action-photo {
+  display: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  object-fit: cover;
+}
+
+.profile-action-photo.visible {
+  display: block;
 }
 
 .profile-action:hover {
@@ -1758,6 +1781,31 @@ h2 {
   box-shadow: 0 0 28px rgba(94, 169, 255, 0.18);
   font-size: 1.4rem;
   font-weight: 900;
+  overflow: hidden;
+}
+
+.profile-avatar.has-image {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-photo-button {
+  min-height: 34px;
+  width: fit-content;
+  padding: 0 12px;
+  font-size: 0.78rem;
+}
+
+.profile-photo-hint {
+  color: var(--muted);
+  font-size: 0.72rem;
+  line-height: 1.25;
 }
 
 .profile-card strong,
@@ -2325,7 +2373,21 @@ h2 {
 
   .notifications-panel {
     right: 0;
-    width: min(92vw, 300px);
+    width: min(92vw, 320px);
+    max-height: min(68vh, 360px);
+  }
+
+  .notifications-panel.open-up {
+    bottom: calc(100% + 8px);
+  }
+
+  .notifications-list {
+    max-height: min(52vh, 278px);
+    padding: 8px 10px 10px;
+  }
+
+  .notifications-panel-header {
+    padding: 10px 12px 8px;
   }
 
   .panel {
