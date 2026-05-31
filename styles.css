@@ -795,6 +795,7 @@ button:hover {
     rgba(8, 10, 14, 0.44);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 22px 70px rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(16px);
+  overflow: hidden;
 }
 
 .topbar > div {
@@ -2325,10 +2326,15 @@ h2 {
 
   .topbar {
     display: grid;
+    place-items: center;
+    height: 70px !important;
+    min-height: 70px !important;
+    max-height: 70px !important;
     gap: 8px;
     margin-bottom: 8px;
     border-radius: 16px;
     padding: 8px 10px;
+    overflow: hidden;
   }
 
   .app-shell[data-active-view="cars"] .topbar,
@@ -2336,9 +2342,9 @@ h2 {
   .app-shell[data-active-view="tasks"] .topbar,
   .app-shell[data-active-view="team"] .topbar,
   .app-shell[data-active-view="resources"] .topbar {
-    height: 70px;
-    min-height: 70px;
-    max-height: 70px;
+    height: 70px !important;
+    min-height: 70px !important;
+    max-height: 70px !important;
     overflow: hidden;
     padding: 8px 10px;
   }
