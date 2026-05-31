@@ -1931,6 +1931,13 @@ h2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .event-list,
+  .task-list,
+  .task-list-featured,
+  .resource-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .content-grid {
     grid-template-columns: 1fr;
   }
@@ -2211,6 +2218,14 @@ h2 {
     gap: 8px;
   }
 
+  .event-list,
+  .task-list,
+  .task-list-featured,
+  .resource-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
   .team-grid,
   .settings-grid,
   .profile-layout {
@@ -2223,6 +2238,8 @@ h2 {
     gap: 6px;
     border-radius: 14px;
     padding: 8px;
+    min-height: 112px;
+    height: 100%;
   }
 
   .team-member {
@@ -2246,11 +2263,47 @@ h2 {
   .resource-card {
     border-radius: 14px;
     padding: 8px;
+    min-height: 128px;
+    height: 100%;
   }
 
   .task-top {
     align-items: flex-start;
     flex-direction: column;
+    gap: 5px;
+  }
+
+  .task-item {
+    align-content: start;
+    gap: 6px;
+  }
+
+  .task-item strong,
+  .event-row strong,
+  .resource-card strong {
+    font-size: 0.82rem;
+    line-height: 1.15;
+  }
+
+  .task-item span,
+  .event-row span,
+  .resource-card span {
+    font-size: 0.7rem;
+    line-height: 1.25;
+  }
+
+  .priority,
+  .task-owner,
+  .task-due,
+  .status-pill {
+    width: fit-content;
+    min-width: 0;
+    padding: 4px 7px;
+    font-size: 0.68rem;
+  }
+
+  .task-item .row-actions {
+    margin-top: auto;
   }
 
   .small-action {
