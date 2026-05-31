@@ -811,8 +811,16 @@ button:hover {
   min-height: 72px;
   height: auto;
   align-content: center;
+  margin-bottom: 0;
   padding-top: 10px;
   padding-bottom: 10px;
+}
+
+.app-shell[data-active-view="events"] .admin-view[data-view-panel="events"].active,
+.app-shell[data-active-view="tasks"] .admin-view[data-view-panel="tasks"].active,
+.app-shell[data-active-view="team"] .admin-view[data-view-panel="team"].active,
+.app-shell[data-active-view="resources"] .admin-view[data-view-panel="resources"].active {
+  margin-top: 0;
 }
 
 .app-shell[data-active-view="cars"] .topbar > div,
@@ -2352,8 +2360,16 @@ h2 {
     height: 70px !important;
     min-height: 70px !important;
     max-height: 70px !important;
+    margin-bottom: 0 !important;
     overflow: hidden;
     padding: 8px 10px;
+  }
+
+  .app-shell[data-active-view="events"] .admin-view[data-view-panel="events"].active,
+  .app-shell[data-active-view="tasks"] .admin-view[data-view-panel="tasks"].active,
+  .app-shell[data-active-view="team"] .admin-view[data-view-panel="team"].active,
+  .app-shell[data-active-view="resources"] .admin-view[data-view-panel="resources"].active {
+    margin-top: 0 !important;
   }
 
   .app-shell[data-active-view="cars"] .topbar > div,
