@@ -132,7 +132,7 @@ const dictionaries = {
       ["Verificare autorizatii locatie", "Mihai", "Mediu"],
     ],
     team: [
-      ["Victor", "Coordonator logistica", "Admin", "admin@kultura.md", "admin123"],
+      ["Victor", "Coordonator logistica", "Admin general", "admin@kultura.md", "admin123"],
       ["Ana", "Securitate si pista", "Editor", "ana@kultura.md", "ana123"],
       ["Irina", "Media si comunicare", "Editor", "irina@kultura.md", "irina123"],
       ["Mihai", "Parteneri si autorizatii", "Viewer", "mihai@kultura.md", "mihai123"],
@@ -257,7 +257,7 @@ const dictionaries = {
       ["Проверка разрешений локации", "Михаил", "Средне"],
     ],
     team: [
-      ["Виктор", "Координатор логистики", "Admin", "admin@kultura.md", "admin123"],
+      ["Виктор", "Координатор логистики", "Admin general", "admin@kultura.md", "admin123"],
       ["Анна", "Безопасность и трасса", "Editor", "ana@kultura.md", "ana123"],
       ["Ирина", "Медиа и коммуникация", "Editor", "irina@kultura.md", "irina123"],
       ["Михаил", "Партнеры и разрешения", "Viewer", "mihai@kultura.md", "mihai123"],
@@ -382,7 +382,7 @@ const dictionaries = {
       ["Check venue permits", "Mihai", "Medium"],
     ],
     team: [
-      ["Victor", "Logistics coordinator", "Admin", "admin@kultura.md", "admin123"],
+      ["Victor", "Logistics coordinator", "Admin general", "admin@kultura.md", "admin123"],
       ["Ana", "Safety and track", "Editor", "ana@kultura.md", "ana123"],
       ["Irina", "Media and comms", "Editor", "irina@kultura.md", "irina123"],
       ["Mihai", "Partners and permits", "Viewer", "mihai@kultura.md", "mihai123"],
@@ -405,9 +405,9 @@ const state = {
 const languageOrder = ["ro", "ru", "en"];
 
 const roleLabels = {
-  ro: { admin: "Admin general", editor: "Coordonator evenimente", viewer: "Observator" },
-  ru: { admin: "Главный администратор", editor: "Координатор событий", viewer: "Наблюдатель" },
-  en: { admin: "General admin", editor: "Event coordinator", viewer: "Observer" },
+  ro: { admin_general: "Admin general", admin: "Admin", editor: "Coordonator evenimente", viewer: "Observator" },
+  ru: { admin_general: "Главный администратор", admin: "Админ", editor: "Координатор событий", viewer: "Наблюдатель" },
+  en: { admin_general: "General admin", admin: "Admin", editor: "Event coordinator", viewer: "Observer" },
 };
 
 const dataKeys = ["events", "cars", "tasks", "team", "resources"];
@@ -443,6 +443,10 @@ function normalizeTeamRows() {
       const fallback = defaults[member[0]] || [`member${index + 1}@kultura.md`, `pass${index + 1}`];
       const email = String(member[3] || "").trim().toLowerCase();
       const shouldRefreshSeededAdmin = fallback[0] === "admin@kultura.md" && (!email || email === "admin@autocrew.md");
+
+      if (email === "admin@kultura.md") {
+        return [member[0], member[1], "Admin general", member[3] || fallback[0], member[4] || fallback[1]];
+      }
 
       if (member.length >= 5 && !shouldRefreshSeededAdmin) return member;
       return [member[0], member[1], member[2], fallback[0], member[4] || fallback[1]];
@@ -888,7 +892,7 @@ const formConfigs = {
     fields: [
       { label: { ro: "Nume", ru: "Имя", en: "Name" }, placeholder: "Victor" },
       { label: { ro: "Rol", ru: "Роль", en: "Role" }, placeholder: "Coordonator logistica" },
-      { label: { ro: "Acces", ru: "Доступ", en: "Access" }, placeholder: "Admin", type: "select", options: ["Admin", "Editor", "Viewer"] },
+      { label: { ro: "Acces", ru: "Доступ", en: "Access" }, placeholder: "Admin general", type: "select", options: ["Admin general", "Admin", "Editor", "Viewer"] },
       { label: { ro: "Email", ru: "Email", en: "Email" }, placeholder: "admin@kultura.md", type: "email" },
       { label: { ro: "Parola", ru: "Пароль", en: "Password" }, placeholder: "admin123" },
     ],
@@ -1057,7 +1061,10 @@ function setAuthMode(mode = "login") {
 }
 
 function accessKey(access) {
-  return String(access || "").trim().toLowerCase();
+  return String(access || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[\s-]+/g, "_");
 }
 
 function roleLabel(role) {
@@ -1069,9 +1076,14 @@ function canManage(kind) {
   const user = getCurrentUser();
   const role = accessKey(user?.role);
   if (!user) return false;
-  if (role === "admin") return true;
+  if (role === "admin_general") return true;
+  if (role === "admin") return kind !== "team";
   if (role === "editor") return kind !== "team";
   return false;
+}
+
+function canViewTeam() {
+  return accessKey(getCurrentUser()?.role) === "admin_general";
 }
 
 function uiText(key) {
@@ -1348,6 +1360,10 @@ function renderProfile() {
 }
 
 function applyPermissions() {
+  document.querySelectorAll('[data-view="team"]').forEach((button) => {
+    button.hidden = !canViewTeam();
+  });
+
   document.querySelectorAll("[data-add]").forEach((button) => {
     button.hidden = !canManage(button.dataset.add);
   });
@@ -1727,6 +1743,9 @@ function render() {
 }
 
 function showView(view) {
+  if (view === "team" && !canViewTeam()) {
+    view = "dashboard";
+  }
   state.view = view;
   localStorage.setItem("kultura_last_view", view);
   if (profileSuccess) profileSuccess.classList.remove("visible");
