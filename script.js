@@ -37,8 +37,11 @@ const dictionaries = {
     password_confirm_label: "Confirma parola",
     register_error_exists: "Exista deja un cont cu acest email.",
     register_error_password: "Parolele nu coincid.",
-    register_error_short: "Parola trebuie sa aiba cel putin 4 caractere.",
+    register_error_short: "Parola trebuie sa aiba cel putin 6 caractere.",
     register_error_supabase: "Contul nu a fost salvat in Supabase. Incearca din nou.",
+    auth_error: "Autentificarea Supabase nu a reusit.",
+    auth_no_access: "Contul exista, dar nu are acces in echipa.",
+    register_check_email: "Cont creat. Verifica emailul pentru confirmare, apoi intra in cont.",
     public_register: "Inregistreaza-te",
     public_admin: "Admin",
     public_language_label: "Schimba limba",
@@ -57,6 +60,7 @@ const dictionaries = {
     profile_subtitle: "Datele de acces pentru contul tau de organizator.",
     profile_save: "Salveaza profilul",
     profile_saved: "Profilul a fost salvat.",
+    profile_password_label: "Parola noua",
     metric_events: "Evenimente active",
     metric_events_note: "2 in pregatire intensiva",
     metric_tasks: "Task-uri deschise",
@@ -132,10 +136,10 @@ const dictionaries = {
       ["Verificare autorizatii locatie", "Mihai", "Mediu"],
     ],
     team: [
-      ["Victor", "Coordonator logistica", "Admin general", "admin@kultura.md", "admin123"],
-      ["Ana", "Securitate si pista", "Editor", "ana@kultura.md", "ana123"],
-      ["Irina", "Media si comunicare", "Editor", "irina@kultura.md", "irina123"],
-      ["Mihai", "Parteneri si autorizatii", "Viewer", "mihai@kultura.md", "mihai123"],
+      ["Victor", "Coordonator logistica", "Admin general", "admin@kultura.md"],
+      ["Ana", "Securitate si pista", "Editor", "ana@kultura.md"],
+      ["Irina", "Media si comunicare", "Editor", "irina@kultura.md"],
+      ["Mihai", "Parteneri si autorizatii", "Viewer", "mihai@kultura.md"],
     ],
     resources: [
       ["Autorizatii", "Permise de locatie, acces public si siguranta", "In lucru"],
@@ -162,8 +166,11 @@ const dictionaries = {
     password_confirm_label: "Подтвердите пароль",
     register_error_exists: "Аккаунт с этим email уже существует.",
     register_error_password: "Пароли не совпадают.",
-    register_error_short: "Пароль должен быть не короче 4 символов.",
+    register_error_short: "Пароль должен быть не короче 6 символов.",
     register_error_supabase: "Аккаунт не был сохранен в Supabase. Попробуйте еще раз.",
+    auth_error: "Аутентификация Supabase не удалась.",
+    auth_no_access: "Аккаунт существует, но у него нет доступа в команде.",
+    register_check_email: "Аккаунт создан. Подтвердите email, затем войдите.",
     public_register: "Зарегистрироваться",
     public_admin: "Админ",
     public_language_label: "Сменить язык",
@@ -182,6 +189,7 @@ const dictionaries = {
     profile_subtitle: "Данные доступа для вашего аккаунта организатора.",
     profile_save: "Сохранить профиль",
     profile_saved: "Профиль сохранен.",
+    profile_password_label: "Новый пароль",
     metric_events: "Активные события",
     metric_events_note: "2 в активной подготовке",
     metric_tasks: "Открытые задачи",
@@ -257,10 +265,10 @@ const dictionaries = {
       ["Проверка разрешений локации", "Михаил", "Средне"],
     ],
     team: [
-      ["Виктор", "Координатор логистики", "Admin general", "admin@kultura.md", "admin123"],
-      ["Анна", "Безопасность и трасса", "Editor", "ana@kultura.md", "ana123"],
-      ["Ирина", "Медиа и коммуникация", "Editor", "irina@kultura.md", "irina123"],
-      ["Михаил", "Партнеры и разрешения", "Viewer", "mihai@kultura.md", "mihai123"],
+      ["Виктор", "Координатор логистики", "Admin general", "admin@kultura.md"],
+      ["Анна", "Безопасность и трасса", "Editor", "ana@kultura.md"],
+      ["Ирина", "Медиа и коммуникация", "Editor", "irina@kultura.md"],
+      ["Михаил", "Партнеры и разрешения", "Viewer", "mihai@kultura.md"],
     ],
     resources: [
       ["Разрешения", "Локация, публичный доступ и безопасность", "В работе"],
@@ -287,8 +295,11 @@ const dictionaries = {
     password_confirm_label: "Confirm password",
     register_error_exists: "An account with this email already exists.",
     register_error_password: "Passwords do not match.",
-    register_error_short: "Password must be at least 4 characters.",
+    register_error_short: "Password must be at least 6 characters.",
     register_error_supabase: "The account was not saved in Supabase. Please try again.",
+    auth_error: "Supabase authentication failed.",
+    auth_no_access: "The account exists, but it has no team access.",
+    register_check_email: "Account created. Check your email to confirm it, then log in.",
     public_register: "Register",
     public_admin: "Admin",
     public_language_label: "Change language",
@@ -307,6 +318,7 @@ const dictionaries = {
     profile_subtitle: "Access details for your organizer account.",
     profile_save: "Save profile",
     profile_saved: "Profile saved.",
+    profile_password_label: "New password",
     metric_events: "Active events",
     metric_events_note: "2 in intensive preparation",
     metric_tasks: "Open tasks",
@@ -382,10 +394,10 @@ const dictionaries = {
       ["Check venue permits", "Mihai", "Medium"],
     ],
     team: [
-      ["Victor", "Logistics coordinator", "Admin general", "admin@kultura.md", "admin123"],
-      ["Ana", "Safety and track", "Editor", "ana@kultura.md", "ana123"],
-      ["Irina", "Media and comms", "Editor", "irina@kultura.md", "irina123"],
-      ["Mihai", "Partners and permits", "Viewer", "mihai@kultura.md", "mihai123"],
+      ["Victor", "Logistics coordinator", "Admin general", "admin@kultura.md"],
+      ["Ana", "Safety and track", "Editor", "ana@kultura.md"],
+      ["Irina", "Media and comms", "Editor", "irina@kultura.md"],
+      ["Mihai", "Partners and permits", "Viewer", "mihai@kultura.md"],
     ],
     resources: [
       ["Permits", "Venue, public access and safety permits", "In progress"],
@@ -430,31 +442,37 @@ applyStoredData(savedData);
 
 function normalizeTeamRows() {
   const defaults = {
-    Victor: ["admin@kultura.md", "admin123"],
-    Ana: ["ana@kultura.md", "ana123"],
-    Irina: ["irina@kultura.md", "irina123"],
-    Mihai: ["mihai@kultura.md", "mihai123"],
-    Виктор: ["admin@kultura.md", "admin123"],
-    Анна: ["ana@kultura.md", "ana123"],
-    Ирина: ["irina@kultura.md", "irina123"],
-    Михаил: ["mihai@kultura.md", "mihai123"],
+    Victor: "admin@kultura.md",
+    Ana: "ana@kultura.md",
+    Irina: "irina@kultura.md",
+    Mihai: "mihai@kultura.md",
+    Виктор: "admin@kultura.md",
+    Анна: "ana@kultura.md",
+    Ирина: "irina@kultura.md",
+    Михаил: "mihai@kultura.md",
   };
 
   Object.values(dictionaries).forEach((dictionary) => {
     dictionary.team = dictionary.team.map((member, index) => {
-      const fallback = defaults[member[0]] || [`member${index + 1}@kultura.md`, `pass${index + 1}`];
+      const fallbackEmail = defaults[member[0]] || `member${index + 1}@kultura.md`;
       const email = String(member[3] || "").trim().toLowerCase();
-      const shouldRefreshSeededAdmin = fallback[0] === "admin@kultura.md" && (!email || email === "admin@autocrew.md");
+      const nextEmail = member[3] || fallbackEmail;
+      const nextEmailKey = String(nextEmail).trim().toLowerCase();
+      const shouldRefreshSeededAdmin = fallbackEmail === "admin@kultura.md" && (!email || email === "admin@autocrew.md");
+      const hasLegacyPassword = member.length > 4;
 
-      if (generalAdminEmails.includes(email)) {
+      if (generalAdminEmails.includes(nextEmailKey)) {
         if (member[2] !== "Admin general") {
           shouldSaveNormalizedTeamRows = true;
         }
-        return [member[0], member[1], "Admin general", member[3] || fallback[0], member[4] || fallback[1]];
+        if (hasLegacyPassword) shouldSaveNormalizedTeamRows = true;
+        return [member[0], member[1], "Admin general", nextEmail];
       }
 
-      if (member.length >= 5 && !shouldRefreshSeededAdmin) return member;
-      return [member[0], member[1], member[2], fallback[0], member[4] || fallback[1]];
+      if (hasLegacyPassword || shouldRefreshSeededAdmin || member.length < 4) {
+        shouldSaveNormalizedTeamRows = true;
+      }
+      return [member[0], member[1], member[2], nextEmail];
     });
   });
 }
@@ -899,7 +917,6 @@ const formConfigs = {
       { label: { ro: "Rol", ru: "Роль", en: "Role" }, placeholder: "Coordonator logistica" },
       { label: { ro: "Acces", ru: "Доступ", en: "Access" }, placeholder: "Admin general", type: "select", options: ["Admin general", "Admin", "Editor", "Viewer"] },
       { label: { ro: "Email", ru: "Email", en: "Email" }, placeholder: "admin@kultura.md", type: "email" },
-      { label: { ro: "Parola", ru: "Пароль", en: "Password" }, placeholder: "admin123" },
     ],
   },
   resources: {
@@ -1058,6 +1075,7 @@ function setAuthMode(mode = "login") {
   const isRegister = mode === "register";
   loginForm?.classList.toggle("is-hidden", isRegister);
   registerForm?.classList.toggle("is-hidden", !isRegister);
+  if (formError) formError.textContent = t().login_error;
   formError?.classList.remove("visible");
   if (registerError) {
     registerError.textContent = "";
@@ -1207,21 +1225,44 @@ async function loadDataFromSupabase() {
   await saveDataToSupabase(buildDataPayload());
 }
 
-function findTeamUser(email, password) {
+function findTeamMemberByEmail(email) {
   const normalizedEmail = String(email).trim().toLowerCase();
-  const normalizedPassword = String(password).trim();
-  const dictionariesToSearch = [t(), ...Object.values(dictionaries).filter((dictionary) => dictionary !== t())];
-  let member = null;
+  return (
+    t().team.find((member) => String(member[3]).trim().toLowerCase() === normalizedEmail) ||
+    Object.values(dictionaries)
+      .flatMap((dictionary) => dictionary.team)
+      .find((member) => String(member[3]).trim().toLowerCase() === normalizedEmail) ||
+    null
+  );
+}
 
-  dictionariesToSearch.some((dictionary) => {
-    member = dictionary.team.find(([, , , memberEmail, memberPassword]) => {
-      return String(memberEmail).trim().toLowerCase() === normalizedEmail && String(memberPassword).trim() === normalizedPassword;
-    });
-    return Boolean(member);
+async function signInWithSupabase(email, password) {
+  if (!supabaseClient) {
+    return { user: null, error: new Error(t().auth_error) };
+  }
+
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
+    email: String(email).trim(),
+    password,
   });
 
-  if (!member) return null;
-  return userFromTeamMember(member);
+  return { user: data?.user || null, error };
+}
+
+async function signUpWithSupabase(email, password, name) {
+  if (!supabaseClient) {
+    return { user: null, session: null, error: new Error(t().auth_error) };
+  }
+
+  const { data, error } = await supabaseClient.auth.signUp({
+    email: String(email).trim(),
+    password,
+    options: {
+      data: { name },
+    },
+  });
+
+  return { user: data?.user || null, session: data?.session || null, error };
 }
 
 function teamEmailExists(email) {
@@ -1231,22 +1272,22 @@ function teamEmailExists(email) {
   );
 }
 
-function addRegisteredUser(name, email, password) {
+function addRegisteredUser(name, email) {
   const roleDescriptions = {
     ro: "Membru inregistrat",
     ru: "Зарегистрированный участник",
     en: "Registered member",
   };
+  const access = generalAdminEmails.includes(String(email).trim().toLowerCase()) ? "Admin general" : "Viewer";
   Object.entries(dictionaries).forEach(([language, dictionary]) => {
     dictionary.team.unshift([
       name,
       roleDescriptions[language] || roleDescriptions.ro,
-      "Viewer",
+      access,
       email,
-      password,
     ]);
   });
-  return { name, email, role: "Viewer", roleDescription: roleDescriptions[state.language] || roleDescriptions.ro };
+  return { name, email, role: access, roleDescription: roleDescriptions[state.language] || roleDescriptions.ro };
 }
 
 function removeRegisteredUser(email) {
@@ -1259,14 +1300,7 @@ function removeRegisteredUser(email) {
 function findCurrentTeamMember() {
   const user = getCurrentUser();
   if (!user) return null;
-  const email = String(user.email).trim().toLowerCase();
-  return (
-    t().team.find((member) => String(member[3]).trim().toLowerCase() === email) ||
-    Object.values(dictionaries)
-      .flatMap((dictionary) => dictionary.team)
-      .find((member) => String(member[3]).trim().toLowerCase() === email) ||
-    null
-  );
+  return findTeamMemberByEmail(user.email);
 }
 
 function loginUser(user) {
@@ -1361,7 +1395,7 @@ function renderProfile() {
   profileName.textContent = member[0];
   profileRole.textContent = `${member[1]} - ${roleLabel(member[2])}`;
   profileEmail.value = member[3];
-  profilePassword.value = member[4];
+  profilePassword.value = "";
 }
 
 function applyPermissions() {
@@ -1559,13 +1593,13 @@ function renderTeam() {
   if (!teamList) return;
 
   teamList.innerHTML = t().team
-    .map(([name, role, access, email, password], index) => `
+    .map(([name, role, access, email], index) => `
       <article class="team-member">
         <div class="avatar">${escapeHtml(initials(name))}</div>
         <div>
           <strong>${escapeHtml(name)}</strong>
           <span>${escapeHtml(role)} - ${escapeHtml(access)}</span>
-          <span>${escapeHtml(email)} - ${escapeHtml(password)}</span>
+          <span>${escapeHtml(email)}</span>
         </div>
         <div class="row-actions">
           <button class="small-action" type="button" data-edit="team" data-index="${index}">${t().edit}</button>
@@ -1815,17 +1849,30 @@ showLoginButton?.addEventListener("click", () => {
   setAuthMode("login");
 });
 
-loginForm.addEventListener("submit", (event) => {
+loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
+  const submitButton = loginForm.querySelector('button[type="submit"]');
   const email = document.querySelector("#email").value.trim();
   const password = document.querySelector("#password").value;
-  const user = findTeamUser(email, password);
 
-  if (user) {
-    loginUser(user);
+  if (submitButton) submitButton.disabled = true;
+  const { user: authUser, error } = await signInWithSupabase(email, password);
+  if (submitButton) submitButton.disabled = false;
+
+  if (error || !authUser) {
+    formError.textContent = error?.message || t().auth_error;
+    formError.classList.add("visible");
     return;
   }
 
+  const member = findTeamMemberByEmail(authUser.email || email);
+  if (member) {
+    loginUser(userFromTeamMember(member));
+    return;
+  }
+
+  await supabaseClient?.auth.signOut();
+  formError.textContent = t().auth_no_access;
   formError.classList.add("visible");
 });
 
@@ -1837,7 +1884,7 @@ registerForm?.addEventListener("submit", async (event) => {
   const password = document.querySelector("#register-password").value.trim();
   const passwordConfirm = document.querySelector("#register-password-confirm").value.trim();
 
-  if (password.length < 4) {
+  if (password.length < 6) {
     registerError.textContent = t().register_error_short;
     registerError.classList.add("visible");
     return;
@@ -1849,15 +1896,19 @@ registerForm?.addEventListener("submit", async (event) => {
     return;
   }
 
-  if (teamEmailExists(email)) {
-    registerError.textContent = t().register_error_exists;
+  if (submitButton) submitButton.disabled = true;
+  const { session, error } = await signUpWithSupabase(email, password, name);
+
+  if (error) {
+    if (submitButton) submitButton.disabled = false;
+    registerError.textContent = error.message || t().auth_error;
     registerError.classList.add("visible");
     return;
   }
 
-  const user = addRegisteredUser(name, email, password);
-  if (submitButton) submitButton.disabled = true;
-  const saved = await saveData({ requireSupabase: true });
+  const existingMember = findTeamMemberByEmail(email);
+  const user = existingMember ? userFromTeamMember(existingMember) : addRegisteredUser(name, email);
+  const saved = existingMember ? true : await saveData({ requireSupabase: true });
   if (submitButton) submitButton.disabled = false;
 
   if (!saved) {
@@ -1870,10 +1921,18 @@ registerForm?.addEventListener("submit", async (event) => {
   }
 
   registerForm.reset();
-  loginUser(user);
+  if (session) {
+    loginUser(user);
+    return;
+  }
+
+  setAuthMode("login");
+  formError.textContent = t().register_check_email;
+  formError.classList.add("visible");
 });
 
-document.querySelector("#logout-button").addEventListener("click", () => {
+document.querySelector("#logout-button").addEventListener("click", async () => {
+  await supabaseClient?.auth.signOut();
   clearStoredSession();
   showHome();
 });
@@ -1976,7 +2035,7 @@ if (carsClearButton) {
 }
 
 if (profileForm) {
-  profileForm.addEventListener("submit", (event) => {
+  profileForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const user = getCurrentUser();
     if (!user) return;
@@ -1984,19 +2043,46 @@ if (profileForm) {
     const oldEmail = String(user.email).trim().toLowerCase();
     const nextEmail = profileEmail.value.trim();
     const nextPassword = profilePassword.value.trim();
+    const authUpdates = {};
     let updatedUser = null;
+
+    if (nextPassword && nextPassword.length < 6) {
+      showToast(t().register_error_short, "error");
+      return;
+    }
+
+    if (nextEmail && nextEmail.toLowerCase() !== oldEmail) {
+      authUpdates.email = nextEmail;
+    }
+
+    if (nextPassword) {
+      authUpdates.password = nextPassword;
+    }
+
+    if (Object.keys(authUpdates).length > 0) {
+      if (!supabaseClient) {
+        showToast(t().auth_error, "error");
+        return;
+      }
+
+      const { error } = await supabaseClient.auth.updateUser(authUpdates);
+      if (error) {
+        showToast(error.message || t().auth_error, "error");
+        return;
+      }
+    }
 
     Object.values(dictionaries).forEach((dictionary) => {
       const member = dictionary.team.find((item) => String(item[3]).trim().toLowerCase() === oldEmail);
       if (!member) return;
       member[3] = nextEmail;
-      member[4] = nextPassword;
       updatedUser = { name: member[0], email: nextEmail, role: member[2] };
     });
 
     if (!updatedUser) return;
     localStorage.setItem("kultura_current_user", JSON.stringify(updatedUser));
     saveData();
+    profilePassword.value = "";
     render();
     profileSuccess.classList.add("visible");
   });
@@ -2065,8 +2151,9 @@ async function initializeApp() {
   }
   renderTranslations();
 
-  const savedUser = getCurrentUser();
-  const savedMember = savedUser ? findCurrentTeamMember() : null;
+  const { data: authData } = supabaseClient ? await supabaseClient.auth.getSession() : { data: { session: null } };
+  const authEmail = authData?.session?.user?.email || "";
+  const savedMember = authEmail ? findTeamMemberByEmail(authEmail) : null;
   if (savedMember) {
     const refreshedUser = userFromTeamMember(savedMember);
     localStorage.setItem("autocrew_logged_in", "yes");
@@ -2081,6 +2168,7 @@ async function initializeApp() {
     return;
   }
 
+  await supabaseClient?.auth.signOut();
   clearStoredSession();
   showHome();
 }
