@@ -29,6 +29,15 @@ const dictionaries = {
     login_hint: "Introdu emailul si parola primite de la admin.",
     login_button: "Intra",
     login_error: "Email sau parola incorecta.",
+    name_label: "Nume",
+    register_button: "Creeaza cont",
+    register_submit: "Creeaza cont",
+    register_hint: "Contul va fi creat cu acces de observator. Adminul poate modifica accesul din Echipa.",
+    back_to_login: "Am deja cont",
+    password_confirm_label: "Confirma parola",
+    register_error_exists: "Exista deja un cont cu acest email.",
+    register_error_password: "Parolele nu coincid.",
+    register_error_short: "Parola trebuie sa aiba cel putin 4 caractere.",
     nav_dashboard: "Dashboard",
     nav_cars: "Auto participanti",
     nav_events: "Evenimente",
@@ -141,6 +150,15 @@ const dictionaries = {
     login_hint: "Введите email и пароль, полученные от администратора.",
     login_button: "Войти",
     login_error: "Неверный email или пароль.",
+    name_label: "Имя",
+    register_button: "Создать аккаунт",
+    register_submit: "Создать аккаунт",
+    register_hint: "Аккаунт будет создан с доступом наблюдателя. Админ может изменить доступ в Команде.",
+    back_to_login: "У меня уже есть аккаунт",
+    password_confirm_label: "Подтвердите пароль",
+    register_error_exists: "Аккаунт с этим email уже существует.",
+    register_error_password: "Пароли не совпадают.",
+    register_error_short: "Пароль должен быть не короче 4 символов.",
     nav_dashboard: "Панель",
     nav_cars: "Авто участников",
     nav_events: "События",
@@ -253,6 +271,15 @@ const dictionaries = {
     login_hint: "Enter the email and password received from admin.",
     login_button: "Enter",
     login_error: "Incorrect email or password.",
+    name_label: "Name",
+    register_button: "Create account",
+    register_submit: "Create account",
+    register_hint: "The account will be created with viewer access. Admin can change access from Team.",
+    back_to_login: "I already have an account",
+    password_confirm_label: "Confirm password",
+    register_error_exists: "An account with this email already exists.",
+    register_error_password: "Passwords do not match.",
+    register_error_short: "Password must be at least 4 characters.",
     nav_dashboard: "Dashboard",
     nav_cars: "Participant cars",
     nav_events: "Events",
@@ -865,12 +892,17 @@ const formConfigs = {
 const publicHome = document.querySelector("#public-home");
 const publicNav = document.querySelector(".public-nav");
 const adminEntry = document.querySelector("#admin-entry");
+const registerEntry = document.querySelector("#register-entry");
 const loginScreen = document.querySelector("#login-screen");
 const adminApp = document.querySelector("#admin-app");
 const navMenu = document.querySelector(".nav-menu");
 const menuToggle = document.querySelector("#menu-toggle");
 const loginForm = document.querySelector("#login-form");
+const registerForm = document.querySelector("#register-form");
+const showRegisterButton = document.querySelector("#show-register-button");
+const showLoginButton = document.querySelector("#show-login-button");
 const formError = document.querySelector("#form-error");
+const registerError = document.querySelector("#register-error");
 const languageSelect = document.querySelector("#language");
 const viewTitle = document.querySelector("#view-title");
 const currentUserName = document.querySelector("#current-user-name");
@@ -996,6 +1028,17 @@ function userFromTeamMember(member) {
   if (!member) return null;
   const [name, roleDescription, access, memberEmail] = member;
   return { name, email: String(memberEmail).trim(), role: access, roleDescription };
+}
+
+function setAuthMode(mode = "login") {
+  const isRegister = mode === "register";
+  loginForm?.classList.toggle("is-hidden", isRegister);
+  registerForm?.classList.toggle("is-hidden", !isRegister);
+  formError?.classList.remove("visible");
+  if (registerError) {
+    registerError.textContent = "";
+    registerError.classList.remove("visible");
+  }
 }
 
 function accessKey(access) {
@@ -1137,6 +1180,32 @@ function findTeamUser(email, password) {
 
   if (!member) return null;
   return userFromTeamMember(member);
+}
+
+function teamEmailExists(email) {
+  const normalizedEmail = String(email).trim().toLowerCase();
+  return Object.values(dictionaries).some((dictionary) =>
+    dictionary.team.some((member) => String(member[3]).trim().toLowerCase() === normalizedEmail),
+  );
+}
+
+function addRegisteredUser(name, email, password) {
+  const roleDescriptions = {
+    ro: "Membru inregistrat",
+    ru: "Зарегистрированный участник",
+    en: "Registered member",
+  };
+  Object.entries(dictionaries).forEach(([language, dictionary]) => {
+    dictionary.team.unshift([
+      name,
+      roleDescriptions[language] || roleDescriptions.ro,
+      "Viewer",
+      email,
+      password,
+    ]);
+  });
+  saveData();
+  return { name, email, role: "Viewer", roleDescription: roleDescriptions[state.language] || roleDescriptions.ro };
 }
 
 function findCurrentTeamMember() {
@@ -1625,6 +1694,7 @@ function showLogin() {
   publicHome?.classList.add("is-hidden");
   adminApp.classList.add("is-hidden");
   loginScreen.classList.remove("is-hidden");
+  setAuthMode("login");
 }
 
 function updatePublicNavState() {
@@ -1636,10 +1706,24 @@ updatePublicNavState();
 
 adminEntry?.addEventListener("click", showLogin);
 
+registerEntry?.addEventListener("click", () => {
+  showLogin();
+  setAuthMode("register");
+});
+
 document.querySelectorAll(".ticket-action").forEach((button) => {
   button.addEventListener("click", () => {
+    if (button.dataset.authMode === "register") return;
     showToast("In curand aici vom conecta formularul pentru participanti si bilete.", "info");
   });
+});
+
+showRegisterButton?.addEventListener("click", () => {
+  setAuthMode("register");
+});
+
+showLoginButton?.addEventListener("click", () => {
+  setAuthMode("login");
 });
 
 loginForm.addEventListener("submit", (event) => {
@@ -1654,6 +1738,36 @@ loginForm.addEventListener("submit", (event) => {
   }
 
   formError.classList.add("visible");
+});
+
+registerForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const name = document.querySelector("#register-name").value.trim();
+  const email = document.querySelector("#register-email").value.trim();
+  const password = document.querySelector("#register-password").value.trim();
+  const passwordConfirm = document.querySelector("#register-password-confirm").value.trim();
+
+  if (password.length < 4) {
+    registerError.textContent = t().register_error_short;
+    registerError.classList.add("visible");
+    return;
+  }
+
+  if (password !== passwordConfirm) {
+    registerError.textContent = t().register_error_password;
+    registerError.classList.add("visible");
+    return;
+  }
+
+  if (teamEmailExists(email)) {
+    registerError.textContent = t().register_error_exists;
+    registerError.classList.add("visible");
+    return;
+  }
+
+  const user = addRegisteredUser(name, email, password);
+  registerForm.reset();
+  loginUser(user);
 });
 
 document.querySelector("#logout-button").addEventListener("click", () => {

@@ -1090,6 +1090,10 @@ h2 {
   width: 100%;
 }
 
+.ghost-action.full {
+  width: 100%;
+}
+
 .ghost-action {
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.05);
