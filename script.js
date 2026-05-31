@@ -1924,6 +1924,7 @@ function showView(view) {
     view = "dashboard";
   }
   state.view = view;
+  adminApp?.setAttribute("data-active-view", view);
   localStorage.setItem("kultura_last_view", view);
   if (profileSuccess) profileSuccess.classList.remove("visible");
   document.querySelectorAll(".nav-item").forEach((item) => {

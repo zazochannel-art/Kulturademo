@@ -802,6 +802,36 @@ button:hover {
   width: 100%;
 }
 
+.app-shell[data-active-view="cars"] .topbar,
+.app-shell[data-active-view="events"] .topbar,
+.app-shell[data-active-view="tasks"] .topbar,
+.app-shell[data-active-view="team"] .topbar,
+.app-shell[data-active-view="resources"] .topbar {
+  min-height: 72px;
+  height: auto;
+  align-content: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.app-shell[data-active-view="cars"] .topbar > div,
+.app-shell[data-active-view="events"] .topbar > div,
+.app-shell[data-active-view="tasks"] .topbar > div,
+.app-shell[data-active-view="team"] .topbar > div,
+.app-shell[data-active-view="resources"] .topbar > div {
+  display: grid;
+  gap: 3px;
+  align-content: center;
+}
+
+.app-shell[data-active-view="cars"] .topbar .eyebrow,
+.app-shell[data-active-view="events"] .topbar .eyebrow,
+.app-shell[data-active-view="tasks"] .topbar .eyebrow,
+.app-shell[data-active-view="team"] .topbar .eyebrow,
+.app-shell[data-active-view="resources"] .topbar .eyebrow {
+  margin-bottom: 0;
+}
+
 .admin-bar-actions {
   margin-left: auto;
 }
@@ -2299,6 +2329,26 @@ h2 {
     margin-bottom: 8px;
     border-radius: 16px;
     padding: 8px 10px;
+  }
+
+  .app-shell[data-active-view="cars"] .topbar,
+  .app-shell[data-active-view="events"] .topbar,
+  .app-shell[data-active-view="tasks"] .topbar,
+  .app-shell[data-active-view="team"] .topbar,
+  .app-shell[data-active-view="resources"] .topbar {
+    height: 70px;
+    min-height: 70px;
+    max-height: 70px;
+    overflow: hidden;
+    padding: 8px 10px;
+  }
+
+  .app-shell[data-active-view="cars"] .topbar > div,
+  .app-shell[data-active-view="events"] .topbar > div,
+  .app-shell[data-active-view="tasks"] .topbar > div,
+  .app-shell[data-active-view="team"] .topbar > div,
+  .app-shell[data-active-view="resources"] .topbar > div {
+    gap: 2px;
   }
 
   .topbar h1 {
