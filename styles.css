@@ -2153,7 +2153,11 @@ h2 {
     width: 100%;
   }
 
-  .metrics-grid,
+  .metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
   .team-grid,
   .settings-grid,
   .profile-layout {
@@ -2198,19 +2202,21 @@ h2 {
 
   .small-action {
     grid-column: 1 / -1;
-    min-height: 32px;
-    font-size: 0.76rem;
+    min-height: 28px;
+    padding: 0 10px;
+    font-size: 0.7rem;
   }
 
   .row-actions {
-    display: grid;
+    display: flex;
+    flex-wrap: wrap;
     gap: 6px;
-    grid-template-columns: 1fr;
-    justify-content: stretch;
+    justify-content: flex-start;
   }
 
   .row-actions .small-action {
-    width: 100%;
+    width: auto;
+    flex: 0 1 auto;
   }
 
   h1,
