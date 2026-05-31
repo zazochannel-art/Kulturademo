@@ -826,17 +826,45 @@ h2 {
 
 .notifications-button {
   position: relative;
+  width: 44px;
   min-width: 44px;
-  min-height: 44px;
-  padding: 0 12px;
+  max-width: 44px;
+  height: 42px;
+  min-height: 42px;
+  max-height: 42px;
+  flex: 0 0 44px;
+  padding: 0;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #ffffff;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  box-shadow: none;
+  color: var(--muted);
   font-size: 1.1rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  transition: background 300ms ease, color 300ms ease;
+}
+
+.notifications-button:hover,
+.notifications-button:focus,
+.notifications-button:focus-visible,
+.notifications-button[aria-expanded="true"] {
+  border: 0;
+  outline: 0;
+  background: rgba(255, 207, 69, 0.10);
+  box-shadow: none;
+  color: var(--accent-3);
+  transform: none;
+}
+
+.notifications-button span[aria-hidden="true"] {
+  display: grid;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  line-height: 1;
 }
 
 .notification-badge {
