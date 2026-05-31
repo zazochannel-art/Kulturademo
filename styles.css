@@ -143,8 +143,24 @@ button:hover {
 
 .public-language {
   grid-column: 3;
+  justify-self: end;
+  min-width: 48px;
+  min-height: 38px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0 14px;
   font-weight: 900;
   color: #ffffff;
+  cursor: pointer;
+  transition: background 300ms ease, color 300ms ease, border-color 300ms ease;
+}
+
+.public-language:hover,
+.public-language:focus-visible {
+  border-color: rgba(255, 214, 0, 0.42);
+  background: rgba(255, 214, 0, 0.12);
+  color: var(--accent);
 }
 
 .hero-actions {

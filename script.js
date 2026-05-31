@@ -38,6 +38,9 @@ const dictionaries = {
     register_error_exists: "Exista deja un cont cu acest email.",
     register_error_password: "Parolele nu coincid.",
     register_error_short: "Parola trebuie sa aiba cel putin 4 caractere.",
+    public_register: "Inregistreaza-te",
+    public_admin: "Admin",
+    public_language_label: "Schimba limba",
     nav_dashboard: "Dashboard",
     nav_cars: "Auto participanti",
     nav_events: "Evenimente",
@@ -159,6 +162,9 @@ const dictionaries = {
     register_error_exists: "Аккаунт с этим email уже существует.",
     register_error_password: "Пароли не совпадают.",
     register_error_short: "Пароль должен быть не короче 4 символов.",
+    public_register: "Зарегистрироваться",
+    public_admin: "Админ",
+    public_language_label: "Сменить язык",
     nav_dashboard: "Панель",
     nav_cars: "Авто участников",
     nav_events: "События",
@@ -280,6 +286,9 @@ const dictionaries = {
     register_error_exists: "An account with this email already exists.",
     register_error_password: "Passwords do not match.",
     register_error_short: "Password must be at least 4 characters.",
+    public_register: "Register",
+    public_admin: "Admin",
+    public_language_label: "Change language",
     nav_dashboard: "Dashboard",
     nav_cars: "Participant cars",
     nav_events: "Events",
@@ -389,6 +398,8 @@ const state = {
   view: "dashboard",
   notifications: [],
 };
+
+const languageOrder = ["ro", "ru", "en"];
 
 const roleLabels = {
   ro: { admin: "Admin general", editor: "Coordonator evenimente", viewer: "Observator" },
@@ -891,6 +902,7 @@ const formConfigs = {
 
 const publicHome = document.querySelector("#public-home");
 const publicNav = document.querySelector(".public-nav");
+const publicLanguage = document.querySelector("#public-language");
 const adminEntry = document.querySelector("#admin-entry");
 const registerEntry = document.querySelector("#register-entry");
 const loginScreen = document.querySelector("#login-screen");
@@ -1262,7 +1274,39 @@ function renderTranslations() {
   if (viewTitle) {
     viewTitle.textContent = dictionary.views[state.view];
   }
+  renderPublicHome();
   renderCurrentUser();
+}
+
+function renderPublicHome() {
+  const dictionary = t();
+  if (publicLanguage) {
+    publicLanguage.textContent = state.language.toUpperCase();
+    publicLanguage.setAttribute("aria-label", dictionary.public_language_label);
+    publicLanguage.title = dictionary.public_language_label;
+  }
+  if (registerEntry) {
+    registerEntry.textContent = dictionary.public_register;
+  }
+  if (adminEntry) {
+    adminEntry.textContent = dictionary.public_admin;
+  }
+}
+
+function setLanguage(language) {
+  if (!dictionaries[language]) return;
+  state.language = language;
+  localStorage.setItem("autocrew_language", state.language);
+  if (languageSelect) {
+    languageSelect.value = state.language;
+  }
+  render();
+}
+
+function switchPublicLanguage() {
+  const currentIndex = languageOrder.indexOf(state.language);
+  const nextLanguage = languageOrder[(currentIndex + 1) % languageOrder.length] || "ro";
+  setLanguage(nextLanguage);
 }
 
 function renderCurrentUser() {
@@ -1704,6 +1748,8 @@ function updatePublicNavState() {
 window.addEventListener("scroll", updatePublicNavState, { passive: true });
 updatePublicNavState();
 
+publicLanguage?.addEventListener("click", switchPublicLanguage);
+
 adminEntry?.addEventListener("click", showLogin);
 
 registerEntry?.addEventListener("click", () => {
@@ -1798,9 +1844,7 @@ document.querySelectorAll("[data-view-shortcut]").forEach((button) => {
 
 languageSelect.value = state.language;
 languageSelect.addEventListener("change", (event) => {
-  state.language = event.target.value;
-  localStorage.setItem("autocrew_language", state.language);
-  render();
+  setLanguage(event.target.value);
 });
 
 if (carsSearch) {
