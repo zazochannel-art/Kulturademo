@@ -1003,6 +1003,10 @@ const notificationsList = document.querySelector("#notifications-list");
 const clearNotificationsButton = document.querySelector("#clear-notifications-button");
 const notificationBadge = document.querySelector("#notification-badge");
 
+if (notificationsPanel && notificationsPanel.parentElement !== document.body) {
+  document.body.append(notificationsPanel);
+}
+
 function updateNotificationBadge() {
   if (!notificationBadge) return;
   const unreadCount = state.notifications.filter((item) => !item.read).length;
@@ -1067,15 +1071,32 @@ function closeNotificationsPanel() {
 
 function positionNotificationsPanel() {
   if (!notificationsPanel || !notificationsButton) return;
+  const isMobile = window.matchMedia("(max-width: 720px)").matches;
   const buttonRect = notificationsButton.getBoundingClientRect();
+  const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
   const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
   const spaceBelow = viewportHeight - buttonRect.bottom;
   const spaceAbove = buttonRect.top;
-  const shouldOpenUp = spaceBelow < 390 && spaceAbove > spaceBelow;
-  const availableSpace = Math.max(190, Math.floor((shouldOpenUp ? spaceAbove : spaceBelow) - 14));
+  const margin = isMobile ? 8 : 12;
+  const gap = isMobile ? 10 : 12;
+  const panelWidth = isMobile
+    ? Math.max(260, viewportWidth - margin * 2)
+    : Math.min(320, viewportWidth - margin * 2);
+  const panelLeft = isMobile
+    ? margin
+    : Math.min(Math.max(margin, buttonRect.right - panelWidth), viewportWidth - panelWidth - margin);
+  const shouldOpenUp = isMobile || (spaceBelow < 390 && spaceAbove > spaceBelow);
+  const availableSpace = Math.max(190, Math.floor((shouldOpenUp ? spaceAbove : spaceBelow) - margin - gap));
   const maxPanelHeight = Math.min(380, availableSpace);
 
   notificationsPanel.classList.toggle("open-up", shouldOpenUp);
+  notificationsPanel.style.position = "fixed";
+  notificationsPanel.style.left = `${panelLeft}px`;
+  notificationsPanel.style.right = "auto";
+  notificationsPanel.style.width = `${panelWidth}px`;
+  notificationsPanel.style.zIndex = "1500";
+  notificationsPanel.style.top = shouldOpenUp ? "auto" : `${buttonRect.bottom + gap}px`;
+  notificationsPanel.style.bottom = shouldOpenUp ? `${viewportHeight - buttonRect.top + gap}px` : "auto";
   notificationsPanel.style.maxHeight = `${maxPanelHeight}px`;
   if (notificationsList) {
     notificationsList.style.maxHeight = `${Math.max(120, maxPanelHeight - 62)}px`;
