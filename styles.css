@@ -1931,36 +1931,45 @@ h2 {
   }
 
   .public-nav {
-    min-height: 52px;
-    padding: 8px 16px;
+    min-height: 46px;
+    padding: 6px 12px;
     background: rgba(5, 5, 5, 0.62);
   }
 
+  .public-logo {
+    width: 68px;
+    height: 34px;
+  }
+
   .public-language {
-    font-size: 0.88rem;
+    min-width: 42px;
+    min-height: 32px;
+    padding: 0 10px;
+    font-size: 0.8rem;
   }
 
   .hero-actions {
-    width: min(100%, 320px);
-    gap: 10px;
+    width: min(100%, 280px);
+    gap: 8px;
   }
 
   .hero-actions .ticket-action,
   .hero-actions .admin-entry {
     width: 100%;
-    min-height: 46px;
-    font-size: 0.96rem;
+    min-height: 40px;
+    font-size: 0.88rem;
   }
 
   .public-hero {
-    padding: 88px 18px 34px;
+    padding: 72px 14px 26px;
     background-position: 58% center;
   }
 
   .sidebar {
-    gap: 8px;
+    min-height: 52px;
+    gap: 6px;
     flex-wrap: nowrap;
-    padding: 7px 10px;
+    padding: 6px 8px;
   }
 
   .sidebar .brand {
@@ -1968,36 +1977,83 @@ h2 {
   }
 
   .sidebar .brand-logo {
-    width: 58px;
-    height: 34px;
+    width: 48px;
+    height: 28px;
   }
 
   .sidebar .brand strong {
-    font-size: 0.92rem;
+    font-size: 0.78rem;
   }
 
   .sidebar .brand span {
-    font-size: 0.74rem;
+    font-size: 0.68rem;
   }
 
   .nav-list {
     width: max-content;
     min-width: max-content;
+    gap: 6px;
+  }
+
+  .nav-item {
+    width: auto;
+    min-width: 46px;
+    max-width: 112px;
+    height: 36px;
+    min-height: 36px;
+    max-height: 36px;
+    gap: 6px;
+    padding: 0 9px;
+  }
+
+  .nav-item span:first-child {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    max-width: 20px;
+    font-size: 0.88rem;
+  }
+
+  .nav-item span:last-child {
+    font-size: 0.76rem;
   }
 
   .workspace,
   .login-screen {
-    padding: 12px;
+    padding: 9px;
   }
 
   .login-panel {
-    padding: 20px;
+    max-width: 390px;
+    border-radius: 22px;
+    padding: 16px;
+  }
+
+  .login-copy {
+    margin: 18px 0 16px;
+  }
+
+  .login-form {
+    gap: 10px;
+  }
+
+  .login-form input {
+    min-height: 40px;
+    border-radius: 14px;
+    font-size: 0.9rem;
   }
 
   .topbar {
     display: grid;
-    gap: 10px;
-    margin-bottom: 14px;
+    gap: 8px;
+    margin-bottom: 10px;
+    border-radius: 20px;
+    padding: 12px;
+  }
+
+  .eyebrow {
+    margin-bottom: 4px;
+    font-size: 0.68rem;
   }
 
   .topbar-actions {
@@ -2014,23 +2070,73 @@ h2 {
 
   .topbar-actions .primary-action,
   .logout-button {
-    width: 44px;
-    min-width: 44px;
-    max-width: 44px;
+    width: 38px;
+    min-width: 38px;
+    max-width: 38px;
+    height: 38px;
+    min-height: 38px;
+    max-height: 38px;
   }
 
   .logout-button {
-    min-width: 44px;
+    min-width: 38px;
     border-radius: 999px;
   }
 
+  .notifications-button,
+  .icon-action,
+  .topbar-actions .logout-button {
+    width: 38px;
+    min-width: 38px;
+    max-width: 38px;
+    height: 38px;
+    min-height: 38px;
+    max-height: 38px;
+    flex-basis: 38px;
+  }
+
+  .notifications-button span[aria-hidden="true"],
+  .icon-action svg,
+  .topbar-actions .logout-button svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .notifications-panel {
+    right: 0;
+    width: min(92vw, 300px);
+  }
+
   .panel {
-    padding: 13px;
+    border-radius: 20px;
+    padding: 11px;
+  }
+
+  .metric-card {
+    min-height: 86px;
+    border-radius: 20px;
+    padding: 11px;
+  }
+
+  .metric-card strong {
+    font-size: 1.46rem;
   }
 
   .panel-header {
     display: grid;
-    gap: 10px;
+    gap: 8px;
+  }
+
+  .panel-header h2,
+  h2 {
+    font-size: 0.86rem;
+  }
+
+  .panel-header p,
+  .panel > p,
+  .metric-card small,
+  .metric-card span {
+    font-size: 0.78rem;
   }
 
   .panel-actions {
@@ -2049,16 +2155,32 @@ h2 {
   .event-row,
   .table-row {
     grid-template-columns: 1fr;
-    gap: 10px;
+    gap: 8px;
+    border-radius: 16px;
+    padding: 10px;
   }
 
   .team-member {
-    grid-template-columns: 40px minmax(0, 1fr);
+    grid-template-columns: 34px minmax(0, 1fr);
     align-items: flex-start;
+    border-radius: 16px;
+    padding: 10px;
   }
 
   .team-member .row-actions {
     grid-column: 1 / -1;
+  }
+
+  .avatar {
+    width: 34px;
+    height: 34px;
+    font-size: 0.8rem;
+  }
+
+  .task-item,
+  .resource-card {
+    border-radius: 16px;
+    padding: 10px;
   }
 
   .task-top {
@@ -2068,11 +2190,13 @@ h2 {
 
   .small-action {
     grid-column: 1 / -1;
-    min-height: 36px;
+    min-height: 34px;
+    font-size: 0.82rem;
   }
 
   .row-actions {
     display: grid;
+    gap: 7px;
     grid-template-columns: 1fr;
     justify-content: stretch;
   }
@@ -2083,24 +2207,32 @@ h2 {
 
   h1,
   .login-copy h1 {
-    font-size: 1.78rem;
+    font-size: 1.48rem;
   }
 
   .modal-backdrop {
     align-items: stretch;
-    padding: 10px;
+    padding: 8px;
   }
 
   .modal {
-    max-height: calc(100svh - 20px);
+    border-radius: 22px;
+    max-height: calc(100svh - 16px);
   }
 
   .modal-header {
-    padding: 16px;
+    padding: 13px;
   }
 
   .modal-form {
-    padding: 14px 16px 16px;
+    gap: 10px;
+    padding: 12px 13px 13px;
+  }
+
+  .modal-form input,
+  .modal-form select {
+    min-height: 40px;
+    border-radius: 14px;
   }
 
   .modal-actions {
@@ -2112,18 +2244,19 @@ h2 {
 @media (max-width: 420px) {
   .topbar-actions {
     display: flex;
+    gap: 6px;
   }
 
   .metric-card strong {
-    font-size: 1.72rem;
+    font-size: 1.38rem;
   }
 
   .login-copy h1,
   h1 {
-    font-size: 1.74rem;
+    font-size: 1.38rem;
   }
 
   .hero-copy h1 {
-    font-size: 2.35rem;
+    font-size: 2rem;
   }
 }
