@@ -403,6 +403,8 @@ const state = {
 };
 
 const languageOrder = ["ro", "ru", "en"];
+const generalAdminEmails = ["admin@kultura.md", "igor.gratii.99@mail.ru"];
+let shouldSaveNormalizedTeamRows = false;
 
 const roleLabels = {
   ro: { admin_general: "Admin general", admin: "Admin", editor: "Coordonator evenimente", viewer: "Observator" },
@@ -444,7 +446,10 @@ function normalizeTeamRows() {
       const email = String(member[3] || "").trim().toLowerCase();
       const shouldRefreshSeededAdmin = fallback[0] === "admin@kultura.md" && (!email || email === "admin@autocrew.md");
 
-      if (email === "admin@kultura.md") {
+      if (generalAdminEmails.includes(email)) {
+        if (member[2] !== "Admin general") {
+          shouldSaveNormalizedTeamRows = true;
+        }
         return [member[0], member[1], "Admin general", member[3] || fallback[0], member[4] || fallback[1]];
       }
 
@@ -2054,6 +2059,10 @@ async function initializeApp() {
   normalizeTeamRows();
   normalizeCarStatuses();
   normalizeTaskRows();
+  if (shouldSaveNormalizedTeamRows) {
+    await saveData({ requireSupabase: Boolean(supabaseClient) });
+    shouldSaveNormalizedTeamRows = false;
+  }
   renderTranslations();
 
   const savedUser = getCurrentUser();
