@@ -97,10 +97,19 @@
             <span aria-hidden="true">&#128276;</span>
             <span class="notification-badge" id="notification-badge"></span>
           </button>
-          <button class="primary-action" type="button" data-view-shortcut="profile" data-i18n="profile_button">Profil</button>
+          <button class="primary-action icon-action profile-action" type="button" data-view-shortcut="profile" aria-label="Profil" title="Profil">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18 20a6 6 0 0 0-12 0" />
+              <circle cx="12" cy="10" r="4" />
+              <circle cx="12" cy="12" r="10" />
+            </svg>
+          </button>
           <button class="logout-button" id="logout-button" type="button" aria-label="Iesire" title="Iesire">
-            <img src="./logout-icon.png" alt="Iesire" aria-hidden="true" />
-            <span>Iesire</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <path d="M16 17l5-5-5-5" />
+              <path d="M21 12H9" />
+            </svg>
           </button>
           <div class="notifications-panel" id="notifications-panel" aria-label="Notificari" aria-hidden="true">
             <div class="notifications-panel-header">

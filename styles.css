@@ -457,14 +457,14 @@ button:hover {
 .topbar-actions .ghost-action,
 .topbar-actions .primary-action,
 .topbar-actions .logout-button {
-  width: 112px;
-  min-width: 112px;
-  max-width: 112px;
+  width: 44px;
+  min-width: 44px;
+  max-width: 44px;
   height: 42px;
   min-height: 42px;
   max-height: 42px;
-  flex: 0 0 112px;
-  padding: 0 14px;
+  flex: 0 0 44px;
+  padding: 0;
 }
 
 .topbar-actions .notifications-button {
@@ -682,39 +682,25 @@ button:hover {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  min-width: 128px;
+  gap: 0;
+  min-width: 44px;
   min-height: 42px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 999px;
-  padding: 0 18px;
-  background: linear-gradient(135deg, #ff4c38, #b5302b);
+  padding: 0;
+  background: rgba(255, 76, 56, 0.12);
   color: #ffffff;
   font-size: 0.95rem;
   font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
   overflow: hidden;
+  transition: background 300ms ease, border-color 300ms ease, box-shadow 300ms ease, color 300ms ease;
 }
 
 .logout-button:hover {
-  border-color: rgba(255, 255, 255, 0.26);
-  background: linear-gradient(135deg, #e35c47, #c13a32);
+  border-color: rgba(255, 76, 56, 0.42);
+  background: rgba(255, 76, 56, 0.18);
+  box-shadow: 0 0 0 1px rgba(255, 76, 56, 0.12), 0 16px 36px rgba(255, 76, 56, 0.16);
   transform: none;
-}
-
-.logout-button img {
-  width: 18px;
-  height: 18px;
-  object-fit: contain;
-  border-radius: 50%;
-}
-
-.logout-button span {
-  display: inline-block;
-  color: #ffffff;
-  font-size: 0.92rem;
-  font-weight: 900;
 }
 
 .current-user {
@@ -830,18 +816,12 @@ h2 {
 
 .topbar-actions .primary-action,
 .topbar-actions .logout-button {
-  min-width: 112px;
-  max-width: 112px;
-  width: 112px;
+  min-width: 44px;
+  max-width: 44px;
+  width: 44px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.topbar-actions .primary-action span,
-.topbar-actions .logout-button span {
-  display: inline-block;
-  min-width: 0;
 }
 
 .notifications-button {
@@ -1011,6 +991,39 @@ h2 {
   font-weight: 900;
   font-size: 0.92rem;
   letter-spacing: 0;
+}
+
+.icon-action,
+.topbar-actions .logout-button {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  min-width: 44px;
+  max-width: 44px;
+  height: 42px;
+  min-height: 42px;
+  max-height: 42px;
+  padding: 0;
+  border-radius: 999px;
+}
+
+.icon-action svg,
+.topbar-actions .logout-button svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.profile-action {
+  color: #061018;
+}
+
+.profile-action:hover {
+  box-shadow: 0 0 0 1px rgba(94, 169, 255, 0.16), 0 16px 36px rgba(94, 169, 255, 0.20);
 }
 
 .primary-action {
@@ -1801,16 +1814,11 @@ h2 {
 
   .topbar-actions .primary-action,
   .topbar-actions .logout-button {
-    width: 104px;
-    min-width: 104px;
-    max-width: 104px;
-    flex-basis: 104px;
+    width: 44px;
+    min-width: 44px;
+    max-width: 44px;
+    flex-basis: 44px;
     font-size: 0.86rem;
-  }
-
-  .topbar-actions .primary-action span,
-  .topbar-actions .logout-button span {
-    white-space: nowrap;
   }
 
   .nav-item span:last-child {
@@ -1935,12 +1943,13 @@ h2 {
 
   .topbar-actions .primary-action,
   .logout-button {
-    width: 100%;
-    min-width: 0;
+    width: 44px;
+    min-width: 44px;
+    max-width: 44px;
   }
 
   .logout-button {
-    min-width: 0;
+    min-width: 44px;
     border-radius: 999px;
   }
 
