@@ -978,7 +978,24 @@ function t() {
 }
 
 function getCurrentUser() {
-  return JSON.parse(localStorage.getItem("kultura_current_user") || "null");
+  try {
+    return JSON.parse(localStorage.getItem("kultura_current_user") || "null");
+  } catch (error) {
+    clearStoredSession();
+    return null;
+  }
+}
+
+function clearStoredSession() {
+  localStorage.removeItem("autocrew_logged_in");
+  localStorage.removeItem("kultura_current_user");
+  localStorage.removeItem("kultura_last_view");
+}
+
+function userFromTeamMember(member) {
+  if (!member) return null;
+  const [name, roleDescription, access, memberEmail] = member;
+  return { name, email: String(memberEmail).trim(), role: access, roleDescription };
 }
 
 function accessKey(access) {
@@ -1107,20 +1124,19 @@ async function loadDataFromSupabase() {
 
 function findTeamUser(email, password) {
   const normalizedEmail = String(email).trim().toLowerCase();
-  const normalizedPassword = String(password);
+  const normalizedPassword = String(password).trim();
   const dictionariesToSearch = [t(), ...Object.values(dictionaries).filter((dictionary) => dictionary !== t())];
   let member = null;
 
   dictionariesToSearch.some((dictionary) => {
     member = dictionary.team.find(([, , , memberEmail, memberPassword]) => {
-      return String(memberEmail).trim().toLowerCase() === normalizedEmail && String(memberPassword) === normalizedPassword;
+      return String(memberEmail).trim().toLowerCase() === normalizedEmail && String(memberPassword).trim() === normalizedPassword;
     });
     return Boolean(member);
   });
 
   if (!member) return null;
-  const [name, roleDescription, access, memberEmail] = member;
-  return { name, email: String(memberEmail).trim(), role: access, roleDescription };
+  return userFromTeamMember(member);
 }
 
 function findCurrentTeamMember() {
@@ -1641,9 +1657,7 @@ loginForm.addEventListener("submit", (event) => {
 });
 
 document.querySelector("#logout-button").addEventListener("click", () => {
-  localStorage.removeItem("autocrew_logged_in");
-  localStorage.removeItem("kultura_current_user");
-  localStorage.removeItem("kultura_last_view");
+  clearStoredSession();
   showHome();
 });
 
@@ -1833,14 +1847,22 @@ async function initializeApp() {
   renderTranslations();
 
   const savedUser = getCurrentUser();
-  if (savedUser) {
+  const savedMember = savedUser ? findCurrentTeamMember() : null;
+  if (savedMember) {
+    const refreshedUser = userFromTeamMember(savedMember);
     localStorage.setItem("autocrew_logged_in", "yes");
+    localStorage.setItem("kultura_current_user", JSON.stringify({
+      name: refreshedUser.name,
+      email: refreshedUser.email,
+      role: refreshedUser.role,
+    }));
     state.view = localStorage.getItem("kultura_last_view") || "dashboard";
     showAdmin();
     showView(state.view);
     return;
   }
 
+  clearStoredSession();
   showHome();
 }
 
