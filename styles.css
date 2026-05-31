@@ -2217,16 +2217,22 @@ h2 {
   }
 
   .sidebar {
+    --mobile-nav-size: clamp(28px, 8.4vw, 34px);
+    --mobile-nav-icon: clamp(17px, 5.2vw, 20px);
     position: fixed;
     top: auto;
-    right: 8px;
+    right: auto;
     bottom: calc(8px + env(safe-area-inset-bottom));
-    left: 8px;
+    left: 50%;
+    width: calc(100vw - 16px);
+    max-width: 430px;
     z-index: 40;
     min-height: 50px;
-    gap: 6px;
+    gap: 4px;
     flex-wrap: nowrap;
-    padding: 7px;
+    justify-content: center;
+    padding: 7px 6px;
+    transform: translateX(-50%);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 24px;
     background: rgba(8, 10, 14, 0.88);
@@ -2240,20 +2246,21 @@ h2 {
 
   .nav-list {
     display: grid !important;
-    grid-template-columns: repeat(6, 34px);
-    grid-auto-columns: 34px;
-    width: max-content;
-    min-width: max-content;
-    gap: 4px;
+    grid-template-columns: repeat(6, var(--mobile-nav-size));
+    grid-auto-columns: var(--mobile-nav-size);
+    width: auto;
+    min-width: 0;
+    gap: 3px;
+    flex: 0 0 auto;
   }
 
   .nav-item {
-    width: 34px;
-    min-width: 34px;
-    max-width: 34px;
-    height: 34px;
-    min-height: 34px;
-    max-height: 34px;
+    width: var(--mobile-nav-size);
+    min-width: var(--mobile-nav-size);
+    max-width: var(--mobile-nav-size);
+    height: var(--mobile-nav-size);
+    min-height: var(--mobile-nav-size);
+    max-height: var(--mobile-nav-size);
     gap: 0;
     justify-content: center;
     padding: 0;
@@ -2266,10 +2273,10 @@ h2 {
   }
 
   .nav-item span:first-child {
-    width: 20px;
-    height: 20px;
-    min-width: 20px;
-    max-width: 20px;
+    width: var(--mobile-nav-icon);
+    height: var(--mobile-nav-icon);
+    min-width: var(--mobile-nav-icon);
+    max-width: var(--mobile-nav-icon);
     color: currentColor;
     text-shadow: none;
   }
@@ -2284,8 +2291,8 @@ h2 {
   }
 
   .nav-icon {
-    width: 20px;
-    height: 20px;
+    width: var(--mobile-nav-icon);
+    height: var(--mobile-nav-icon);
   }
 
   .nav-item.active,
@@ -2377,7 +2384,7 @@ h2 {
   .admin-bar-actions {
     margin-left: 0;
     flex: 0 0 auto;
-    gap: 4px;
+    gap: 3px;
   }
 
   .topbar-actions .primary-action,
@@ -2398,13 +2405,13 @@ h2 {
   .notifications-button,
   .icon-action,
   .topbar-actions .logout-button {
-    width: 34px;
-    min-width: 34px;
-    max-width: 34px;
-    height: 34px;
-    min-height: 34px;
-    max-height: 34px;
-    flex-basis: 34px;
+    width: var(--mobile-nav-size);
+    min-width: var(--mobile-nav-size);
+    max-width: var(--mobile-nav-size);
+    height: var(--mobile-nav-size);
+    min-height: var(--mobile-nav-size);
+    max-height: var(--mobile-nav-size);
+    flex-basis: var(--mobile-nav-size);
     border-radius: 14px;
     background: transparent;
     color: rgba(242, 245, 247, 0.66);
@@ -2414,8 +2421,8 @@ h2 {
   .notifications-button span[aria-hidden="true"],
   .icon-action svg,
   .topbar-actions .logout-button svg {
-    width: 19px;
-    height: 19px;
+    width: var(--mobile-nav-icon);
+    height: var(--mobile-nav-icon);
   }
 
   .notifications-button:hover,
@@ -2739,9 +2746,14 @@ h2 {
 }
 
 @media (max-width: 420px) {
+  .sidebar {
+    width: calc(100vw - 12px);
+    padding-inline: 5px;
+  }
+
   .topbar-actions {
     display: flex;
-    gap: 6px;
+    gap: 3px;
   }
 
   .metric-card strong {
