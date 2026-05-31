@@ -685,21 +685,21 @@ button:hover {
   gap: 0;
   min-width: 44px;
   min-height: 42px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 0;
   border-radius: 999px;
   padding: 0;
-  background: rgba(255, 76, 56, 0.12);
-  color: #ffffff;
+  background: transparent;
+  color: var(--muted);
   font-size: 0.95rem;
   font-weight: 900;
   overflow: hidden;
-  transition: background 300ms ease, border-color 300ms ease, box-shadow 300ms ease, color 300ms ease;
+  transition: background 300ms ease, color 300ms ease;
 }
 
 .logout-button:hover {
-  border-color: rgba(255, 76, 56, 0.42);
-  background: rgba(255, 76, 56, 0.18);
-  box-shadow: 0 0 0 1px rgba(255, 76, 56, 0.12), 0 16px 36px rgba(255, 76, 56, 0.16);
+  background: rgba(255, 76, 56, 0.10);
+  color: #ff8a7a;
+  box-shadow: none;
   transform: none;
 }
 
@@ -1004,13 +1004,17 @@ h2 {
   min-height: 42px;
   max-height: 42px;
   padding: 0;
+  border: 0;
   border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  transition: background 300ms ease, color 300ms ease;
 }
 
 .icon-action svg,
 .topbar-actions .logout-button svg {
-  width: 22px;
-  height: 22px;
+  width: 21px;
+  height: 21px;
   fill: none;
   stroke: currentColor;
   stroke-width: 2;
@@ -1019,11 +1023,13 @@ h2 {
 }
 
 .profile-action {
-  color: #061018;
+  color: var(--muted);
 }
 
 .profile-action:hover {
-  box-shadow: 0 0 0 1px rgba(94, 169, 255, 0.16), 0 16px 36px rgba(94, 169, 255, 0.20);
+  background: rgba(94, 169, 255, 0.10);
+  color: #cfeaff;
+  box-shadow: none;
 }
 
 .primary-action {
@@ -1032,8 +1038,16 @@ h2 {
   color: #1c1d10;
 }
 
+.primary-action.icon-action {
+  background: transparent;
+}
+
 .primary-action:hover {
   background: linear-gradient(135deg, #8fd6ff, #ffffff);
+}
+
+.primary-action.icon-action:hover {
+  background: rgba(94, 169, 255, 0.10);
 }
 
 .primary-action.full {
