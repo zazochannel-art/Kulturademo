@@ -528,15 +528,15 @@ button:hover {
 }
 
 .sidebar {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
     width: 100vw;
     max-width: none;
     position: sticky;
     top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    transform: none;
     z-index: 12;
     gap: 14px;
     overflow: hidden;
@@ -544,32 +544,61 @@ button:hover {
     padding: 8px 24px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     background: rgba(6, 6, 6, 0.92);
+    position: relative;
   }
 
   .sidebar .brand.admin-brand {
-    z-index: 1;
+    justify-self: start;
+  }
+
+  .sidebar {
+    text-align: center;
+  }
+
+  .sidebar .brand,
+  .sidebar .topbar-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .sidebar .topbar-actions {
+    justify-self: end;
+  }
+
+  .sidebar .nav-list {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .sidebar .nav-item {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .sidebar .nav-item span:last-child {
+    display: block;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .sidebar-title {
     position: absolute;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
     width: min(640px, calc(100vw - 280px));
+    max-width: 100%;
     margin: 0;
+    padding: 0 10px;
     text-align: center;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     z-index: 2;
-  }
-
-  .topbar-actions {
-    justify-self: end;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    flex-wrap: nowrap;
-    overflow: visible;
   }
 .topbar-actions .ghost-action,
 .topbar-actions .primary-action,
@@ -935,47 +964,18 @@ button:hover {
   line-height: 1.2;
   text-align: center;
   color: #ffffff;
-  flex: 1 1 auto;
-  min-width: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(640px, calc(100vw - 280px));
+  max-width: 100%;
   padding: 0 10px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
+  z-index: 2;
 
-.sidebar-title {
-  text-shadow: 0 6px 18px rgba(0,0,0,0.6);
-}
-
-.topbar .nav-list {
-  margin-top: 0;
-}
-
-.topbar .nav-list { z-index: 25; }
-
-/* Center admin nav buttons in the top area on larger screens
-   Keep logo on left and profile/logout on the right. Mobile rules unchanged. */
-@media (min-width: 1051px) {
-  #admin-app .sidebar {
-    position: relative;
-  }
-
-  #admin-app .sidebar .nav-menu {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 12px;
-    width: auto;
-    z-index: 20;
-    background: transparent;
-  }
-
-  #admin-app .sidebar .nav-list {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    grid-template-columns: none;
-    padding: 0;
     margin: 0;
   }
 
