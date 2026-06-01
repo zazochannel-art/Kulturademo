@@ -2097,6 +2097,37 @@ h2 {
   gap: 10px;
 }
 
+.task-priority-legend {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0 0 10px;
+  padding: 8px;
+  border: 1px solid rgba(159, 199, 255, 0.12);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.task-priority-legend .priority {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+  justify-items: start;
+  text-align: left;
+  padding: 8px 10px;
+}
+
+.task-priority-legend .priority strong,
+.task-priority-legend .priority small {
+  display: block;
+}
+
+.task-priority-legend .priority small {
+  color: var(--muted);
+  font-size: 0.72rem;
+  line-height: 1.2;
+}
+
 .priority {
   min-width: 68px;
   border-radius: 999px;
@@ -2106,6 +2137,24 @@ h2 {
   font-size: 0.78rem;
   font-weight: 800;
   text-align: center;
+}
+
+.priority-urgent {
+  background: rgba(255, 61, 90, 0.2);
+  color: #ffd8d8;
+  border: 1px solid rgba(255, 61, 90, 0.28);
+}
+
+.priority-important {
+  background: rgba(255, 207, 69, 0.18);
+  color: var(--amber);
+  border: 1px solid rgba(255, 207, 69, 0.28);
+}
+
+.priority-optional {
+  background: rgba(94, 169, 255, 0.16);
+  color: #bfe6ff;
+  border: 1px solid rgba(94, 169, 255, 0.24);
 }
 
 .task-owner {
@@ -3016,6 +3065,24 @@ h2 {
     min-width: 0;
     padding: 4px 7px;
     font-size: 0.68rem;
+  }
+
+  .task-priority-legend {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    margin-bottom: 8px;
+    padding: 7px;
+    border-radius: 14px;
+  }
+
+  .task-priority-legend .priority {
+    width: 100%;
+    padding: 7px 8px;
+    font-size: 0.68rem;
+  }
+
+  .task-priority-legend .priority small {
+    font-size: 0.62rem;
   }
 
   .task-item .row-actions {

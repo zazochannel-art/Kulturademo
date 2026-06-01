@@ -619,14 +619,46 @@ function isDateValue(value) {
   return /^\d{4}-\d{2}-\d{2}$/.test(String(value || ""));
 }
 
+const taskPriorityOptions = ["🚨 Urgente", "⏳ Importante", "📋 Opționale"];
+
+function normalizeTaskPriority(value) {
+  const raw = String(value || "").trim();
+  const compact = raw
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+
+  if (compact.includes("urgent") || compact.includes("🚨") || compact.includes("сроч")) {
+    return taskPriorityOptions[0];
+  }
+  if (compact.includes("important") || compact.includes("mediu") || compact.includes("medium") || compact.includes("⏳") || compact.includes("сред")) {
+    return taskPriorityOptions[1];
+  }
+  if (compact.includes("optional") || compact.includes("option") || compact.includes("low") || compact.includes("normal") || compact.includes("📋")) {
+    return taskPriorityOptions[2];
+  }
+  return taskPriorityOptions.includes(raw) ? raw : taskPriorityOptions[1];
+}
+
+function taskPriorityClass(priority) {
+  const normalized = normalizeTaskPriority(priority);
+  if (normalized === taskPriorityOptions[0]) return "priority-urgent";
+  if (normalized === taskPriorityOptions[1]) return "priority-important";
+  return "priority-optional";
+}
+
+function taskPriorityRank(priority) {
+  return taskPriorityOptions.indexOf(normalizeTaskPriority(priority));
+}
+
 function normalizeTaskRows() {
   Object.values(dictionaries).forEach((dictionary) => {
     dictionary.tasks = dictionary.tasks.map((task) => {
-      if (task.length >= 6) return task;
-      if (task.length === 5) return [task[0], task[1], task[2], "", task[3], task[4]];
-      if (task.length === 4 && isDateValue(task[3])) return [task[0], task[1], task[2], task[3], "", ""];
-      if (task.length === 4) return [task[0], task[1], task[2], "", task[3], ""];
-      return [task[0], task[1], task[2], "", "", ""];
+      if (task.length >= 6) return [task[0], task[1], normalizeTaskPriority(task[2]), task[3], task[4], task[5]];
+      if (task.length === 5) return [task[0], task[1], normalizeTaskPriority(task[2]), "", task[3], task[4]];
+      if (task.length === 4 && isDateValue(task[3])) return [task[0], task[1], normalizeTaskPriority(task[2]), task[3], "", ""];
+      if (task.length === 4) return [task[0], task[1], normalizeTaskPriority(task[2]), "", task[3], ""];
+      return [task[0], task[1], normalizeTaskPriority(task[2]), "", "", ""];
     });
   });
 }
@@ -1027,7 +1059,7 @@ const formConfigs = {
     fields: [
       { label: { ro: "Task", ru: "Задача", en: "Task" }, placeholder: "Confirmare securitate" },
       { label: { ro: "Responsabil", ru: "Ответственный", en: "Owner" }, placeholder: "Ana" },
-      { label: { ro: "Prioritate", ru: "Приоритет", en: "Priority" }, placeholder: "Urgent" },
+      { label: { ro: "Prioritate", ru: "Приоритет", en: "Priority" }, placeholder: taskPriorityOptions[0], type: "select", options: taskPriorityOptions },
       { label: { ro: "Termen", ru: "Срок", en: "Due date" }, placeholder: "", type: "date" },
     ],
   },
@@ -1761,12 +1793,7 @@ function renderPriorityTasks() {
 
   const tasks = t().tasks
     .map((task, index) => ({ task, index }))
-    .sort((a, b) => {
-      const order = { urgent: 0, mediu: 1, medium: 1, normal: 2, low: 3 };
-      const aPriority = a.task[2].toString().toLowerCase();
-      const bPriority = b.task[2].toString().toLowerCase();
-      return (order[aPriority] ?? 2) - (order[bPriority] ?? 2);
-    })
+    .sort((a, b) => taskPriorityRank(a.task[2]) - taskPriorityRank(b.task[2]))
     .slice(0, 5);
 
   priorityList.innerHTML = tasks
@@ -1790,10 +1817,12 @@ function buildTaskMarkup(task, owner, priority, dueDate, status, takenBy, index)
   const takenByCurrentUser = takenBy && currentUser?.name === takenBy;
   const done = status === t().task_done;
   const takeLabel = takenByCurrentUser ? t().task_taken_mine : taken ? `${t().task_taken_by} ${takenBy}` : t().take_task;
+  const normalizedPriority = normalizeTaskPriority(priority);
+  const priorityClass = taskPriorityClass(normalizedPriority);
 
   return `
         <article class="task-item">
-          <div class="task-top"><strong>${escapeHtml(task)}</strong><span class="priority">${escapeHtml(priority)}</span></div>
+          <div class="task-top"><strong>${escapeHtml(task)}</strong><span class="priority ${priorityClass}">${escapeHtml(normalizedPriority)}</span></div>
           <span>${t().responsible}: ${escapeHtml(owner)}</span>
           ${dueDate ? `<span class="task-due">${escapeHtml(t().task_due)}: ${escapeHtml(dueDate)}</span>` : ""}
           ${
@@ -2030,12 +2059,18 @@ function editorValues(kind, values) {
   if (kind === "cars" && values.length === 7) {
     return [values[1], values[0], values[2], values[3], values[4], values[5], values[6]];
   }
+  if (kind === "tasks") {
+    return [values[0], values[1], normalizeTaskPriority(values[2]), values[3]];
+  }
   return values;
 }
 
 function storageValues(kind, values) {
   if (kind === "cars") {
     return [values[1], values[0], values[2], values[3], values[4], values[5], values[6]];
+  }
+  if (kind === "tasks") {
+    return [values[0], values[1], normalizeTaskPriority(values[2]), values[3]];
   }
   return values;
 }
