@@ -3514,6 +3514,24 @@ body::after {
     margin-top: 0;
     padding-top: 9px;
   }
+
+  #admin-app .sidebar {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    justify-content: stretch;
+    align-items: center;
+    column-gap: 6px;
+  }
+
+  #nav-list-mobile {
+    grid-column: 1;
+    justify-self: start;
+  }
+
+  #admin-app .sidebar .admin-bar-actions {
+    grid-column: 3;
+    justify-self: end;
+  }
 }
 
 .public-language:hover,
