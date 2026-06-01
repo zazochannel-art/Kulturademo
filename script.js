@@ -38,6 +38,7 @@ const dictionaries = {
     login_hint: "Introdu loginul si parola.",
     login_button: "Intra",
     google_login: "Continua cu Google",
+    back_home: "Inapoi",
     login_error: "Login sau parola incorecta.",
     name_label: "Nume",
     register_button: "Creeaza cont",
@@ -64,7 +65,7 @@ const dictionaries = {
     auth_error_signup_disabled: "Inregistrarea este oprita in Supabase. Activeaza signups pentru Email.",
     register_check_email: "Cont creat. Intra cu emailul si parola.",
     public_register: "Inregistreaza-te",
-    public_admin: "Admin",
+    public_admin: "Logare",
     public_language_label: "Schimba limba",
     nav_dashboard: "Dashboard",
     nav_cars: "Auto participanti",
@@ -218,6 +219,7 @@ const dictionaries = {
     login_hint: "Введите логин и пароль.",
     login_button: "Войти",
     google_login: "Продолжить с Google",
+    back_home: "Назад",
     login_error: "Неверный логин или пароль.",
     name_label: "Имя",
     register_button: "Создать аккаунт",
@@ -244,7 +246,7 @@ const dictionaries = {
     auth_error_signup_disabled: "Регистрация отключена в Supabase. Включите signups для Email.",
     register_check_email: "Аккаунт создан. Войдите с email и паролем.",
     public_register: "Зарегистрироваться",
-    public_admin: "Админ",
+    public_admin: "Вход",
     public_language_label: "Сменить язык",
     nav_dashboard: "Панель",
     nav_cars: "Авто участников",
@@ -398,6 +400,7 @@ const dictionaries = {
     login_hint: "Enter the login and password.",
     login_button: "Enter",
     google_login: "Continue with Google",
+    back_home: "Back",
     login_error: "Incorrect login or password.",
     name_label: "Name",
     register_button: "Create account",
@@ -424,7 +427,7 @@ const dictionaries = {
     auth_error_signup_disabled: "Registration is disabled in Supabase. Enable signups for Email.",
     register_check_email: "Account created. Log in with email and password.",
     public_register: "Register",
-    public_admin: "Admin",
+    public_admin: "Login",
     public_language_label: "Change language",
     nav_dashboard: "Dashboard",
     nav_cars: "Participant cars",
@@ -1137,6 +1140,7 @@ const publicNav = document.querySelector(".public-nav");
 const publicLanguage = document.querySelector("#public-language");
 const adminEntry = document.querySelector("#admin-entry");
 const registerEntry = document.querySelector("#register-entry");
+const googleEntry = document.querySelector("#google-entry");
 const loginScreen = document.querySelector("#login-screen");
 const adminApp = document.querySelector("#admin-app");
 const navMenu = document.querySelector(".nav-menu");
@@ -1145,6 +1149,7 @@ const loginForm = document.querySelector("#login-form");
 const registerForm = document.querySelector("#register-form");
 const showRegisterButton = document.querySelector("#show-register-button");
 const showLoginButton = document.querySelector("#show-login-button");
+const authBackButton = document.querySelector("#auth-back-button");
 const googleLoginButton = document.querySelector("#google-login-button");
 const formError = document.querySelector("#form-error");
 const registerError = document.querySelector("#register-error");
@@ -2507,6 +2512,30 @@ function showLogin() {
   setAuthMode("login");
 }
 
+function showAuthHome() {
+  clearFormError(formError);
+  clearFormError(registerError);
+  loginForm?.reset();
+  registerForm?.reset();
+  showHome();
+}
+
+async function handleGoogleAuth(button, errorNode = null) {
+  if (!button) return;
+  clearFormError(errorNode);
+  button.disabled = true;
+  const { error } = await signInWithGoogle();
+  if (error) {
+    button.disabled = false;
+    const message = authErrorMessage(error, t().auth_error_google_provider);
+    if (errorNode) {
+      setFormError(errorNode, message);
+    } else {
+      showToast(message, "error");
+    }
+  }
+}
+
 function updatePublicNavState() {
   publicNav?.classList.toggle("is-solid", window.scrollY > 20);
 }
@@ -2517,6 +2546,10 @@ updatePublicNavState();
 publicLanguage?.addEventListener("click", switchPublicLanguage);
 
 adminEntry?.addEventListener("click", showLogin);
+
+googleEntry?.addEventListener("click", () => {
+  handleGoogleAuth(googleEntry);
+});
 
 registerEntry?.addEventListener("click", () => {
   showLogin();
@@ -2538,6 +2571,8 @@ showLoginButton?.addEventListener("click", () => {
   setAuthMode("login");
 });
 
+authBackButton?.addEventListener("click", showAuthHome);
+
 loginForm?.addEventListener("input", () => {
   formError?.classList.remove("visible");
 });
@@ -2547,13 +2582,7 @@ registerForm?.addEventListener("input", () => {
 });
 
 googleLoginButton?.addEventListener("click", async () => {
-  clearFormError(formError);
-  googleLoginButton.disabled = true;
-  const { error } = await signInWithGoogle();
-  if (error) {
-    googleLoginButton.disabled = false;
-    setFormError(formError, authErrorMessage(error, t().auth_error_google_provider));
-  }
+  handleGoogleAuth(googleLoginButton, formError);
 });
 
 loginForm.addEventListener("submit", async (event) => {

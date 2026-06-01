@@ -181,6 +181,12 @@ button:hover {
   font-weight: 900;
 }
 
+.public-google-entry {
+  min-height: 44px;
+  padding: 0 22px;
+  white-space: nowrap;
+}
+
 .ticket-action.yellow {
   background: linear-gradient(135deg, var(--accent), #8fd6ff 52%, #ffffff);
   color: #1c1d10;
@@ -202,6 +208,8 @@ button:hover {
 
 .ticket-action:focus-visible,
 .admin-entry:focus-visible,
+.google-action:focus-visible,
+.auth-back-button:focus-visible,
 .primary-action:focus-visible,
 .ghost-action:focus-visible,
 .small-action:focus-visible,
@@ -370,6 +378,7 @@ button:hover {
 }
 
 .login-panel {
+  position: relative;
   width: min(100%, 480px);
   border-radius: 32px;
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -380,6 +389,27 @@ button:hover {
   box-shadow: 0 40px 120px rgba(0, 0, 0, 0.54), 0 0 0 1px rgba(94, 169, 255, 0.12);
   backdrop-filter: blur(22px);
   animation: fadeUp 520ms ease both;
+}
+
+.auth-back-button {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  min-height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 999px;
+  padding: 0 14px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  font-weight: 900;
+  cursor: pointer;
+  transition: background 260ms ease, border-color 260ms ease, color 260ms ease;
+}
+
+.auth-back-button:hover {
+  border-color: rgba(255, 214, 0, 0.42);
+  background: rgba(255, 214, 0, 0.10);
+  color: var(--accent);
 }
 
 .login-copy {
@@ -2506,7 +2536,8 @@ h2 {
   }
 
   .hero-actions .ticket-action,
-  .hero-actions .admin-entry {
+  .hero-actions .admin-entry,
+  .hero-actions .public-google-entry {
     width: 100%;
     min-height: 40px;
     font-size: 0.88rem;
