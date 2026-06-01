@@ -613,13 +613,18 @@ button:hover {
 }
 
 .brand-logo {
-  width: 96px;
-  height: 52px;
+  width: 120px;
+  height: 68px;
   object-fit: contain;
   border-radius: 14px;
   background: radial-gradient(circle at 50% 52%, rgba(255, 255, 255, 0.18), rgba(5, 5, 5, 0.72) 62%);
   padding: 2px;
   flex: 0 0 auto;
+}
+
+.sidebar .brand-logo {
+  width: 100px;
+  height: 56px;
 }
 
 .brand strong,
@@ -883,6 +888,9 @@ button:hover {
   text-align: center;
   border-radius: 22px;
   padding: 10px 14px;
+  height: 70px;
+  min-height: 70px;
+  max-height: 70px;
   background:
     linear-gradient(90deg, rgba(94, 169, 255, 0.10), rgba(255, 255, 255, 0.025), rgba(255, 61, 90, 0.07)),
     rgba(8, 10, 14, 0.44);
@@ -894,6 +902,9 @@ button:hover {
 .topbar > div {
   max-width: 920px;
   width: 100%;
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 
 .app-shell[data-active-view="cars"] .topbar,
@@ -901,9 +912,9 @@ button:hover {
 .app-shell[data-active-view="tasks"] .topbar,
 .app-shell[data-active-view="team"] .topbar,
 .app-shell[data-active-view="resources"] .topbar {
-  min-height: 72px;
+  min-height: 0;
   height: auto;
-  align-content: center;
+  align-items: center;
   margin-bottom: 0;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -921,9 +932,12 @@ button:hover {
 .app-shell[data-active-view="tasks"] .topbar > div,
 .app-shell[data-active-view="team"] .topbar > div,
 .app-shell[data-active-view="resources"] .topbar > div {
-  display: grid;
-  gap: 3px;
-  align-content: center;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+  min-height: 100%;
+  max-height: 100%;
 }
 
 .app-shell[data-active-view="cars"] .topbar .eyebrow,
@@ -1684,27 +1698,21 @@ h2 {
 .admin-view[data-view-panel="tasks"] .panel,
 .admin-view[data-view-panel="team"] .panel,
 .admin-view[data-view-panel="resources"] .panel {
-  padding-top: 8px;
+  padding-top: 0;
 }
 
 .admin-view[data-view-panel="events"] .panel-header,
 .admin-view[data-view-panel="tasks"] .panel-header,
 .admin-view[data-view-panel="team"] .panel-header,
 .admin-view[data-view-panel="resources"] .panel-header {
-  min-height: 48px;
+  min-height: 0;
   gap: 6px;
   margin-bottom: 6px;
   padding-bottom: 6px;
-}
-
-.admin-view[data-view-panel="events"] .panel-header > div,
-.admin-view[data-view-panel="tasks"] .panel-header > div,
-.admin-view[data-view-panel="team"] .panel-header > div,
-.admin-view[data-view-panel="resources"] .panel-header > div {
-  display: grid;
-  min-width: 0;
-  gap: 1px;
+  align-items: center;
   align-content: center;
+  flex-wrap: nowrap;
+
 }
 
 .admin-view[data-view-panel="cars"] .panel-header h2,
@@ -3007,17 +3015,18 @@ h2 {
   .admin-view[data-view-panel="tasks"] .panel,
   .admin-view[data-view-panel="team"] .panel,
   .admin-view[data-view-panel="resources"] .panel {
-    padding-top: 6px;
+    padding-top: 0;
   }
 
   .admin-view[data-view-panel="events"] .panel-header,
   .admin-view[data-view-panel="tasks"] .panel-header,
   .admin-view[data-view-panel="team"] .panel-header,
   .admin-view[data-view-panel="resources"] .panel-header {
-    min-height: 38px;
+    min-height: 0;
     gap: 4px;
     margin-bottom: 5px;
     padding-bottom: 5px;
+    align-items: center;
   }
 
   .admin-view[data-view-panel="events"] .panel-header > div,

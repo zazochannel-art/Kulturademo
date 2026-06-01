@@ -1724,6 +1724,77 @@ async function loadDataFromSupabase() {
   await saveDataToSupabase(buildDataPayload());
 }
 
+function enableRealtimeSync(options = {}) {
+  const pollInterval = options.pollIntervalMs || 5000;
+
+  // Listen for localStorage changes in other tabs (same-browser tabs/devices)
+  window.addEventListener("storage", (e) => {
+    if (!e.key || e.key !== "kultura_admin_data") return;
+    try {
+      const newData = JSON.parse(e.newValue || "{}");
+      applyStoredData(newData);
+      render();
+      setSyncStatus("Sincronizat local", "ok");
+    } catch (err) {
+      console.warn("Eroare la aplicarea datelor din storage:", err);
+    }
+  });
+
+  // Periodic polling from Supabase to pick up remote changes (cross-device)
+  if (typeof loadDataFromSupabase === "function") {
+    let pollTimer = setInterval(async () => {
+      try {
+        await loadDataFromSupabase();
+        render();
+      } catch (err) {
+        console.warn("Polling loadDataFromSupabase failed:", err);
+      }
+    }, pollInterval);
+
+    // If Supabase realtime is available, subscribe and cancel polling
+    if (supabaseClient && typeof supabaseClient.channel === "function" && supabaseConfig?.table && supabaseConfig?.rowId) {
+      try {
+        const channel = supabaseClient
+          .channel("realtime-admin")
+          .on(
+            "postgres_changes",
+            { event: "*", schema: "public", table: supabaseConfig.table, filter: `id=eq.${supabaseConfig.rowId}` },
+            (payload) => {
+              try {
+                const newData = payload.record?.data || payload.new?.data || payload?.new?.data || null;
+                if (newData) {
+                  applyStoredData(newData);
+                  localStorage.setItem("kultura_admin_data", JSON.stringify(newData));
+                  render();
+                  setSyncStatus("Supabase: sincronizat (realtime)", "ok");
+                }
+              } catch (err) {
+                console.warn("Eroare la aplicarea datelor realtime:", err);
+              }
+            },
+          )
+          .subscribe();
+
+        // Stop polling once realtime subscription is active
+        if (pollTimer) {
+          clearInterval(pollTimer);
+          pollTimer = null;
+        }
+
+        window.addEventListener("beforeunload", () => {
+          try {
+            channel.unsubscribe?.();
+          } catch (e) {
+            // ignore
+          }
+        });
+      } catch (err) {
+        console.warn("Nu s-a putut porni subscripția realtime:", err);
+      }
+    }
+  }
+}
+
 function findTeamMemberByEmail(email) {
   const normalizedEmail = normalizeEmail(email);
   return (
@@ -3030,6 +3101,7 @@ async function initializeApp() {
     shouldSaveNormalizedTeamRows = false;
   }
   renderTranslations();
+  enableRealtimeSync();
 
   if (redirectError) {
     await supabaseClient?.auth.signOut();
