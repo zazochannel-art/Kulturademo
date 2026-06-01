@@ -1527,8 +1527,13 @@ h2 {
   opacity: 0.34;
 }
 
-.task-list-featured {
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+.event-list,
+.task-list,
+.task-list-featured,
+.admin-view[data-view-panel="events"] .table-list {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  align-items: stretch;
 }
 
 .panel {
@@ -1719,6 +1724,33 @@ h2 {
   width: 100%;
   min-width: 0;
   gap: 10px;
+}
+
+.event-list .event-row,
+.admin-view[data-view-panel="events"] .table-row {
+  grid-template-columns: 1fr;
+  align-content: start;
+  align-items: start;
+  min-height: 164px;
+  height: 100%;
+}
+
+.event-list .event-row .row-actions,
+.admin-view[data-view-panel="events"] .table-row .row-actions {
+  margin-top: auto;
+  justify-content: flex-start;
+}
+
+.task-list .task-item,
+.task-list-featured .task-item {
+  min-height: 180px;
+  height: 100%;
+}
+
+.task-list .task-item .row-actions,
+.task-list-featured .task-item .row-actions {
+  margin-top: auto;
+  justify-content: flex-start;
 }
 
 .admin-view[data-view-panel="cars"] .table-list {
@@ -2343,6 +2375,7 @@ h2 {
   .event-list,
   .task-list,
   .task-list-featured,
+  .admin-view[data-view-panel="events"] .table-list,
   .resource-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2879,9 +2912,20 @@ h2 {
   .event-list,
   .task-list,
   .task-list-featured,
+  .admin-view[data-view-panel="events"] .table-list,
   .resource-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
     gap: 8px;
+  }
+
+  .event-list .event-row,
+  .admin-view[data-view-panel="events"] .table-row {
+    min-height: 128px;
+  }
+
+  .task-list .task-item,
+  .task-list-featured .task-item {
+    min-height: 128px;
   }
 
   .team-grid,
