@@ -3427,6 +3427,13 @@ body::after {
   border-color: rgba(255, 255, 255, 0.12);
 }
 
+/* Desktop: keep navigation in the topbar only; hide any sidebar nav on larger screens */
+@media (min-width: 721px) {
+  .sidebar .nav-list { display: none !important; }
+  .sidebar .mobile-nav { display: none !important; }
+  .topbar .nav-list { display: grid !important; }
+}
+
 .public-language:hover,
 .public-language:focus-visible,
 .auth-back-button:hover {
