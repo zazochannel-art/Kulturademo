@@ -2769,6 +2769,9 @@ h2 {
     overflow: hidden;
   }
 
+  /* hide sidebar title on small screens */
+  .sidebar-title { display: none !important; }
+
   /* hide desktop topbar nav on mobile and show the bottom sidebar nav */
   .topbar .nav-list { display: none !important; }
 
