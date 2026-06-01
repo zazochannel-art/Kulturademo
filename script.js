@@ -682,7 +682,7 @@ const roleLabels = {
 };
 
 const dataKeys = ["events", "cars", "tasks", "team", "resources", "ops_alerts", "event_plan", "quick_contacts"];
-const availableViews = ["dashboard", "cars", "events", "tasks", "team", "chat", "profile"];
+const availableViews = ["dashboard", "cars", "events", "tasks", "team", "profile"];
 
 const transliteratedRussianTextFixes = [
   ["Na dannyy moment vse v poryadke.", "На данный момент всё в порядке."],
@@ -1513,6 +1513,9 @@ const quickContacts = document.querySelector("#quick-contacts");
 const tasksTable = document.querySelector("#tasks-table");
 const teamList = document.querySelector("#team-list");
 const resourceList = document.querySelector("#resource-list");
+const chatFab = document.querySelector("#chat-fab");
+const chatWidgetPanel = document.querySelector("#chat-widget-panel");
+const chatCloseButton = document.querySelector("#chat-close-button");
 const chatMessages = document.querySelector("#chat-messages");
 const chatForm = document.querySelector("#chat-form");
 const chatInput = document.querySelector("#chat-input");
@@ -2471,6 +2474,33 @@ function renderChatMessages() {
   requestAnimationFrame(scrollChatToBottom);
 }
 
+function openChatWidget() {
+  if (!chatWidgetPanel || !chatFab) return;
+  chatWidgetPanel.classList.add("open");
+  chatWidgetPanel.setAttribute("aria-hidden", "false");
+  chatFab.setAttribute("aria-expanded", "true");
+  loadChatMessages({ silent: state.chatMessages.length > 0 });
+  requestAnimationFrame(() => {
+    scrollChatToBottom();
+    chatInput?.focus();
+  });
+}
+
+function closeChatWidget() {
+  if (!chatWidgetPanel || !chatFab) return;
+  chatWidgetPanel.classList.remove("open");
+  chatWidgetPanel.setAttribute("aria-hidden", "true");
+  chatFab.setAttribute("aria-expanded", "false");
+}
+
+function toggleChatWidget() {
+  if (!chatWidgetPanel?.classList.contains("open")) {
+    openChatWidget();
+    return;
+  }
+  closeChatWidget();
+}
+
 function mergeChatMessages(messages) {
   const byId = new Map(state.chatMessages.map((message) => [message.id, message]));
   messages.map(normalizeChatMessage).forEach((message) => {
@@ -2585,6 +2615,7 @@ function stopChatSync() {
   chatSyncStarted = false;
   state.chatMessages = [];
   renderChatMessages();
+  closeChatWidget();
 }
 
 function applyPermissions() {
@@ -3120,9 +3151,6 @@ function showView(view) {
   if (viewTitle) {
     viewTitle.textContent = t().views[view];
   }
-  if (view === "chat") {
-    loadChatMessages({ silent: state.chatMessages.length > 0 });
-  }
   renderProfile();
 }
 
@@ -3428,6 +3456,23 @@ chatForm?.addEventListener("submit", async (event) => {
   if (sent && chatInput) {
     chatInput.value = "";
     chatInput.focus();
+  }
+});
+
+chatFab?.addEventListener("click", toggleChatWidget);
+
+chatCloseButton?.addEventListener("click", closeChatWidget);
+
+document.addEventListener("click", (event) => {
+  if (!chatWidgetPanel?.classList.contains("open")) return;
+  const target = event.target instanceof Element ? event.target : null;
+  if (target?.closest("#chat-widget-panel") || target?.closest("#chat-fab")) return;
+  closeChatWidget();
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeChatWidget();
   }
 });
 

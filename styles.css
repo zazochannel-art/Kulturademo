@@ -2470,6 +2470,133 @@ h2 {
   box-shadow: 0 0 0 3px rgb(var(--lime-rgb) / 0.14);
 }
 
+.chat-fab {
+  position: fixed;
+  right: 18px;
+  bottom: calc(18px + env(safe-area-inset-bottom));
+  z-index: 1450;
+  display: grid;
+  width: 54px;
+  height: 54px;
+  place-items: center;
+  border: 1px solid rgb(var(--lime-rgb) / 0.34);
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--lime), #ffffff);
+  color: #060606;
+  box-shadow: 0 18px 48px rgb(var(--lime-rgb) / 0.26);
+  cursor: pointer;
+  transition: transform 260ms ease, box-shadow 260ms ease, background 260ms ease;
+}
+
+.chat-fab svg {
+  width: 25px;
+  height: 25px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.chat-fab:hover,
+.chat-fab[aria-expanded="true"] {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 60px rgb(var(--lime-rgb) / 0.34);
+}
+
+.chat-widget-panel {
+  position: fixed;
+  right: 18px;
+  bottom: calc(84px + env(safe-area-inset-bottom));
+  z-index: 1440;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  width: min(380px, calc(100vw - 24px));
+  max-height: min(620px, calc(100vh - 120px));
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 12% 0%, rgb(var(--lime-rgb) / 0.10), transparent 13rem),
+    linear-gradient(155deg, rgba(17, 17, 17, 0.96), rgba(9, 9, 9, 0.94));
+  box-shadow: 0 26px 80px rgba(0, 0, 0, 0.72), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px) scale(0.98);
+  transition: opacity 260ms ease, transform 260ms ease;
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+}
+
+.chat-widget-panel.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.chat-widget-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px 15px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.chat-widget-header strong {
+  display: block;
+  color: #ffffff;
+  font-size: 0.98rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.chat-widget-header span {
+  display: block;
+  margin-top: 3px;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.chat-close-button {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  place-items: center;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.78);
+  cursor: pointer;
+  font-size: 1.25rem;
+  line-height: 1;
+  transition: background 260ms ease, color 260ms ease;
+}
+
+.chat-close-button:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.chat-widget-panel .chat-shell {
+  min-height: 0;
+  height: 100%;
+  grid-template-rows: minmax(220px, 1fr) auto auto;
+  padding: 12px;
+}
+
+.chat-widget-panel .chat-messages {
+  min-height: 220px;
+  max-height: min(46vh, 420px);
+}
+
+.chat-widget-panel .chat-form .primary-action {
+  min-height: 42px;
+  padding-inline: 16px;
+}
+
 .avatar {
   display: grid;
   width: 36px;
@@ -4072,6 +4199,46 @@ body::after {
 
   .chat-form .primary-action {
     width: 100%;
+  }
+
+  .chat-fab {
+    right: 12px;
+    bottom: calc(60px + env(safe-area-inset-bottom));
+    width: 50px;
+    height: 50px;
+  }
+
+  .chat-fab svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .chat-widget-panel {
+    right: 8px;
+    left: 8px;
+    bottom: calc(118px + env(safe-area-inset-bottom));
+    width: auto;
+    max-height: min(70vh, 520px);
+    border-radius: 22px;
+  }
+
+  .chat-widget-header {
+    padding: 12px 12px 10px;
+  }
+
+  .chat-widget-panel .chat-shell {
+    grid-template-rows: minmax(210px, 1fr) auto auto;
+    min-height: 0;
+    padding: 10px;
+  }
+
+  .chat-widget-panel .chat-messages {
+    min-height: 210px;
+    max-height: min(48vh, 360px);
+  }
+
+  .chat-widget-panel .chat-form {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
