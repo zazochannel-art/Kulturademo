@@ -39,7 +39,7 @@ const dictionaries = {
     name_label: "Nume",
     register_button: "Creeaza cont",
     register_submit: "Creeaza cont",
-    register_hint: "Contul va fi creat cu acces de observator. Adminul poate modifica accesul din Echipa.",
+    register_hint: "Contul se creeaza cu email si parola, fara confirmare prin email. Adminul poate modifica accesul din Echipa.",
     back_to_login: "Am deja cont",
     password_confirm_label: "Confirma parola",
     register_error_name: "Introdu numele complet.",
@@ -52,10 +52,12 @@ const dictionaries = {
     auth_error_email_disabled: "Loginul cu email este oprit in Supabase. Activeaza Authentication > Providers > Email.",
     auth_error_invalid_credentials: "Emailul sau parola nu sunt corecte.",
     auth_error_existing_account: "Exista deja un cont cu acest email. Intra in cont sau foloseste parola existenta.",
-    auth_error_email_not_confirmed: "Emailul nu este confirmat. Verifica mesajul de confirmare.",
+    auth_error_email_not_confirmed: "Emailul nu este confirmat. Pentru login fara email, opreste Confirm email in Supabase.",
+    auth_error_email_send_failed: "Supabase inca incearca sa trimita email. Opreste Confirm email in Authentication > Providers > Email.",
+    auth_error_confirmation_required: "Confirmarea prin email este inca activa in Supabase. Opreste Confirm email ca loginul sa fie doar cu email si parola.",
     auth_error_rate_limit: "Prea multe incercari. Asteapta putin si incearca din nou.",
     auth_error_signup_disabled: "Inregistrarea este oprita in Supabase. Activeaza signups pentru Email.",
-    register_check_email: "Cont creat. Verifica emailul pentru confirmare, apoi intra in cont.",
+    register_check_email: "Cont creat. Intra cu emailul si parola.",
     public_register: "Inregistreaza-te",
     public_admin: "Admin",
     public_language_label: "Schimba limba",
@@ -212,7 +214,7 @@ const dictionaries = {
     name_label: "Имя",
     register_button: "Создать аккаунт",
     register_submit: "Создать аккаунт",
-    register_hint: "Аккаунт будет создан с доступом наблюдателя. Админ может изменить доступ в Команде.",
+    register_hint: "Аккаунт создается с email и паролем, без подтверждения по email. Админ может изменить доступ в Команде.",
     back_to_login: "У меня уже есть аккаунт",
     password_confirm_label: "Подтвердите пароль",
     register_error_name: "Введите полное имя.",
@@ -225,10 +227,12 @@ const dictionaries = {
     auth_error_email_disabled: "Вход по email отключен в Supabase. Включите Authentication > Providers > Email.",
     auth_error_invalid_credentials: "Email или пароль неверны.",
     auth_error_existing_account: "Аккаунт с этим email уже существует. Войдите или используйте существующий пароль.",
-    auth_error_email_not_confirmed: "Email не подтвержден. Проверьте письмо подтверждения.",
+    auth_error_email_not_confirmed: "Email не подтвержден. Для входа без письма отключите Confirm email в Supabase.",
+    auth_error_email_send_failed: "Supabase все еще пытается отправить email. Отключите Confirm email в Authentication > Providers > Email.",
+    auth_error_confirmation_required: "Подтверждение email все еще включено в Supabase. Отключите Confirm email, чтобы вход был только по email и паролю.",
     auth_error_rate_limit: "Слишком много попыток. Подождите немного и попробуйте снова.",
     auth_error_signup_disabled: "Регистрация отключена в Supabase. Включите signups для Email.",
-    register_check_email: "Аккаунт создан. Подтвердите email, затем войдите.",
+    register_check_email: "Аккаунт создан. Войдите с email и паролем.",
     public_register: "Зарегистрироваться",
     public_admin: "Админ",
     public_language_label: "Сменить язык",
@@ -385,7 +389,7 @@ const dictionaries = {
     name_label: "Name",
     register_button: "Create account",
     register_submit: "Create account",
-    register_hint: "The account will be created with viewer access. Admin can change access from Team.",
+    register_hint: "The account is created with email and password, without email confirmation. Admin can change access from Team.",
     back_to_login: "I already have an account",
     password_confirm_label: "Confirm password",
     register_error_name: "Enter the full name.",
@@ -398,10 +402,12 @@ const dictionaries = {
     auth_error_email_disabled: "Email login is disabled in Supabase. Enable Authentication > Providers > Email.",
     auth_error_invalid_credentials: "Email or password is incorrect.",
     auth_error_existing_account: "An account with this email already exists. Log in or use the existing password.",
-    auth_error_email_not_confirmed: "Email is not confirmed. Check the confirmation message.",
+    auth_error_email_not_confirmed: "Email is not confirmed. For login without email messages, turn off Confirm email in Supabase.",
+    auth_error_email_send_failed: "Supabase is still trying to send an email. Turn off Confirm email in Authentication > Providers > Email.",
+    auth_error_confirmation_required: "Email confirmation is still enabled in Supabase. Turn off Confirm email so login uses only email and password.",
     auth_error_rate_limit: "Too many attempts. Wait a moment and try again.",
     auth_error_signup_disabled: "Registration is disabled in Supabase. Enable signups for Email.",
-    register_check_email: "Account created. Check your email to confirm it, then log in.",
+    register_check_email: "Account created. Log in with email and password.",
     public_register: "Register",
     public_admin: "Admin",
     public_language_label: "Change language",
@@ -1376,6 +1382,9 @@ function authErrorMessage(error, fallback = t().auth_error) {
   }
   if (message.includes("already registered") || message.includes("already exists") || code.includes("user_already_exists")) {
     return t().auth_error_existing_account;
+  }
+  if (message.includes("error sending confirmation email") || message.includes("sending confirmation email") || message.includes("error sending invite email")) {
+    return t().auth_error_email_send_failed;
   }
   if (message.includes("email not confirmed") || message.includes("not confirmed")) {
     return t().auth_error_email_not_confirmed;
@@ -2500,9 +2509,7 @@ registerForm?.addEventListener("submit", async (event) => {
   }
 
   setSubmitLoading(submitButton, false);
-  setAuthMode("login");
-  formError.textContent = t().register_check_email;
-  formError.classList.add("visible");
+  setFormError(registerError, t().auth_error_confirmation_required);
 });
 
 document.querySelector("#logout-button").addEventListener("click", async () => {
