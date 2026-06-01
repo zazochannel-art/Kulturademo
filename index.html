@@ -43,17 +43,17 @@
 
         <form class="login-form" id="login-form">
           <label>
-            <span data-i18n="email_label">Email</span>
-            <input id="email" type="email" placeholder="admin@kultura.md" autocomplete="username" inputmode="email" maxlength="120" required />
+            <span data-i18n="login_label">Login</span>
+            <input id="email" type="text" placeholder="igor" autocomplete="username" maxlength="80" required />
           </label>
           <label>
             <span data-i18n="password_label">Parola</span>
             <input id="password" type="password" placeholder="Parola contului" autocomplete="current-password" minlength="6" required />
           </label>
-          <p class="login-hint" data-i18n="login_hint">Introdu emailul si parola primite de la admin.</p>
+          <p class="login-hint" data-i18n="login_hint">Introdu loginul si parola.</p>
           <button class="primary-action full" type="submit" data-i18n="login_button">Intra</button>
           <button class="ghost-action full" type="button" id="show-register-button" data-i18n="register_button">Creeaza cont</button>
-          <p class="form-error" id="form-error" data-i18n="login_error">Email sau parola incorecta.</p>
+          <p class="form-error" id="form-error" data-i18n="login_error">Login sau parola incorecta.</p>
         </form>
 
         <form class="login-form auth-register-form is-hidden" id="register-form">
@@ -62,8 +62,8 @@
             <input id="register-name" type="text" placeholder="Nume Prenume" autocomplete="name" minlength="2" maxlength="80" required />
           </label>
           <label>
-            <span data-i18n="email_label">Email</span>
-            <input id="register-email" type="email" placeholder="nume@kultura.md" autocomplete="username" inputmode="email" maxlength="120" required />
+            <span data-i18n="username_label">Username</span>
+            <input id="register-email" type="text" placeholder="igor" autocomplete="username" maxlength="80" required />
           </label>
           <label>
             <span data-i18n="password_label">Parola</span>
@@ -73,7 +73,7 @@
             <span data-i18n="password_confirm_label">Confirma parola</span>
             <input id="register-password-confirm" type="password" placeholder="Repeta parola" autocomplete="new-password" minlength="6" required />
           </label>
-          <p class="login-hint" data-i18n="register_hint">Contul se creeaza cu email si parola, fara confirmare prin email. Adminul poate modifica accesul din Echipa.</p>
+          <p class="login-hint" data-i18n="register_hint">Contul se creeaza cu username si parola. Adminul poate modifica accesul din Echipa.</p>
           <button class="primary-action full" type="submit" data-i18n="register_submit">Creeaza cont</button>
           <button class="ghost-action full" type="button" id="show-login-button" data-i18n="back_to_login">Am deja cont</button>
           <p class="form-error" id="register-error"></p>
@@ -337,8 +337,8 @@
                   </select>
                 </label>
                 <label>
-                  <span data-i18n="email_label">Email</span>
-                  <input id="profile-email" type="email" required />
+                  <span data-i18n="login_label">Login</span>
+                  <input id="profile-email" type="text" maxlength="80" required />
                 </label>
                 <label>
                   <span data-i18n="profile_password_label">Parola noua</span>

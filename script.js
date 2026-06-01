@@ -32,26 +32,28 @@ const dictionaries = {
     login_title: "Logare in panoul organizatorilor",
     login_subtitle: "Gestioneaza evenimente, task-uri, membri si resurse dintr-un singur loc.",
     email_label: "Email",
+    login_label: "Login",
+    username_label: "Username",
     password_label: "Parola",
-    login_hint: "Introdu emailul si parola primite de la admin.",
+    login_hint: "Introdu loginul si parola.",
     login_button: "Intra",
-    login_error: "Email sau parola incorecta.",
+    login_error: "Login sau parola incorecta.",
     name_label: "Nume",
     register_button: "Creeaza cont",
     register_submit: "Creeaza cont",
-    register_hint: "Contul se creeaza cu email si parola, fara confirmare prin email. Adminul poate modifica accesul din Echipa.",
+    register_hint: "Contul se creeaza cu username si parola. Adminul poate modifica accesul din Echipa.",
     back_to_login: "Am deja cont",
     password_confirm_label: "Confirma parola",
     register_error_name: "Introdu numele complet.",
-    register_error_exists: "Exista deja un cont cu acest email.",
+    register_error_exists: "Exista deja un cont cu acest login.",
     register_error_password: "Parolele nu coincid.",
     register_error_short: "Parola trebuie sa aiba cel putin 6 caractere.",
     register_error_supabase: "Contul nu a fost salvat in Supabase. Incearca din nou.",
     auth_error: "Autentificarea Supabase nu a reusit.",
     auth_no_access: "Contul exista, dar nu are acces in echipa.",
-    auth_error_email_disabled: "Loginul cu email este oprit in Supabase. Activeaza Authentication > Providers > Email.",
-    auth_error_invalid_credentials: "Emailul sau parola nu sunt corecte.",
-    auth_error_existing_account: "Exista deja un cont cu acest email. Intra in cont sau foloseste parola existenta.",
+    auth_error_email_disabled: "Autentificarea cu login si parola este oprita in Supabase. Activeaza Authentication > Providers > Email.",
+    auth_error_invalid_credentials: "Loginul sau parola nu sunt corecte.",
+    auth_error_existing_account: "Exista deja un cont cu acest login. Intra in cont sau foloseste parola existenta.",
     auth_error_email_not_confirmed: "Emailul nu este confirmat. Pentru login fara email, opreste Confirm email in Supabase.",
     auth_error_email_send_failed: "Supabase inca incearca sa trimita email. Opreste Confirm email in Authentication > Providers > Email.",
     auth_error_confirmation_required: "Confirmarea prin email este inca activa in Supabase. Opreste Confirm email ca loginul sa fie doar cu email si parola.",
@@ -207,26 +209,28 @@ const dictionaries = {
     login_title: "Вход в панель организаторов",
     login_subtitle: "Управляйте событиями, задачами, командой и ресурсами в одном месте.",
     email_label: "Email",
+    login_label: "Логин",
+    username_label: "Username",
     password_label: "Пароль",
-    login_hint: "Введите email и пароль, полученные от администратора.",
+    login_hint: "Введите логин и пароль.",
     login_button: "Войти",
-    login_error: "Неверный email или пароль.",
+    login_error: "Неверный логин или пароль.",
     name_label: "Имя",
     register_button: "Создать аккаунт",
     register_submit: "Создать аккаунт",
-    register_hint: "Аккаунт создается с email и паролем, без подтверждения по email. Админ может изменить доступ в Команде.",
+    register_hint: "Аккаунт создается с username и паролем. Админ может изменить доступ в Команде.",
     back_to_login: "У меня уже есть аккаунт",
     password_confirm_label: "Подтвердите пароль",
     register_error_name: "Введите полное имя.",
-    register_error_exists: "Аккаунт с этим email уже существует.",
+    register_error_exists: "Аккаунт с этим логином уже существует.",
     register_error_password: "Пароли не совпадают.",
     register_error_short: "Пароль должен быть не короче 6 символов.",
     register_error_supabase: "Аккаунт не был сохранен в Supabase. Попробуйте еще раз.",
     auth_error: "Аутентификация Supabase не удалась.",
     auth_no_access: "Аккаунт существует, но у него нет доступа в команде.",
-    auth_error_email_disabled: "Вход по email отключен в Supabase. Включите Authentication > Providers > Email.",
-    auth_error_invalid_credentials: "Email или пароль неверны.",
-    auth_error_existing_account: "Аккаунт с этим email уже существует. Войдите или используйте существующий пароль.",
+    auth_error_email_disabled: "Вход по логину и паролю отключен в Supabase. Включите Authentication > Providers > Email.",
+    auth_error_invalid_credentials: "Логин или пароль неверны.",
+    auth_error_existing_account: "Аккаунт с этим логином уже существует. Войдите или используйте существующий пароль.",
     auth_error_email_not_confirmed: "Email не подтвержден. Для входа без письма отключите Confirm email в Supabase.",
     auth_error_email_send_failed: "Supabase все еще пытается отправить email. Отключите Confirm email в Authentication > Providers > Email.",
     auth_error_confirmation_required: "Подтверждение email все еще включено в Supabase. Отключите Confirm email, чтобы вход был только по email и паролю.",
@@ -382,26 +386,28 @@ const dictionaries = {
     login_title: "Log in to the organizer panel",
     login_subtitle: "Manage events, tasks, members and resources from one place.",
     email_label: "Email",
+    login_label: "Login",
+    username_label: "Username",
     password_label: "Password",
-    login_hint: "Enter the email and password received from admin.",
+    login_hint: "Enter the login and password.",
     login_button: "Enter",
-    login_error: "Incorrect email or password.",
+    login_error: "Incorrect login or password.",
     name_label: "Name",
     register_button: "Create account",
     register_submit: "Create account",
-    register_hint: "The account is created with email and password, without email confirmation. Admin can change access from Team.",
+    register_hint: "The account is created with username and password. Admin can change access from Team.",
     back_to_login: "I already have an account",
     password_confirm_label: "Confirm password",
     register_error_name: "Enter the full name.",
-    register_error_exists: "An account with this email already exists.",
+    register_error_exists: "An account with this login already exists.",
     register_error_password: "Passwords do not match.",
     register_error_short: "Password must be at least 6 characters.",
     register_error_supabase: "The account was not saved in Supabase. Please try again.",
     auth_error: "Supabase authentication failed.",
     auth_no_access: "The account exists, but it has no team access.",
-    auth_error_email_disabled: "Email login is disabled in Supabase. Enable Authentication > Providers > Email.",
-    auth_error_invalid_credentials: "Email or password is incorrect.",
-    auth_error_existing_account: "An account with this email already exists. Log in or use the existing password.",
+    auth_error_email_disabled: "Login and password auth is disabled in Supabase. Enable Authentication > Providers > Email.",
+    auth_error_invalid_credentials: "Login or password is incorrect.",
+    auth_error_existing_account: "An account with this login already exists. Log in or use the existing password.",
     auth_error_email_not_confirmed: "Email is not confirmed. For login without email messages, turn off Confirm email in Supabase.",
     auth_error_email_send_failed: "Supabase is still trying to send an email. Turn off Confirm email in Authentication > Providers > Email.",
     auth_error_confirmation_required: "Email confirmation is still enabled in Supabase. Turn off Confirm email so login uses only email and password.",
@@ -561,6 +567,7 @@ const state = {
 };
 
 const languageOrder = ["ro", "ru", "en"];
+const loginEmailDomain = "kultura-login.md";
 const generalAdminEmails = ["admin@kultura.md", "igor.gratii.99@mail.ru"];
 let shouldSaveNormalizedTeamRows = false;
 let lastSupabaseSaveError = "";
@@ -1103,7 +1110,7 @@ const formConfigs = {
       { label: { ro: "Nume", ru: "Имя", en: "Name" }, placeholder: "Victor" },
       { label: { ro: "Rol", ru: "Роль", en: "Role" }, placeholder: "Coordonator logistica" },
       { label: { ro: "Acces", ru: "Доступ", en: "Access" }, placeholder: "Admin general", type: "select", options: ["Admin general", "Admin", "Editor", "Viewer"] },
-      { label: { ro: "Email", ru: "Email", en: "Email" }, placeholder: "admin@kultura.md", type: "email" },
+      { label: { ro: "Login", ru: "Логин", en: "Login" }, placeholder: "igor" },
     ],
   },
   resources: {
@@ -1309,6 +1316,30 @@ function normalizeEmail(value) {
   return String(value || "").trim().toLowerCase();
 }
 
+function normalizeLogin(value) {
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9._-]/g, "")
+    .replace(/^[._-]+|[._-]+$/g, "");
+}
+
+function loginToAuthEmail(value) {
+  const raw = String(value || "").trim();
+  if (raw.includes("@")) return normalizeEmail(raw);
+  const login = normalizeLogin(raw);
+  return login ? `${login}@${loginEmailDomain}` : "";
+}
+
+function authEmailToLogin(value) {
+  const email = normalizeEmail(value);
+  const suffix = `@${loginEmailDomain}`;
+  return email.endsWith(suffix) ? email.slice(0, -suffix.length) : email;
+}
+
 function getAuthRedirectUrl() {
   const redirectUrl = new URL(window.location.href);
   redirectUrl.hash = "";
@@ -1345,7 +1376,7 @@ async function getActiveSupabaseSession() {
 function nameFromAuthUser(authUser, fallbackName = "", fallbackEmail = "") {
   const metadataName = String(authUser?.user_metadata?.name || "").trim();
   const typedName = String(fallbackName || "").trim();
-  const emailName = normalizeEmail(authUser?.email || fallbackEmail).split("@")[0];
+  const emailName = authEmailToLogin(authUser?.email || fallbackEmail).split("@")[0];
   return metadataName || typedName || emailName || "Membru";
 }
 
@@ -1857,7 +1888,7 @@ function renderProfile() {
   setProfileImagePreview(member[0], member[3], pendingProfileImagePreview);
   profileName.textContent = member[0];
   profileRole.textContent = `${member[1]} - ${roleLabel(member[2])}`;
-  profileEmail.value = member[3];
+  profileEmail.value = authEmailToLogin(member[3]);
   profilePassword.value = "";
   if (profilePhotoHint) {
     profilePhotoHint.textContent = pendingProfileImageFile ? pendingProfileImageFile.name : t().profile_photo_hint;
@@ -2069,7 +2100,7 @@ function renderTeam() {
         <div>
           <strong>${escapeHtml(name)}</strong>
           <span>${escapeHtml(role)} - ${escapeHtml(access)}</span>
-          <span>${escapeHtml(email)}</span>
+          <span>${escapeHtml(authEmailToLogin(email))}</span>
         </div>
         <div class="row-actions">
           <button class="small-action" type="button" data-edit="team" data-index="${index}">${t().edit}</button>
@@ -2192,7 +2223,7 @@ function renderDashboardHome() {
           <div>
             <strong>${escapeHtml(name)}</strong>
             <span>${escapeHtml(role)} - ${escapeHtml(access)}</span>
-            <small>${escapeHtml(email)}</small>
+            <small>${escapeHtml(authEmailToLogin(email))}</small>
           </div>
         </article>
       `).join("")
@@ -2237,6 +2268,9 @@ function editorValues(kind, values) {
   if (kind === "tasks") {
     return [values[0], values[1], normalizeTaskPriority(values[2]), values[3]];
   }
+  if (kind === "team") {
+    return [values[0], values[1], values[2], authEmailToLogin(values[3])];
+  }
   return values;
 }
 
@@ -2246,6 +2280,9 @@ function storageValues(kind, values) {
   }
   if (kind === "tasks") {
     return [values[0], values[1], normalizeTaskPriority(values[2]), values[3]];
+  }
+  if (kind === "team") {
+    return [values[0], values[1], values[2], loginToAuthEmail(values[3])];
   }
   return values;
 }
@@ -2439,10 +2476,15 @@ registerForm?.addEventListener("input", () => {
 loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const submitButton = loginForm.querySelector('button[type="submit"]');
-  const email = normalizeEmail(document.querySelector("#email").value);
+  const email = loginToAuthEmail(document.querySelector("#email").value);
   const password = document.querySelector("#password").value;
 
   clearFormError(formError);
+  if (!email) {
+    setFormError(formError, t().auth_error_invalid_credentials);
+    return;
+  }
+
   setSubmitLoading(submitButton, true, t().login_button);
   const { user: authUser, error } = await signInWithSupabase(email, password);
   setSubmitLoading(submitButton, false);
@@ -2466,7 +2508,7 @@ registerForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
   const submitButton = registerForm.querySelector('button[type="submit"]');
   const name = document.querySelector("#register-name").value.trim();
-  const email = normalizeEmail(document.querySelector("#register-email").value);
+  const email = loginToAuthEmail(document.querySelector("#register-email").value);
   const password = document.querySelector("#register-password").value.trim();
   const passwordConfirm = document.querySelector("#register-password-confirm").value.trim();
 
@@ -2474,6 +2516,11 @@ registerForm?.addEventListener("submit", async (event) => {
 
   if (name.length < 2) {
     setFormError(registerError, t().register_error_name);
+    return;
+  }
+
+  if (!email) {
+    setFormError(registerError, t().auth_error_invalid_credentials);
     return;
   }
 
@@ -2662,7 +2709,7 @@ if (profileForm) {
     if (!user) return;
 
     const oldEmail = normalizeEmail(user.email);
-    const nextEmail = normalizeEmail(profileEmail.value);
+    const nextEmail = loginToAuthEmail(profileEmail.value);
     const nextPassword = profilePassword.value.trim();
     const authUpdates = {};
     let updatedUser = null;
@@ -2670,6 +2717,11 @@ if (profileForm) {
 
     if (nextPassword && nextPassword.length < 6) {
       showToast(t().register_error_short, "error");
+      return;
+    }
+
+    if (!nextEmail) {
+      showToast(t().auth_error_invalid_credentials, "error");
       return;
     }
 
