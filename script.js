@@ -11,7 +11,13 @@ function createSupabaseClient() {
   if (!hasConfig || !window.supabase) return null;
 
   try {
-    return window.supabase.createClient(supabaseConfig.url, supabaseConfig.anonKey);
+    return window.supabase.createClient(supabaseConfig.url, supabaseConfig.anonKey, {
+      auth: {
+        autoRefreshToken: true,
+        detectSessionInUrl: true,
+        persistSession: true,
+      },
+    });
   } catch (error) {
     console.warn("Supabase nu a putut fi initializat.", error);
     return null;
@@ -1296,6 +1302,39 @@ function normalizeEmail(value) {
   return String(value || "").trim().toLowerCase();
 }
 
+function getAuthRedirectUrl() {
+  const redirectUrl = new URL(window.location.href);
+  redirectUrl.hash = "";
+  redirectUrl.search = "";
+  return redirectUrl.toString();
+}
+
+function hasAuthRedirectHash() {
+  const hash = window.location.hash || "";
+  return hash.includes("access_token=") || hash.includes("refresh_token=") || hash.includes("error_code=") || hash.includes("type=signup");
+}
+
+function authRedirectErrorMessage() {
+  if (!window.location.hash) return "";
+  const params = new URLSearchParams(window.location.hash.slice(1));
+  return params.get("error_description") || params.get("error") || "";
+}
+
+function clearAuthRedirectHash() {
+  if (!hasAuthRedirectHash() || !window.history?.replaceState) return;
+  window.history.replaceState(null, document.title, `${window.location.pathname}${window.location.search}`);
+}
+
+async function getActiveSupabaseSession() {
+  if (!supabaseClient) return null;
+  const { data, error } = await supabaseClient.auth.getSession();
+  if (error) {
+    console.warn("Sesiunea Supabase nu a putut fi citita.", error);
+    return null;
+  }
+  return data?.session || null;
+}
+
 function nameFromAuthUser(authUser, fallbackName = "", fallbackEmail = "") {
   const metadataName = String(authUser?.user_metadata?.name || "").trim();
   const typedName = String(fallbackName || "").trim();
@@ -1541,6 +1580,7 @@ async function signUpWithSupabase(email, password, name) {
     password,
     options: {
       data: { name: String(name || "").trim() },
+      emailRedirectTo: getAuthRedirectUrl(),
     },
   });
 
@@ -2615,7 +2655,9 @@ if (profileForm) {
         return;
       }
 
-      const { error } = await supabaseClient.auth.updateUser(authUpdates);
+      const { error } = await supabaseClient.auth.updateUser(authUpdates, {
+        emailRedirectTo: getAuthRedirectUrl(),
+      });
       if (error) {
         showToast(authErrorMessage(error), "error");
         return;
@@ -2712,6 +2754,13 @@ document.addEventListener("click", (event) => {
 });
 
 async function initializeApp() {
+  const hadAuthRedirect = hasAuthRedirectHash();
+  const redirectError = authRedirectErrorMessage();
+  const redirectSession = hadAuthRedirect && !redirectError ? await getActiveSupabaseSession() : null;
+  if (hadAuthRedirect) {
+    clearAuthRedirectHash();
+  }
+
   await loadDataFromSupabase();
   normalizeTeamRows();
   normalizeCarStatuses();
@@ -2722,8 +2771,16 @@ async function initializeApp() {
   }
   renderTranslations();
 
-  const { data: authData } = supabaseClient ? await supabaseClient.auth.getSession() : { data: { session: null } };
-  const authUser = authData?.session?.user || null;
+  if (redirectError) {
+    await supabaseClient?.auth.signOut();
+    clearStoredSession();
+    showLogin();
+    setFormError(formError, redirectError);
+    return;
+  }
+
+  const session = redirectSession || (await getActiveSupabaseSession());
+  const authUser = session?.user || null;
   const authEmail = authUser?.email || "";
   const savedMember = authEmail ? findTeamMemberByEmail(authEmail) : null;
   if (savedMember) {
