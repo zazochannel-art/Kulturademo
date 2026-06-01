@@ -2767,6 +2767,54 @@ h2 {
     overflow: hidden;
   }
 
+  /* hide desktop topbar nav on mobile and show the bottom sidebar nav */
+  .topbar .nav-list { display: none !important; }
+
+  .mobile-only { display: none; }
+  .mobile-nav { display: none; }
+  .sidebar .mobile-nav { display: none; }
+
+  .mobile-only {
+    display: none;
+  }
+
+  /* enable mobile nav inside sidebar */
+  .sidebar .mobile-nav.mobile-only {
+    display: grid !important;
+    grid-template-columns: repeat(5, var(--mobile-nav-size));
+    grid-auto-columns: var(--mobile-nav-size);
+    width: auto;
+    min-width: 0;
+    gap: 6px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .sidebar .mobile-nav .nav-item {
+    width: var(--mobile-nav-size);
+    min-width: var(--mobile-nav-size);
+    max-width: var(--mobile-nav-size);
+    height: var(--mobile-nav-size);
+    min-height: var(--mobile-nav-size);
+    max-height: var(--mobile-nav-size);
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    border-radius: 14px;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  /* ensure labels hidden on mobile nav */
+  .sidebar .mobile-nav .nav-item span:last-child {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
 
   .topbar h1 {
     font-size: 1.12rem;
