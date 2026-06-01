@@ -44,11 +44,11 @@
         <form class="login-form" id="login-form">
           <label>
             <span data-i18n="email_label">Email</span>
-            <input id="email" type="email" placeholder="admin@kultura.md" autocomplete="username" required />
+            <input id="email" type="email" placeholder="admin@kultura.md" autocomplete="username" inputmode="email" maxlength="120" required />
           </label>
           <label>
             <span data-i18n="password_label">Parola</span>
-            <input id="password" type="password" placeholder="Parola contului" autocomplete="current-password" required />
+            <input id="password" type="password" placeholder="Parola contului" autocomplete="current-password" minlength="6" required />
           </label>
           <p class="login-hint" data-i18n="login_hint">Introdu emailul si parola primite de la admin.</p>
           <button class="primary-action full" type="submit" data-i18n="login_button">Intra</button>
@@ -59,19 +59,19 @@
         <form class="login-form auth-register-form is-hidden" id="register-form">
           <label>
             <span data-i18n="name_label">Nume</span>
-            <input id="register-name" type="text" placeholder="Nume Prenume" autocomplete="name" required />
+            <input id="register-name" type="text" placeholder="Nume Prenume" autocomplete="name" minlength="2" maxlength="80" required />
           </label>
           <label>
             <span data-i18n="email_label">Email</span>
-            <input id="register-email" type="email" placeholder="nume@kultura.md" autocomplete="username" required />
+            <input id="register-email" type="email" placeholder="nume@kultura.md" autocomplete="username" inputmode="email" maxlength="120" required />
           </label>
           <label>
             <span data-i18n="password_label">Parola</span>
-            <input id="register-password" type="password" placeholder="Alege o parola" autocomplete="new-password" required />
+            <input id="register-password" type="password" placeholder="Alege o parola" autocomplete="new-password" minlength="6" required />
           </label>
           <label>
             <span data-i18n="password_confirm_label">Confirma parola</span>
-            <input id="register-password-confirm" type="password" placeholder="Repeta parola" autocomplete="new-password" required />
+            <input id="register-password-confirm" type="password" placeholder="Repeta parola" autocomplete="new-password" minlength="6" required />
           </label>
           <p class="login-hint" data-i18n="register_hint">Contul va fi creat cu acces de observator. Adminul poate modifica accesul din Echipa.</p>
           <button class="primary-action full" type="submit" data-i18n="register_submit">Creeaza cont</button>

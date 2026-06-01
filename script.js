@@ -36,12 +36,19 @@ const dictionaries = {
     register_hint: "Contul va fi creat cu acces de observator. Adminul poate modifica accesul din Echipa.",
     back_to_login: "Am deja cont",
     password_confirm_label: "Confirma parola",
+    register_error_name: "Introdu numele complet.",
     register_error_exists: "Exista deja un cont cu acest email.",
     register_error_password: "Parolele nu coincid.",
     register_error_short: "Parola trebuie sa aiba cel putin 6 caractere.",
     register_error_supabase: "Contul nu a fost salvat in Supabase. Incearca din nou.",
     auth_error: "Autentificarea Supabase nu a reusit.",
     auth_no_access: "Contul exista, dar nu are acces in echipa.",
+    auth_error_email_disabled: "Loginul cu email este oprit in Supabase. Activeaza Authentication > Providers > Email.",
+    auth_error_invalid_credentials: "Emailul sau parola nu sunt corecte.",
+    auth_error_existing_account: "Exista deja un cont cu acest email. Intra in cont sau foloseste parola existenta.",
+    auth_error_email_not_confirmed: "Emailul nu este confirmat. Verifica mesajul de confirmare.",
+    auth_error_rate_limit: "Prea multe incercari. Asteapta putin si incearca din nou.",
+    auth_error_signup_disabled: "Inregistrarea este oprita in Supabase. Activeaza signups pentru Email.",
     register_check_email: "Cont creat. Verifica emailul pentru confirmare, apoi intra in cont.",
     public_register: "Inregistreaza-te",
     public_admin: "Admin",
@@ -202,12 +209,19 @@ const dictionaries = {
     register_hint: "Аккаунт будет создан с доступом наблюдателя. Админ может изменить доступ в Команде.",
     back_to_login: "У меня уже есть аккаунт",
     password_confirm_label: "Подтвердите пароль",
+    register_error_name: "Введите полное имя.",
     register_error_exists: "Аккаунт с этим email уже существует.",
     register_error_password: "Пароли не совпадают.",
     register_error_short: "Пароль должен быть не короче 6 символов.",
     register_error_supabase: "Аккаунт не был сохранен в Supabase. Попробуйте еще раз.",
     auth_error: "Аутентификация Supabase не удалась.",
     auth_no_access: "Аккаунт существует, но у него нет доступа в команде.",
+    auth_error_email_disabled: "Вход по email отключен в Supabase. Включите Authentication > Providers > Email.",
+    auth_error_invalid_credentials: "Email или пароль неверны.",
+    auth_error_existing_account: "Аккаунт с этим email уже существует. Войдите или используйте существующий пароль.",
+    auth_error_email_not_confirmed: "Email не подтвержден. Проверьте письмо подтверждения.",
+    auth_error_rate_limit: "Слишком много попыток. Подождите немного и попробуйте снова.",
+    auth_error_signup_disabled: "Регистрация отключена в Supabase. Включите signups для Email.",
     register_check_email: "Аккаунт создан. Подтвердите email, затем войдите.",
     public_register: "Зарегистрироваться",
     public_admin: "Админ",
@@ -368,12 +382,19 @@ const dictionaries = {
     register_hint: "The account will be created with viewer access. Admin can change access from Team.",
     back_to_login: "I already have an account",
     password_confirm_label: "Confirm password",
+    register_error_name: "Enter the full name.",
     register_error_exists: "An account with this email already exists.",
     register_error_password: "Passwords do not match.",
     register_error_short: "Password must be at least 6 characters.",
     register_error_supabase: "The account was not saved in Supabase. Please try again.",
     auth_error: "Supabase authentication failed.",
     auth_no_access: "The account exists, but it has no team access.",
+    auth_error_email_disabled: "Email login is disabled in Supabase. Enable Authentication > Providers > Email.",
+    auth_error_invalid_credentials: "Email or password is incorrect.",
+    auth_error_existing_account: "An account with this email already exists. Log in or use the existing password.",
+    auth_error_email_not_confirmed: "Email is not confirmed. Check the confirmation message.",
+    auth_error_rate_limit: "Too many attempts. Wait a moment and try again.",
+    auth_error_signup_disabled: "Registration is disabled in Supabase. Enable signups for Email.",
     register_check_email: "Account created. Check your email to confirm it, then log in.",
     public_register: "Register",
     public_admin: "Admin",
@@ -1271,6 +1292,64 @@ function clearStoredSession() {
   localStorage.removeItem("kultura_last_view");
 }
 
+function normalizeEmail(value) {
+  return String(value || "").trim().toLowerCase();
+}
+
+function nameFromAuthUser(authUser, fallbackName = "", fallbackEmail = "") {
+  const metadataName = String(authUser?.user_metadata?.name || "").trim();
+  const typedName = String(fallbackName || "").trim();
+  const emailName = normalizeEmail(authUser?.email || fallbackEmail).split("@")[0];
+  return metadataName || typedName || emailName || "Membru";
+}
+
+function setFormError(target, message) {
+  if (!target) return;
+  target.textContent = message;
+  target.classList.add("visible");
+}
+
+function clearFormError(target) {
+  if (!target) return;
+  target.textContent = "";
+  target.classList.remove("visible");
+}
+
+function setSubmitLoading(button, loading, loadingText = "") {
+  if (!button) return;
+  if (!button.dataset.defaultText) {
+    button.dataset.defaultText = button.textContent;
+  }
+  button.disabled = loading;
+  button.textContent = loading ? loadingText || button.dataset.defaultText : button.dataset.defaultText;
+}
+
+function authErrorMessage(error, fallback = t().auth_error) {
+  const message = String(error?.message || "").toLowerCase();
+  const code = String(error?.code || "").toLowerCase();
+
+  if (message.includes("email logins are disabled") || code.includes("email_provider_disabled")) {
+    return t().auth_error_email_disabled;
+  }
+  if (message.includes("invalid login credentials") || message.includes("invalid credentials")) {
+    return t().auth_error_invalid_credentials;
+  }
+  if (message.includes("already registered") || message.includes("already exists") || code.includes("user_already_exists")) {
+    return t().auth_error_existing_account;
+  }
+  if (message.includes("email not confirmed") || message.includes("not confirmed")) {
+    return t().auth_error_email_not_confirmed;
+  }
+  if (message.includes("rate limit") || message.includes("security purposes") || code.includes("over_email_send_rate_limit")) {
+    return t().auth_error_rate_limit;
+  }
+  if (message.includes("signup") && (message.includes("disabled") || message.includes("not allowed"))) {
+    return t().auth_error_signup_disabled;
+  }
+
+  return error?.message || fallback;
+}
+
 function userFromTeamMember(member) {
   if (!member) return null;
   const [name, roleDescription, access, memberEmail] = member;
@@ -1283,10 +1362,7 @@ function setAuthMode(mode = "login") {
   registerForm?.classList.toggle("is-hidden", !isRegister);
   if (formError) formError.textContent = t().login_error;
   formError?.classList.remove("visible");
-  if (registerError) {
-    registerError.textContent = "";
-    registerError.classList.remove("visible");
-  }
+  clearFormError(registerError);
 }
 
 function accessKey(access) {
@@ -1432,12 +1508,12 @@ async function loadDataFromSupabase() {
 }
 
 function findTeamMemberByEmail(email) {
-  const normalizedEmail = String(email).trim().toLowerCase();
+  const normalizedEmail = normalizeEmail(email);
   return (
-    t().team.find((member) => String(member[3]).trim().toLowerCase() === normalizedEmail) ||
+    t().team.find((member) => normalizeEmail(member[3]) === normalizedEmail) ||
     Object.values(dictionaries)
       .flatMap((dictionary) => dictionary.team)
-      .find((member) => String(member[3]).trim().toLowerCase() === normalizedEmail) ||
+      .find((member) => normalizeEmail(member[3]) === normalizedEmail) ||
     null
   );
 }
@@ -1448,7 +1524,7 @@ async function signInWithSupabase(email, password) {
   }
 
   const { data, error } = await supabaseClient.auth.signInWithPassword({
-    email: String(email).trim(),
+    email: normalizeEmail(email),
     password,
   });
 
@@ -1461,20 +1537,22 @@ async function signUpWithSupabase(email, password, name) {
   }
 
   const { data, error } = await supabaseClient.auth.signUp({
-    email: String(email).trim(),
+    email: normalizeEmail(email),
     password,
     options: {
-      data: { name },
+      data: { name: String(name || "").trim() },
     },
   });
 
-  return { user: data?.user || null, session: data?.session || null, error };
+  const identities = Array.isArray(data?.user?.identities) ? data.user.identities : null;
+  const existingAccount = Boolean(data?.user && identities && identities.length === 0 && !data?.session);
+  return { user: data?.user || null, session: data?.session || null, error, existingAccount };
 }
 
 function teamEmailExists(email) {
-  const normalizedEmail = String(email).trim().toLowerCase();
+  const normalizedEmail = normalizeEmail(email);
   return Object.values(dictionaries).some((dictionary) =>
-    dictionary.team.some((member) => String(member[3]).trim().toLowerCase() === normalizedEmail),
+    dictionary.team.some((member) => normalizeEmail(member[3]) === normalizedEmail),
   );
 }
 
@@ -1484,22 +1562,23 @@ function addRegisteredUser(name, email) {
     ru: "Зарегистрированный участник",
     en: "Registered member",
   };
-  const access = generalAdminEmails.includes(String(email).trim().toLowerCase()) ? "Admin general" : "Viewer";
+  const normalizedEmail = normalizeEmail(email);
+  const access = generalAdminEmails.includes(normalizedEmail) ? "Admin general" : "Viewer";
   Object.entries(dictionaries).forEach(([language, dictionary]) => {
     dictionary.team.unshift([
-      name,
+      String(name || "").trim(),
       roleDescriptions[language] || roleDescriptions.ro,
       access,
-      email,
+      normalizedEmail,
     ]);
   });
-  return { name, email, role: access, roleDescription: roleDescriptions[state.language] || roleDescriptions.ro };
+  return { name: String(name || "").trim(), email: normalizedEmail, role: access, roleDescription: roleDescriptions[state.language] || roleDescriptions.ro };
 }
 
 function removeRegisteredUser(email) {
-  const normalizedEmail = String(email).trim().toLowerCase();
+  const normalizedEmail = normalizeEmail(email);
   Object.values(dictionaries).forEach((dictionary) => {
-    dictionary.team = dictionary.team.filter((member) => String(member[3]).trim().toLowerCase() !== normalizedEmail);
+    dictionary.team = dictionary.team.filter((member) => normalizeEmail(member[3]) !== normalizedEmail);
   });
 }
 
@@ -1509,12 +1588,34 @@ function findCurrentTeamMember() {
   return findTeamMemberByEmail(user.email);
 }
 
+async function ensureTeamMemberForAuthUser(authUser, fallbackName = "", fallbackEmail = "") {
+  const email = normalizeEmail(authUser?.email || fallbackEmail);
+  const existingMember = findTeamMemberByEmail(email);
+  if (existingMember) {
+    return { user: userFromTeamMember(existingMember), saved: true };
+  }
+
+  const user = addRegisteredUser(nameFromAuthUser(authUser, fallbackName, email), email);
+  const saved = await saveData({ requireSupabase: Boolean(supabaseClient) });
+  if (!saved) {
+    removeRegisteredUser(email);
+    renderTeam();
+    renderMetrics();
+    return { user: null, saved: false };
+  }
+
+  renderTeam();
+  renderMetrics();
+  return { user, saved: true };
+}
+
 function loginUser(user) {
   localStorage.setItem("autocrew_logged_in", "yes");
-  localStorage.setItem("kultura_current_user", JSON.stringify({ name: user.name, email: user.email, role: user.role }));
-  formError.classList.remove("visible");
+  localStorage.setItem("kultura_current_user", JSON.stringify({ name: user.name, email: normalizeEmail(user.email), role: user.role }));
+  formError?.classList.remove("visible");
   closeModal();
   showAdmin();
+  showView(localStorage.getItem("kultura_last_view") || state.view || "dashboard");
 }
 
 function statusClass(status) {
@@ -2253,83 +2354,87 @@ showLoginButton?.addEventListener("click", () => {
   setAuthMode("login");
 });
 
+loginForm?.addEventListener("input", () => {
+  formError?.classList.remove("visible");
+});
+
+registerForm?.addEventListener("input", () => {
+  clearFormError(registerError);
+});
+
 loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const submitButton = loginForm.querySelector('button[type="submit"]');
-  const email = document.querySelector("#email").value.trim();
+  const email = normalizeEmail(document.querySelector("#email").value);
   const password = document.querySelector("#password").value;
 
-  if (submitButton) submitButton.disabled = true;
+  clearFormError(formError);
+  setSubmitLoading(submitButton, true, t().login_button);
   const { user: authUser, error } = await signInWithSupabase(email, password);
-  if (submitButton) submitButton.disabled = false;
+  setSubmitLoading(submitButton, false);
 
   if (error || !authUser) {
-    formError.textContent = error?.message || t().auth_error;
-    formError.classList.add("visible");
+    setFormError(formError, authErrorMessage(error));
     return;
   }
 
-  const member = findTeamMemberByEmail(authUser.email || email);
-  if (member) {
-    loginUser(userFromTeamMember(member));
+  const { user, saved } = await ensureTeamMemberForAuthUser(authUser, "", email);
+  if (saved && user) {
+    loginUser(user);
     return;
   }
 
   await supabaseClient?.auth.signOut();
-  formError.textContent = t().auth_no_access;
-  formError.classList.add("visible");
+  setFormError(formError, t().register_error_supabase);
 });
 
 registerForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
   const submitButton = registerForm.querySelector('button[type="submit"]');
   const name = document.querySelector("#register-name").value.trim();
-  const email = document.querySelector("#register-email").value.trim();
+  const email = normalizeEmail(document.querySelector("#register-email").value);
   const password = document.querySelector("#register-password").value.trim();
   const passwordConfirm = document.querySelector("#register-password-confirm").value.trim();
 
+  clearFormError(registerError);
+
+  if (name.length < 2) {
+    setFormError(registerError, t().register_error_name);
+    return;
+  }
+
   if (password.length < 6) {
-    registerError.textContent = t().register_error_short;
-    registerError.classList.add("visible");
+    setFormError(registerError, t().register_error_short);
     return;
   }
 
   if (password !== passwordConfirm) {
-    registerError.textContent = t().register_error_password;
-    registerError.classList.add("visible");
+    setFormError(registerError, t().register_error_password);
     return;
   }
 
-  if (submitButton) submitButton.disabled = true;
-  const { session, error } = await signUpWithSupabase(email, password, name);
+  setSubmitLoading(submitButton, true, t().register_submit);
+  const { user: authUser, session, error, existingAccount } = await signUpWithSupabase(email, password, name);
 
-  if (error) {
-    if (submitButton) submitButton.disabled = false;
-    registerError.textContent = error.message || t().auth_error;
-    registerError.classList.add("visible");
-    return;
-  }
-
-  const existingMember = findTeamMemberByEmail(email);
-  const user = existingMember ? userFromTeamMember(existingMember) : addRegisteredUser(name, email);
-  const saved = existingMember ? true : await saveData({ requireSupabase: true });
-  if (submitButton) submitButton.disabled = false;
-
-  if (!saved) {
-    removeRegisteredUser(email);
-    registerError.textContent = t().register_error_supabase;
-    registerError.classList.add("visible");
-    renderTeam();
-    renderMetrics();
+  if (error || existingAccount) {
+    setSubmitLoading(submitButton, false);
+    setFormError(registerError, existingAccount ? t().auth_error_existing_account : authErrorMessage(error));
     return;
   }
 
   registerForm.reset();
   if (session) {
+    const { user, saved } = await ensureTeamMemberForAuthUser(authUser, name, email);
+    setSubmitLoading(submitButton, false);
+    if (!saved || !user) {
+      setFormError(registerError, t().register_error_supabase);
+      return;
+    }
     loginUser(user);
     return;
   }
 
+  setSubmitLoading(submitButton, false);
   setAuthMode("login");
   formError.textContent = t().register_check_email;
   formError.classList.add("visible");
@@ -2484,8 +2589,8 @@ if (profileForm) {
     const user = getCurrentUser();
     if (!user) return;
 
-    const oldEmail = String(user.email).trim().toLowerCase();
-    const nextEmail = profileEmail.value.trim();
+    const oldEmail = normalizeEmail(user.email);
+    const nextEmail = normalizeEmail(profileEmail.value);
     const nextPassword = profilePassword.value.trim();
     const authUpdates = {};
     let updatedUser = null;
@@ -2512,13 +2617,13 @@ if (profileForm) {
 
       const { error } = await supabaseClient.auth.updateUser(authUpdates);
       if (error) {
-        showToast(error.message || t().auth_error, "error");
+        showToast(authErrorMessage(error), "error");
         return;
       }
     }
 
     Object.values(dictionaries).forEach((dictionary) => {
-      const member = dictionary.team.find((item) => String(item[3]).trim().toLowerCase() === oldEmail);
+      const member = dictionary.team.find((item) => normalizeEmail(item[3]) === oldEmail);
       if (!member) return;
       member[3] = nextEmail;
       updatedUser = { name: member[0], email: nextEmail, role: member[2] };
@@ -2618,7 +2723,8 @@ async function initializeApp() {
   renderTranslations();
 
   const { data: authData } = supabaseClient ? await supabaseClient.auth.getSession() : { data: { session: null } };
-  const authEmail = authData?.session?.user?.email || "";
+  const authUser = authData?.session?.user || null;
+  const authEmail = authUser?.email || "";
   const savedMember = authEmail ? findTeamMemberByEmail(authEmail) : null;
   if (savedMember) {
     const refreshedUser = userFromTeamMember(savedMember);
@@ -2632,6 +2738,22 @@ async function initializeApp() {
     showAdmin();
     showView(state.view);
     return;
+  }
+
+  if (authUser) {
+    const { user, saved } = await ensureTeamMemberForAuthUser(authUser, "", authEmail);
+    if (saved && user) {
+      localStorage.setItem("autocrew_logged_in", "yes");
+      localStorage.setItem("kultura_current_user", JSON.stringify({
+        name: user.name,
+        email: normalizeEmail(user.email),
+        role: user.role,
+      }));
+      state.view = localStorage.getItem("kultura_last_view") || "dashboard";
+      showAdmin();
+      showView(state.view);
+      return;
+    }
   }
 
   await supabaseClient?.auth.signOut();
