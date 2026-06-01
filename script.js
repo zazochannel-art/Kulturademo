@@ -628,10 +628,12 @@ const state = {
   profileImages: {},
 };
 
+const baseLanguage = "ro";
 const languageOrder = ["ro", "ru", "en"];
 const loginEmailDomain = "kultura-login.md";
 const generalAdminEmails = ["admin@kultura.md", "igor.gratii.99@mail.ru"];
 let shouldSaveNormalizedTeamRows = false;
+let shouldSaveSyncedLanguageRows = false;
 let lastSupabaseSaveError = "";
 let pendingProfileImageFile = null;
 let pendingProfileImagePreview = "";
@@ -647,6 +649,50 @@ const roleLabels = {
 const dataKeys = ["events", "cars", "tasks", "team", "resources", "ops_alerts", "event_plan", "quick_contacts"];
 const availableViews = ["dashboard", "cars", "events", "tasks", "team", "profile"];
 
+function cloneDataCollection(collection) {
+  return Array.isArray(collection) ? collection.map((row) => (Array.isArray(row) ? [...row] : row)) : [];
+}
+
+function dataCollectionsEqual(left, right) {
+  return JSON.stringify(left || []) === JSON.stringify(right || []);
+}
+
+function setSyncedCollection(language, key, collection) {
+  const nextCollection = cloneDataCollection(collection);
+  if (dataCollectionsEqual(dictionaries[language]?.[key], nextCollection)) return false;
+  dictionaries[language][key] = nextCollection;
+  return true;
+}
+
+function syncDataAcrossLanguages(sourceLanguage = baseLanguage, keys = dataKeys) {
+  const source = dictionaries[sourceLanguage] ? sourceLanguage : baseLanguage;
+  const selectedKeys = (Array.isArray(keys) ? keys : [keys]).filter((key) => dataKeys.includes(key));
+  if (!selectedKeys.length || !dictionaries[baseLanguage]) return false;
+
+  let changed = false;
+
+  if (source !== baseLanguage) {
+    selectedKeys.forEach((key) => {
+      if (!Array.isArray(dictionaries[source]?.[key])) return;
+      changed = setSyncedCollection(baseLanguage, key, dictionaries[source][key]) || changed;
+    });
+  }
+
+  selectedKeys.forEach((key) => {
+    const baseCollection = dictionaries[baseLanguage][key];
+    if (!Array.isArray(baseCollection)) return;
+    languageOrder.forEach((language) => {
+      if (language === baseLanguage || !dictionaries[language]) return;
+      changed = setSyncedCollection(language, key, baseCollection) || changed;
+    });
+  });
+
+  if (changed) {
+    shouldSaveSyncedLanguageRows = true;
+  }
+  return changed;
+}
+
 function applyStoredData(storedData) {
   if (storedData?.profileImages && typeof storedData.profileImages === "object") {
     state.profileImages = { ...storedData.profileImages };
@@ -660,6 +706,8 @@ function applyStoredData(storedData) {
       }
     });
   });
+
+  syncDataAcrossLanguages(baseLanguage);
 }
 
 const savedData = JSON.parse(localStorage.getItem("kultura_admin_data") || "{}");
@@ -762,6 +810,30 @@ function taskPriorityLabel(priority) {
   return labels[index] || normalized;
 }
 
+function normalizeTaskStatus(value) {
+  const raw = String(value || "").trim();
+  const normalized = raw
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+
+  if (!normalized) return "";
+  if (normalized === "done" || normalized.includes("finisat") || normalized.includes("gata") || normalized.includes("\u0433\u043e\u0442\u043e\u0432")) {
+    return "done";
+  }
+  if (normalized === "in_progress" || normalized.includes("lucru") || normalized.includes("progress") || normalized.includes("\u0440\u0430\u0431\u043e\u0442")) {
+    return "in_progress";
+  }
+  return raw;
+}
+
+function taskStatusLabel(status) {
+  const normalized = normalizeTaskStatus(status);
+  if (normalized === "done") return t().task_done;
+  if (normalized === "in_progress") return t().task_in_progress;
+  return status;
+}
+
 function carStatusLabel(status) {
   const statuses = t().car_statuses || ["Invitat", "Sosit", "Plecat"];
   const index = ["Invitat", "Sosit", "Plecat"].indexOf(status);
@@ -792,10 +864,10 @@ function optionDisplayLabel(kind, fieldIndex, option) {
 function normalizeTaskRows() {
   Object.values(dictionaries).forEach((dictionary) => {
     dictionary.tasks = dictionary.tasks.map((task) => {
-      if (task.length >= 6) return [task[0], task[1], normalizeTaskPriority(task[2]), task[3], task[4], task[5]];
-      if (task.length === 5) return [task[0], task[1], normalizeTaskPriority(task[2]), "", task[3], task[4]];
+      if (task.length >= 6) return [task[0], task[1], normalizeTaskPriority(task[2]), task[3], normalizeTaskStatus(task[4]), task[5]];
+      if (task.length === 5) return [task[0], task[1], normalizeTaskPriority(task[2]), "", normalizeTaskStatus(task[3]), task[4]];
       if (task.length === 4 && isDateValue(task[3])) return [task[0], task[1], normalizeTaskPriority(task[2]), task[3], "", ""];
-      if (task.length === 4) return [task[0], task[1], normalizeTaskPriority(task[2]), "", task[3], ""];
+      if (task.length === 4) return [task[0], task[1], normalizeTaskPriority(task[2]), "", normalizeTaskStatus(task[3]), ""];
       return [task[0], task[1], normalizeTaskPriority(task[2]), "", "", ""];
     });
   });
@@ -825,6 +897,7 @@ function ensureDashboardEditableRows() {
 }
 
 ensureDashboardEditableRows();
+syncDataAcrossLanguages(baseLanguage);
 
 function splitCsvLine(line, separator) {
   const values = [];
@@ -2305,7 +2378,7 @@ function buildTaskMarkup(task, owner, priority, dueDate, status, takenBy, index)
   const currentUser = getCurrentUser();
   const taken = Boolean(takenBy);
   const takenByCurrentUser = takenBy && currentUser?.name === takenBy;
-  const done = status === t().task_done;
+  const done = normalizeTaskStatus(status) === "done";
   const takeLabel = takenByCurrentUser ? t().task_taken_mine : taken ? `${t().task_taken_by} ${takenBy}` : t().take_task;
   const normalizedPriority = normalizeTaskPriority(priority);
   const priorityClass = taskPriorityClass(normalizedPriority);
@@ -2317,7 +2390,7 @@ function buildTaskMarkup(task, owner, priority, dueDate, status, takenBy, index)
           ${dueDate ? `<span class="task-due">${escapeHtml(t().task_due)}: ${escapeHtml(dueDate)}</span>` : ""}
           ${
             taken
-              ? `<span class="task-owner">${escapeHtml(t().task_taken_by)}: ${escapeHtml(takenBy)} - ${escapeHtml(status || t().task_in_progress)}</span>`
+              ? `<span class="task-owner">${escapeHtml(t().task_taken_by)}: ${escapeHtml(takenBy)} - ${escapeHtml(taskStatusLabel(status || "in_progress"))}</span>`
               : ""
           }
           <div class="row-actions">
@@ -2347,8 +2420,9 @@ function takeTask(index) {
   const task = t().tasks[index];
   if (!user || !task || task[5]) return;
 
-  task[4] = t().task_in_progress;
+  task[4] = "in_progress";
   task[5] = user.name;
+  syncDataAcrossLanguages(state.language, ["tasks"]);
   saveData();
   renderTasks();
 }
@@ -2358,7 +2432,8 @@ function finishTask(index) {
   const task = t().tasks[index];
   if (!user || !task || task[5] !== user.name) return;
 
-  task[4] = t().task_done;
+  task[4] = "done";
+  syncDataAcrossLanguages(state.language, ["tasks"]);
   saveData();
   renderTasks();
 }
@@ -2370,6 +2445,7 @@ function cancelTaskTake(index) {
 
   task[4] = "";
   task[5] = "";
+  syncDataAcrossLanguages(state.language, ["tasks"]);
   saveData();
   renderTasks();
 }
@@ -2423,7 +2499,7 @@ function taskDaysUntil(dueDate) {
 }
 
 function isTaskFinished(task) {
-  return String(task[4] || "").toLowerCase() === String(t().task_done || "").toLowerCase();
+  return normalizeTaskStatus(task[4]) === "done";
 }
 
 function renderDashboardHome() {
@@ -2651,6 +2727,7 @@ function openEditor(kind, index = null) {
       }
     }
 
+    syncDataAcrossLanguages(state.language, [kind]);
     saveData();
     closeModal();
     render();
@@ -2666,6 +2743,7 @@ function deleteItem(kind, index) {
   if (!window.confirm(t().delete_confirm)) return;
 
   collection.splice(index, 1);
+  syncDataAcrossLanguages(state.language, [kind]);
   saveData();
   render();
 }
@@ -2968,6 +3046,7 @@ if (carsImportButton && carsImportFile) {
       }
 
       t().cars.unshift(...importedCars);
+      syncDataAcrossLanguages(state.language, ["cars"]);
       saveData();
       renderCars();
       renderMetrics();
@@ -2986,6 +3065,7 @@ if (carsClearButton) {
     if (!window.confirm(t().clear_cars_confirm)) return;
 
     t().cars = [];
+    syncDataAcrossLanguages(state.language, ["cars"]);
     saveData();
     renderCars();
     renderMetrics();
@@ -3118,6 +3198,7 @@ document.addEventListener("change", (event) => {
   if (!car) return;
 
   car[car.length === 7 ? 6 : 5] = statusSelect.value;
+  syncDataAcrossLanguages(state.language, ["cars"]);
   saveData();
   renderCars();
   applyPermissions();
@@ -3174,9 +3255,11 @@ async function initializeApp() {
   normalizeCarStatuses();
   normalizeTaskRows();
   ensureDashboardEditableRows();
-  if (shouldSaveNormalizedTeamRows) {
+  syncDataAcrossLanguages(baseLanguage);
+  if (shouldSaveNormalizedTeamRows || shouldSaveSyncedLanguageRows) {
     await saveData({ requireSupabase: Boolean(supabaseClient) });
     shouldSaveNormalizedTeamRows = false;
+    shouldSaveSyncedLanguageRows = false;
   }
   renderTranslations();
   enableRealtimeSync();
