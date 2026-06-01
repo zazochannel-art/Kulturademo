@@ -1,7 +1,7 @@
 :root {
   color-scheme: dark;
-  --page-padding: 9px 35px 178px;
-  --page-padding-mobile: 9px 9px 76px;
+  --page-padding: 4px 35px 178px;
+  --page-padding-mobile: 4px 9px 76px;
   --bg: #060606;
   --surface: rgba(17, 17, 17, 0.82);
   --surface-muted: rgba(17, 17, 17, 0.94);
@@ -541,6 +541,8 @@ button:hover {
     gap: 14px;
     overflow: hidden;
     min-height: 64px;
+    height: 64px;
+    max-height: 64px;
     padding: 8px 24px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     background: rgba(6, 6, 6, 0.92);
@@ -2585,6 +2587,7 @@ h2 {
     gap: 12px;
     overflow: hidden;
     min-height: 56px;
+    height: 56px;
     max-height: 56px;
     padding: 8px 18px;
     border-right: 0;
