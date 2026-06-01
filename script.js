@@ -2472,7 +2472,12 @@ function renderTaskList() {
   if (!tasksTable) return;
 
   tasksTable.innerHTML = t().tasks
-    .map(([task, owner, priority, dueDate, status, takenBy], index) => buildTaskMarkup(task, owner, priority, dueDate, status, takenBy, index))
+    .map((taskRow, index) => ({ taskRow, index }))
+    .sort((a, b) => {
+      const priorityDiff = taskPriorityRank(a.taskRow[2]) - taskPriorityRank(b.taskRow[2]);
+      return priorityDiff || a.index - b.index;
+    })
+    .map(({ taskRow: [task, owner, priority, dueDate, status, takenBy], index }) => buildTaskMarkup(task, owner, priority, dueDate, status, takenBy, index))
     .join("");
 }
 
