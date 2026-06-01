@@ -1,5 +1,7 @@
 :root {
   color-scheme: dark;
+  --page-padding: 14px 18px 20px;
+  --page-padding-mobile: 9px 9px 76px;
   --bg: #060606;
   --surface: rgba(17, 17, 17, 0.82);
   --surface-muted: rgba(17, 17, 17, 0.94);
@@ -375,7 +377,7 @@ button:hover {
   min-height: 100vh;
   display: grid;
   place-items: center;
-  padding: 24px;
+  padding: var(--page-padding);
   background:
     radial-gradient(circle at 20% 15%, rgba(94, 169, 255, 0.18), transparent 18rem),
     radial-gradient(circle at 78% 80%, rgba(255, 61, 90, 0.10), transparent 20rem),
@@ -389,7 +391,7 @@ button:hover {
   width: min(100%, 480px);
   border-radius: 32px;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 34px;
+  padding: var(--page-padding);
   background:
     linear-gradient(145deg, rgba(94, 169, 255, 0.10), transparent 38%),
     rgba(12, 15, 20, 0.94);
@@ -873,7 +875,7 @@ button:hover {
   width: 100%;
   max-width: none;
   margin: 0 auto;
-  padding: 14px 18px 20px;
+  padding: var(--page-padding);
   overflow-x: hidden;
   background:
     radial-gradient(circle at top right, rgba(94, 169, 255, 0.18), transparent 34rem),
@@ -2728,7 +2730,7 @@ h2 {
 
   .workspace,
   .login-screen {
-    padding: 9px 9px 76px;
+    padding: var(--page-padding-mobile);
     max-width: none;
     overflow-x: hidden;
   }
