@@ -37,6 +37,7 @@ const dictionaries = {
     password_label: "Parola",
     login_hint: "Introdu loginul si parola.",
     login_button: "Intra",
+    google_login: "Continua cu Google",
     login_error: "Login sau parola incorecta.",
     name_label: "Nume",
     register_button: "Creeaza cont",
@@ -57,6 +58,8 @@ const dictionaries = {
     auth_error_email_not_confirmed: "Emailul nu este confirmat. Pentru login fara email, opreste Confirm email in Supabase.",
     auth_error_email_send_failed: "Supabase inca incearca sa trimita email. Opreste Confirm email in Authentication > Providers > Email.",
     auth_error_confirmation_required: "Confirmarea prin email este inca activa in Supabase. Opreste Confirm email ca loginul sa fie doar cu email si parola.",
+    auth_error_google_provider: "Google nu este configurat in Supabase. Activeaza Authentication > Providers > Google.",
+    auth_error_oauth_cancelled: "Autentificarea Google a fost anulata.",
     auth_error_rate_limit: "Prea multe incercari. Asteapta putin si incearca din nou.",
     auth_error_signup_disabled: "Inregistrarea este oprita in Supabase. Activeaza signups pentru Email.",
     register_check_email: "Cont creat. Intra cu emailul si parola.",
@@ -214,6 +217,7 @@ const dictionaries = {
     password_label: "Пароль",
     login_hint: "Введите логин и пароль.",
     login_button: "Войти",
+    google_login: "Продолжить с Google",
     login_error: "Неверный логин или пароль.",
     name_label: "Имя",
     register_button: "Создать аккаунт",
@@ -234,6 +238,8 @@ const dictionaries = {
     auth_error_email_not_confirmed: "Email не подтвержден. Для входа без письма отключите Confirm email в Supabase.",
     auth_error_email_send_failed: "Supabase все еще пытается отправить email. Отключите Confirm email в Authentication > Providers > Email.",
     auth_error_confirmation_required: "Подтверждение email все еще включено в Supabase. Отключите Confirm email, чтобы вход был только по email и паролю.",
+    auth_error_google_provider: "Google не настроен в Supabase. Включите Authentication > Providers > Google.",
+    auth_error_oauth_cancelled: "Вход через Google был отменен.",
     auth_error_rate_limit: "Слишком много попыток. Подождите немного и попробуйте снова.",
     auth_error_signup_disabled: "Регистрация отключена в Supabase. Включите signups для Email.",
     register_check_email: "Аккаунт создан. Войдите с email и паролем.",
@@ -391,6 +397,7 @@ const dictionaries = {
     password_label: "Password",
     login_hint: "Enter the login and password.",
     login_button: "Enter",
+    google_login: "Continue with Google",
     login_error: "Incorrect login or password.",
     name_label: "Name",
     register_button: "Create account",
@@ -411,6 +418,8 @@ const dictionaries = {
     auth_error_email_not_confirmed: "Email is not confirmed. For login without email messages, turn off Confirm email in Supabase.",
     auth_error_email_send_failed: "Supabase is still trying to send an email. Turn off Confirm email in Authentication > Providers > Email.",
     auth_error_confirmation_required: "Email confirmation is still enabled in Supabase. Turn off Confirm email so login uses only email and password.",
+    auth_error_google_provider: "Google is not configured in Supabase. Enable Authentication > Providers > Google.",
+    auth_error_oauth_cancelled: "Google authentication was cancelled.",
     auth_error_rate_limit: "Too many attempts. Wait a moment and try again.",
     auth_error_signup_disabled: "Registration is disabled in Supabase. Enable signups for Email.",
     register_check_email: "Account created. Log in with email and password.",
@@ -1136,6 +1145,7 @@ const loginForm = document.querySelector("#login-form");
 const registerForm = document.querySelector("#register-form");
 const showRegisterButton = document.querySelector("#show-register-button");
 const showLoginButton = document.querySelector("#show-login-button");
+const googleLoginButton = document.querySelector("#google-login-button");
 const formError = document.querySelector("#form-error");
 const registerError = document.querySelector("#register-error");
 const languageSelect = document.querySelector("#language");
@@ -1349,22 +1359,42 @@ function getAuthRedirectUrl() {
 
 function hasAuthRedirectHash() {
   const hash = window.location.hash || "";
-  return hash.includes("access_token=") || hash.includes("refresh_token=") || hash.includes("error_code=") || hash.includes("type=signup");
+  const params = new URLSearchParams(window.location.search);
+  return (
+    hash.includes("access_token=") ||
+    hash.includes("refresh_token=") ||
+    hash.includes("error_code=") ||
+    hash.includes("type=signup") ||
+    params.has("code") ||
+    params.has("error") ||
+    params.has("error_description")
+  );
 }
 
 function authRedirectErrorMessage() {
-  if (!window.location.hash) return "";
-  const params = new URLSearchParams(window.location.hash.slice(1));
-  return params.get("error_description") || params.get("error") || "";
+  const hashParams = new URLSearchParams((window.location.hash || "").slice(1));
+  const searchParams = new URLSearchParams(window.location.search);
+  return hashParams.get("error_description") || searchParams.get("error_description") || hashParams.get("error") || searchParams.get("error") || "";
 }
 
 function clearAuthRedirectHash() {
   if (!hasAuthRedirectHash() || !window.history?.replaceState) return;
-  window.history.replaceState(null, document.title, `${window.location.pathname}${window.location.search}`);
+  window.history.replaceState(null, document.title, window.location.pathname);
 }
 
 async function getActiveSupabaseSession() {
   if (!supabaseClient) return null;
+  const code = new URLSearchParams(window.location.search).get("code");
+  if (code && supabaseClient.auth.exchangeCodeForSession) {
+    const { data: codeData, error: codeError } = await supabaseClient.auth.exchangeCodeForSession(code);
+    if (!codeError && codeData?.session) {
+      return codeData.session;
+    }
+    if (codeError) {
+      console.warn("Codul OAuth Supabase nu a putut fi schimbat pe sesiune.", codeError);
+    }
+  }
+
   const { data, error } = await supabaseClient.auth.getSession();
   if (error) {
     console.warn("Sesiunea Supabase nu a putut fi citita.", error);
@@ -1375,9 +1405,24 @@ async function getActiveSupabaseSession() {
 
 function nameFromAuthUser(authUser, fallbackName = "", fallbackEmail = "") {
   const metadataName = String(authUser?.user_metadata?.name || "").trim();
+  const fullName = String(authUser?.user_metadata?.full_name || "").trim();
   const typedName = String(fallbackName || "").trim();
   const emailName = authEmailToLogin(authUser?.email || fallbackEmail).split("@")[0];
-  return metadataName || typedName || emailName || "Membru";
+  return metadataName || fullName || typedName || emailName || "Membru";
+}
+
+function profileImageFromAuthUser(authUser) {
+  const metadata = authUser?.user_metadata || {};
+  return String(metadata.avatar_url || metadata.picture || metadata.photo_url || "").trim();
+}
+
+function applyAuthProfileImage(authUser, email) {
+  const imageUrl = profileImageFromAuthUser(authUser);
+  if (!imageUrl) return false;
+  const key = profileImageKey(email);
+  if (state.profileImages[key] === imageUrl) return false;
+  state.profileImages[key] = imageUrl;
+  return true;
 }
 
 function setFormError(target, message) {
@@ -1416,6 +1461,12 @@ function authErrorMessage(error, fallback = t().auth_error) {
   }
   if (message.includes("error sending confirmation email") || message.includes("sending confirmation email") || message.includes("error sending invite email")) {
     return t().auth_error_email_send_failed;
+  }
+  if (message.includes("provider") && (message.includes("not enabled") || message.includes("disabled") || message.includes("unsupported"))) {
+    return t().auth_error_google_provider;
+  }
+  if (message.includes("oauth") && (message.includes("cancel") || message.includes("denied") || message.includes("access_denied"))) {
+    return t().auth_error_oauth_cancelled;
   }
   if (message.includes("email not confirmed") || message.includes("not confirmed")) {
     return t().auth_error_email_not_confirmed;
@@ -1654,6 +1705,24 @@ async function signUpWithSupabase(email, password, name) {
   return { user: data?.user || null, session: data?.session || null, error, existingAccount };
 }
 
+async function signInWithGoogle() {
+  if (!supabaseClient) {
+    return { error: new Error(t().auth_error) };
+  }
+
+  const { error } = await supabaseClient.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: getAuthRedirectUrl(),
+      queryParams: {
+        prompt: "select_account",
+      },
+    },
+  });
+
+  return { error };
+}
+
 function teamEmailExists(email) {
   const normalizedEmail = normalizeEmail(email);
   return Object.values(dictionaries).some((dictionary) =>
@@ -1697,10 +1766,14 @@ async function ensureTeamMemberForAuthUser(authUser, fallbackName = "", fallback
   const email = normalizeEmail(authUser?.email || fallbackEmail);
   const existingMember = findTeamMemberByEmail(email);
   if (existingMember) {
+    if (applyAuthProfileImage(authUser, email)) {
+      saveData();
+    }
     return { user: userFromTeamMember(existingMember), saved: true };
   }
 
   const user = addRegisteredUser(nameFromAuthUser(authUser, fallbackName, email), email);
+  applyAuthProfileImage(authUser, email);
   const saved = await saveData({ requireSupabase: Boolean(supabaseClient) });
   if (!saved) {
     removeRegisteredUser(email);
@@ -2473,6 +2546,16 @@ registerForm?.addEventListener("input", () => {
   clearFormError(registerError);
 });
 
+googleLoginButton?.addEventListener("click", async () => {
+  clearFormError(formError);
+  googleLoginButton.disabled = true;
+  const { error } = await signInWithGoogle();
+  if (error) {
+    googleLoginButton.disabled = false;
+    setFormError(formError, authErrorMessage(error, t().auth_error_google_provider));
+  }
+});
+
 loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const submitButton = loginForm.querySelector('button[type="submit"]');
@@ -2859,7 +2942,7 @@ async function initializeApp() {
     await supabaseClient?.auth.signOut();
     clearStoredSession();
     showLogin();
-    setFormError(formError, redirectError);
+    setFormError(formError, authErrorMessage({ message: redirectError }));
     return;
   }
 
