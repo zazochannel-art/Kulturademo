@@ -557,6 +557,7 @@ const state = {
 const languageOrder = ["ro", "ru", "en"];
 const generalAdminEmails = ["admin@kultura.md", "igor.gratii.99@mail.ru"];
 let shouldSaveNormalizedTeamRows = false;
+let lastSupabaseSaveError = "";
 let pendingProfileImageFile = null;
 let pendingProfileImagePreview = "";
 const profileImageMaxSize = 5 * 1024 * 1024;
@@ -1389,6 +1390,26 @@ function authErrorMessage(error, fallback = t().auth_error) {
   return error?.message || fallback;
 }
 
+function databaseErrorMessage(error, fallback = t().register_error_supabase) {
+  const message = String(error?.message || "").trim();
+  const details = String(error?.details || "").trim();
+  const code = String(error?.code || "").trim();
+  const lowerMessage = message.toLowerCase();
+  const suffix = [code, message || details].filter(Boolean).join(": ");
+
+  if (lowerMessage.includes("row-level security") || code === "42501") {
+    return `${fallback} Verifica politicile RLS pentru tabela ${supabaseConfig.table}.`;
+  }
+  if (lowerMessage.includes("permission denied")) {
+    return `${fallback} Lipsesc permisiunile pentru tabela ${supabaseConfig.table}.`;
+  }
+  if (lowerMessage.includes("failed to fetch") || lowerMessage.includes("network")) {
+    return `${fallback} Verifica internetul si conexiunea Supabase.`;
+  }
+
+  return suffix ? `${fallback} (${suffix})` : fallback;
+}
+
 function userFromTeamMember(member) {
   if (!member) return null;
   const [name, roleDescription, access, memberEmail] = member;
@@ -1480,7 +1501,9 @@ async function saveData(options = {}) {
 }
 
 async function saveDataToSupabase(payload) {
+  lastSupabaseSaveError = "";
   if (!supabaseClient) {
+    lastSupabaseSaveError = t().auth_error;
     setSyncStatus("Supabase: neconfigurat", "error");
     return false;
   }
@@ -1501,11 +1524,13 @@ async function saveDataToSupabase(payload) {
 
   if (error) {
     console.warn("Datele nu au fost salvate in Supabase.", error);
+    lastSupabaseSaveError = databaseErrorMessage(error);
     setSyncStatus(`Supabase: eroare ${error.code || ""}`.trim(), "error");
     return false;
   }
 
   if (!data || (Array.isArray(data) && data.length === 0)) {
+    lastSupabaseSaveError = `${t().register_error_supabase} Verifica daca tabela permite select dupa salvare.`;
     setSyncStatus("Supabase: eroare la salvare", "error");
     return false;
   }
@@ -1641,12 +1666,12 @@ async function ensureTeamMemberForAuthUser(authUser, fallbackName = "", fallback
     removeRegisteredUser(email);
     renderTeam();
     renderMetrics();
-    return { user: null, saved: false };
+    return { user: null, saved: false, error: lastSupabaseSaveError || t().register_error_supabase };
   }
 
   renderTeam();
   renderMetrics();
-  return { user, saved: true };
+  return { user, saved: true, error: "" };
 }
 
 function loginUser(user) {
@@ -2418,14 +2443,14 @@ loginForm.addEventListener("submit", async (event) => {
     return;
   }
 
-  const { user, saved } = await ensureTeamMemberForAuthUser(authUser, "", email);
+  const { user, saved, error: saveError } = await ensureTeamMemberForAuthUser(authUser, "", email);
   if (saved && user) {
     loginUser(user);
     return;
   }
 
   await supabaseClient?.auth.signOut();
-  setFormError(formError, t().register_error_supabase);
+  setFormError(formError, saveError || t().register_error_supabase);
 });
 
 registerForm?.addEventListener("submit", async (event) => {
@@ -2464,10 +2489,10 @@ registerForm?.addEventListener("submit", async (event) => {
 
   registerForm.reset();
   if (session) {
-    const { user, saved } = await ensureTeamMemberForAuthUser(authUser, name, email);
+    const { user, saved, error: saveError } = await ensureTeamMemberForAuthUser(authUser, name, email);
     setSubmitLoading(submitButton, false);
     if (!saved || !user) {
-      setFormError(registerError, t().register_error_supabase);
+      setFormError(registerError, saveError || t().register_error_supabase);
       return;
     }
     loginUser(user);
@@ -2798,7 +2823,7 @@ async function initializeApp() {
   }
 
   if (authUser) {
-    const { user, saved } = await ensureTeamMemberForAuthUser(authUser, "", authEmail);
+    const { user, saved, error: saveError } = await ensureTeamMemberForAuthUser(authUser, "", authEmail);
     if (saved && user) {
       localStorage.setItem("autocrew_logged_in", "yes");
       localStorage.setItem("kultura_current_user", JSON.stringify({
@@ -2810,6 +2835,9 @@ async function initializeApp() {
       showAdmin();
       showView(state.view);
       return;
+    }
+    if (saveError) {
+      console.warn("Utilizator autentificat, dar membrul nu a putut fi salvat.", saveError);
     }
   }
 
