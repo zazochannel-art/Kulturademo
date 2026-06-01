@@ -2,6 +2,7 @@ const supabaseConfig = {
   url: "https://jxlqrbpqufrouwujboxi.supabase.co",
   anonKey: "sb_publishable_i9CCh1u2dhO11QMPmTucRA_93UUziQ6",
   table: "kultura_admin_state",
+  chatTable: "kultura_chat_messages",
   rowId: "main",
   profileBucket: "profile-images",
 };
@@ -79,6 +80,7 @@ const dictionaries = {
     nav_events: "Evenimente",
     nav_tasks: "Sarcine",
     nav_team: "Echipa",
+    nav_chat: "Chat",
     nav_resources: "Resurse",
     logout: "Iesire",
     eyebrow: "Panou intern pentru organizatori",
@@ -182,6 +184,14 @@ const dictionaries = {
     team_admin_title: "Membrii echipei",
     team_admin_subtitle: "Roluri, acces si responsabilitati.",
     add_member: "Adauga membru",
+    chat_title: "Chat intern",
+    chat_subtitle: "Mesaje rapide pentru echipa organizatorilor.",
+    chat_placeholder: "Scrie un mesaj pentru echipa...",
+    chat_send: "Trimite",
+    chat_empty: "Nu exista mesaje inca.",
+    chat_loading: "Se incarca mesajele...",
+    chat_error: "Chatul nu a putut fi incarcat.",
+    chat_send_error: "Mesajul nu a putut fi trimis.",
     resources_admin_title: "Resurse si documente",
     resources_admin_subtitle: "Echipamente, furnizori si acte necesare pentru evenimente.",
     add_resource: "Adauga resursa",
@@ -191,6 +201,7 @@ const dictionaries = {
       events: "Administrare evenimente",
       tasks: "Sarcine operationale",
       team: "Administrare echipa",
+      chat: "Chat intern",
       resources: "Resurse si documente",
       profile: "Profilul meu",
     },
@@ -276,6 +287,7 @@ const dictionaries = {
     nav_events: "События",
     nav_tasks: "Задачи",
     nav_team: "Команда",
+    nav_chat: "Чат",
     nav_resources: "Ресурсы",
     logout: "Выход",
     eyebrow: "Внутренняя панель организаторов",
@@ -379,6 +391,14 @@ const dictionaries = {
     team_admin_title: "Участники команды",
     team_admin_subtitle: "Роли, доступ и обязанности.",
     add_member: "Добавить участника",
+    chat_title: "Внутренний чат",
+    chat_subtitle: "Быстрые сообщения для команды организаторов.",
+    chat_placeholder: "Напишите сообщение для команды...",
+    chat_send: "Отправить",
+    chat_empty: "Сообщений пока нет.",
+    chat_loading: "Сообщения загружаются...",
+    chat_error: "Чат не удалось загрузить.",
+    chat_send_error: "Сообщение не удалось отправить.",
     resources_admin_title: "Ресурсы и документы",
     resources_admin_subtitle: "Оборудование, поставщики и документы для событий.",
     add_resource: "Добавить ресурс",
@@ -388,6 +408,7 @@ const dictionaries = {
       events: "Управление событиями",
       tasks: "Операционные задачи",
       team: "Управление командой",
+      chat: "Внутренний чат",
       resources: "Ресурсы и документы",
       profile: "Мой профиль",
     },
@@ -474,6 +495,7 @@ const dictionaries = {
     nav_events: "Events",
     nav_tasks: "Tasks",
     nav_team: "Team",
+    nav_chat: "Chat",
     nav_resources: "Resources",
     logout: "Logout",
     eyebrow: "Internal organizer workspace",
@@ -577,6 +599,14 @@ const dictionaries = {
     team_admin_title: "Team members",
     team_admin_subtitle: "Roles, access and responsibilities.",
     add_member: "Add member",
+    chat_title: "Internal chat",
+    chat_subtitle: "Quick messages for the organizer team.",
+    chat_placeholder: "Write a message for the team...",
+    chat_send: "Send",
+    chat_empty: "No messages yet.",
+    chat_loading: "Loading messages...",
+    chat_error: "Chat could not be loaded.",
+    chat_send_error: "The message could not be sent.",
     resources_admin_title: "Resources and documents",
     resources_admin_subtitle: "Equipment, vendors and documents needed for events.",
     add_resource: "Add resource",
@@ -586,6 +616,7 @@ const dictionaries = {
       events: "Event management",
       tasks: "Operational tasks",
       team: "Team management",
+      chat: "Internal chat",
       resources: "Resources and documents",
       profile: "My profile",
     },
@@ -625,6 +656,7 @@ const state = {
   language: localStorage.getItem("autocrew_language") || "ro",
   view: "dashboard",
   notifications: [],
+  chatMessages: [],
   profileImages: {},
 };
 
@@ -637,6 +669,9 @@ let shouldSaveSyncedLanguageRows = false;
 let lastSupabaseSaveError = "";
 let pendingProfileImageFile = null;
 let pendingProfileImagePreview = "";
+let chatRealtimeChannel = null;
+let chatPollTimer = null;
+let chatSyncStarted = false;
 const profileImageMaxSize = 5 * 1024 * 1024;
 const profileImageTypes = ["image/jpeg", "image/png", "image/webp"];
 
@@ -647,7 +682,7 @@ const roleLabels = {
 };
 
 const dataKeys = ["events", "cars", "tasks", "team", "resources", "ops_alerts", "event_plan", "quick_contacts"];
-const availableViews = ["dashboard", "cars", "events", "tasks", "team", "profile"];
+const availableViews = ["dashboard", "cars", "events", "tasks", "team", "chat", "profile"];
 
 const transliteratedRussianTextFixes = [
   ["Na dannyy moment vse v poryadke.", "На данный момент всё в порядке."],
@@ -1478,6 +1513,11 @@ const quickContacts = document.querySelector("#quick-contacts");
 const tasksTable = document.querySelector("#tasks-table");
 const teamList = document.querySelector("#team-list");
 const resourceList = document.querySelector("#resource-list");
+const chatMessages = document.querySelector("#chat-messages");
+const chatForm = document.querySelector("#chat-form");
+const chatInput = document.querySelector("#chat-input");
+const chatError = document.querySelector("#chat-error");
+const chatSendButton = document.querySelector("#chat-send-button");
 const profileForm = document.querySelector("#profile-form");
 const profileAvatar = document.querySelector("#profile-avatar");
 const profileName = document.querySelector("#profile-name");
@@ -1628,6 +1668,7 @@ function getCurrentUser() {
 }
 
 function clearStoredSession() {
+  stopChatSync();
   localStorage.removeItem("autocrew_logged_in");
   localStorage.removeItem("kultura_current_user");
   localStorage.removeItem("kultura_last_view");
@@ -2354,6 +2395,198 @@ function renderProfile() {
   }
 }
 
+function normalizeChatMessage(row) {
+  return {
+    id: row?.id || `${row?.created_at || Date.now()}-${row?.user_email || ""}`,
+    userName: String(row?.user_name || "").trim() || "Membru",
+    userEmail: normalizeEmail(row?.user_email || ""),
+    message: String(row?.message || "").trim(),
+    createdAt: row?.created_at || new Date().toISOString(),
+  };
+}
+
+function chatTimeLabel(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  return date.toLocaleString([], { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
+}
+
+function setChatError(message = "") {
+  if (!chatError) return;
+  chatError.textContent = message;
+  chatError.classList.toggle("visible", Boolean(message));
+}
+
+function chatErrorMessage(error, fallback = t().chat_error) {
+  const message = String(error?.message || "").trim();
+  const code = String(error?.code || "").trim();
+  const lowerMessage = message.toLowerCase();
+
+  if (lowerMessage.includes("row-level security") || code === "42501") {
+    return `${fallback} Verifica politicile RLS pentru tabela ${supabaseConfig.chatTable}.`;
+  }
+  if (lowerMessage.includes("permission denied")) {
+    return `${fallback} Lipsesc permisiunile pentru tabela ${supabaseConfig.chatTable}.`;
+  }
+  if (lowerMessage.includes("relation") && lowerMessage.includes("does not exist")) {
+    return `${fallback} Tabela ${supabaseConfig.chatTable} nu exista.`;
+  }
+  return message ? `${fallback} (${message})` : fallback;
+}
+
+function scrollChatToBottom() {
+  if (!chatMessages) return;
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function renderChatMessages() {
+  if (!chatMessages) return;
+  const currentUser = getCurrentUser();
+  const currentEmail = normalizeEmail(currentUser?.email || "");
+
+  if (state.chatMessages.length === 0) {
+    chatMessages.innerHTML = `<div class="empty-state">${escapeHtml(t().chat_empty)}</div>`;
+    return;
+  }
+
+  chatMessages.innerHTML = state.chatMessages
+    .slice()
+    .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+    .map((message) => {
+      const mine = currentEmail && normalizeEmail(message.userEmail) === currentEmail;
+      return `
+        <article class="chat-message ${mine ? "mine" : ""}">
+          <div class="chat-bubble">
+            <div class="chat-meta">
+              <strong>${escapeHtml(message.userName)}</strong>
+              <time>${escapeHtml(chatTimeLabel(message.createdAt))}</time>
+            </div>
+            <p>${escapeHtml(message.message)}</p>
+          </div>
+        </article>
+      `;
+    })
+    .join("");
+
+  requestAnimationFrame(scrollChatToBottom);
+}
+
+function mergeChatMessages(messages) {
+  const byId = new Map(state.chatMessages.map((message) => [message.id, message]));
+  messages.map(normalizeChatMessage).forEach((message) => {
+    if (message.message) byId.set(message.id, message);
+  });
+  state.chatMessages = Array.from(byId.values()).sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)).slice(-150);
+}
+
+async function loadChatMessages(options = {}) {
+  const { silent = false } = options;
+  if (!chatMessages || !supabaseClient) {
+    if (!silent) {
+      state.chatMessages = [];
+      renderChatMessages();
+      setChatError(t().chat_error);
+    }
+    return false;
+  }
+
+  if (!silent && state.chatMessages.length === 0) {
+    chatMessages.innerHTML = `<div class="empty-state">${escapeHtml(t().chat_loading)}</div>`;
+  }
+
+  const { data, error } = await supabaseClient
+    .from(supabaseConfig.chatTable)
+    .select("id,user_name,user_email,message,created_at")
+    .order("created_at", { ascending: true })
+    .limit(150);
+
+  if (error) {
+    console.warn("Chatul nu a putut fi citit din Supabase.", error);
+    if (!silent) setChatError(chatErrorMessage(error, t().chat_error));
+    return false;
+  }
+
+  setChatError("");
+  state.chatMessages = (data || []).map(normalizeChatMessage);
+  renderChatMessages();
+  return true;
+}
+
+async function sendChatMessage(text) {
+  const user = getCurrentUser();
+  const message = String(text || "").trim();
+  if (!user || !message || !supabaseClient) return false;
+
+  const { data, error } = await supabaseClient
+    .from(supabaseConfig.chatTable)
+    .insert({
+      user_name: user.name || authEmailToLogin(user.email) || "Membru",
+      user_email: normalizeEmail(user.email),
+      message,
+    })
+    .select("id,user_name,user_email,message,created_at")
+    .single();
+
+  if (error) {
+    console.warn("Mesajul de chat nu a putut fi trimis.", error);
+    setChatError(chatErrorMessage(error, t().chat_send_error));
+    return false;
+  }
+
+  setChatError("");
+  if (data) {
+    mergeChatMessages([data]);
+    renderChatMessages();
+  } else {
+    await loadChatMessages({ silent: true });
+  }
+  return true;
+}
+
+function startChatSync() {
+  if (chatSyncStarted || !supabaseClient || !chatMessages) return;
+  chatSyncStarted = true;
+  loadChatMessages({ silent: true });
+
+  chatPollTimer = window.setInterval(() => {
+    loadChatMessages({ silent: true });
+  }, 7000);
+
+  if (typeof supabaseClient.channel === "function") {
+    try {
+      chatRealtimeChannel = supabaseClient
+        .channel("kultura-chat")
+        .on(
+          "postgres_changes",
+          { event: "INSERT", schema: "public", table: supabaseConfig.chatTable },
+          (payload) => {
+            if (payload?.new) {
+              mergeChatMessages([payload.new]);
+              renderChatMessages();
+            }
+          },
+        )
+        .subscribe();
+    } catch (error) {
+      console.warn("Realtime pentru chat nu a putut fi pornit.", error);
+    }
+  }
+}
+
+function stopChatSync() {
+  if (chatPollTimer) {
+    window.clearInterval(chatPollTimer);
+    chatPollTimer = null;
+  }
+  if (chatRealtimeChannel && supabaseClient?.removeChannel) {
+    supabaseClient.removeChannel(chatRealtimeChannel);
+  }
+  chatRealtimeChannel = null;
+  chatSyncStarted = false;
+  state.chatMessages = [];
+  renderChatMessages();
+}
+
 function applyPermissions() {
   document.querySelectorAll('[data-view="team"]').forEach((button) => {
     button.hidden = !canViewTeam();
@@ -2862,6 +3095,7 @@ function render() {
   renderEvents();
   renderTasks();
   renderTeam();
+  renderChatMessages();
   renderProfile();
   applyPermissions();
 }
@@ -2886,6 +3120,9 @@ function showView(view) {
   if (viewTitle) {
     viewTitle.textContent = t().views[view];
   }
+  if (view === "chat") {
+    loadChatMessages({ silent: state.chatMessages.length > 0 });
+  }
   renderProfile();
 }
 
@@ -2893,6 +3130,7 @@ function showAdmin() {
   publicHome?.classList.add("is-hidden");
   loginScreen.classList.add("is-hidden");
   adminApp.classList.remove("is-hidden");
+  startChatSync();
   render();
 }
 
@@ -3178,6 +3416,20 @@ if (carsClearButton) {
     renderMetrics();
   });
 }
+
+chatForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const message = chatInput?.value.trim();
+  if (!message) return;
+
+  if (chatSendButton) chatSendButton.disabled = true;
+  const sent = await sendChatMessage(message);
+  if (chatSendButton) chatSendButton.disabled = false;
+  if (sent && chatInput) {
+    chatInput.value = "";
+    chatInput.focus();
+  }
+});
 
 profilePhotoButton?.addEventListener("click", () => {
   profilePhotoInput?.click();
