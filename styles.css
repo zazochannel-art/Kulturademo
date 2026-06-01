@@ -3847,6 +3847,8 @@ body::after {
 /* Mobile only: hide the bottom menu bar shell and keep only the icons visible. */
 @media (max-width: 720px) {
   #admin-app .sidebar {
+    --mobile-nav-size: clamp(32px, 9.6vw, 38px);
+    --mobile-nav-icon: clamp(20px, 6vw, 23px);
     display: flex !important;
     flex-direction: row;
     flex-wrap: nowrap;
