@@ -31,7 +31,7 @@ const dictionaries = {
     login_eyebrow: "Acces echipa",
     login_title: "Logare in panoul organizatorilor",
     login_subtitle: "Gestioneaza evenimente, task-uri, membri si resurse dintr-un singur loc.",
-    email_label: "Email",
+    email_label: "Почта",
     login_label: "Login",
     login_email_placeholder: "Introdu loginul sau emailul",
     password_label: "Parola",
@@ -142,6 +142,12 @@ const dictionaries = {
     events_subtitle: "Status, responsabil si progres pentru fiecare eveniment.",
     view_all: "Vezi tot",
     priority_title: "Prioritati azi",
+    priority_urgent_name: "Urgente",
+    priority_urgent_desc: "Necesita atentie imediata",
+    priority_important_name: "Importante",
+    priority_important_desc: "De finalizat in curand",
+    priority_optional_name: "Optionale",
+    priority_optional_desc: "Poate fi amanata",
     responsible: "Responsabil",
     task_due: "Termen",
     take_task: "Iau sarcina",
@@ -225,10 +231,10 @@ const dictionaries = {
     login_subtitle: "Управляйте событиями, задачами, командой и ресурсами в одном месте.",
     email_label: "Email",
     login_label: "Логин",
-    login_email_placeholder: "Введите логин или email",
+    login_email_placeholder: "Введите логин или почту",
     password_label: "Пароль",
     login_password_placeholder: "Пароль аккаунта",
-    username_label: "Username",
+    username_label: "Имя пользователя",
     register_name_placeholder: "Имя Фамилия",
     register_email_placeholder: "igor",
     register_password_placeholder: "Придумайте пароль",
@@ -241,7 +247,7 @@ const dictionaries = {
     name_label: "Имя",
     register_button: "Создать аккаунт",
     register_submit: "Создать аккаунт",
-    register_hint: "Аккаунт создается с username и паролем. Админ может изменить доступ в Команде.",
+    register_hint: "Аккаунт создается с именем пользователя и паролем. Админ может изменить доступ в Команде.",
     back_to_login: "У меня уже есть аккаунт",
     password_confirm_label: "Подтвердите пароль",
     register_error_name: "Введите полное имя.",
@@ -254,14 +260,14 @@ const dictionaries = {
     auth_error_email_disabled: "Вход по логину и паролю отключен в Supabase. Включите Authentication > Providers > Email.",
     auth_error_invalid_credentials: "Логин или пароль неверны.",
     auth_error_existing_account: "Аккаунт с этим логином уже существует. Войдите или используйте существующий пароль.",
-    auth_error_email_not_confirmed: "Email не подтвержден. Для входа без письма отключите Confirm email в Supabase.",
-    auth_error_email_send_failed: "Supabase все еще пытается отправить email. Отключите Confirm email в Authentication > Providers > Email.",
-    auth_error_confirmation_required: "Подтверждение email все еще включено в Supabase. Отключите Confirm email, чтобы вход был только по email и паролю.",
+    auth_error_email_not_confirmed: "Почта не подтверждена. Для входа без письма отключите Confirm email в Supabase.",
+    auth_error_email_send_failed: "Supabase все еще пытается отправить письмо. Отключите Confirm email в Authentication > Providers > Email.",
+    auth_error_confirmation_required: "Подтверждение почты все еще включено в Supabase. Отключите Confirm email, чтобы вход был только по логину и паролю.",
     auth_error_google_provider: "Google не настроен в Supabase. Включите Authentication > Providers > Google.",
     auth_error_oauth_cancelled: "Вход через Google был отменен.",
     auth_error_rate_limit: "Слишком много попыток. Подождите немного и попробуйте снова.",
-    auth_error_signup_disabled: "Регистрация отключена в Supabase. Включите signups для Email.",
-    register_check_email: "Аккаунт создан. Войдите с email и паролем.",
+    auth_error_signup_disabled: "Регистрация отключена в Supabase. Включите регистрацию для почты.",
+    register_check_email: "Аккаунт создан. Войдите с логином и паролем.",
     public_register: "Зарегистрироваться",
     public_admin: "Вход",
     public_language_label: "Сменить язык",
@@ -285,41 +291,41 @@ const dictionaries = {
     profile_photo_hint: "JPG, PNG или WEBP, максимум 5MB.",
     profile_photo_invalid: "Выберите изображение JPG, PNG или WEBP.",
     profile_photo_too_large: "Изображение должно быть максимум 5MB.",
-    profile_photo_upload_error: "Фото не удалось загрузить в Storage. Оно сохранено в данных приложения.",
-    home_eyebrow: "Glavnaya",
-    home_title: "Glavnyy centr Kultura",
-    home_subtitle: "Uchastniki, zadachi, zony, komanda i resursy dlya organizacii sobytiya.",
-    quick_add_car: "Dobavit uchastnika",
-    quick_add_task: "Dobavit zadachu",
-    quick_view_cars: "Avto",
-    quick_view_tasks: "Zadachi",
-    ops_alerts_title: "Organizacionnye alerty",
-    ops_alerts_subtitle: "Chto nuzhno proverit bistro.",
-    add_alert: "Dobavit",
-    zone_status_title: "Avto zony",
-    zone_status_subtitle: "Zanyatost i pribytie po zonam.",
-    timeline_title: "Plan dnya",
-    timeline_subtitle: "Bystrye orientiry dlya komandy.",
-    add_plan_item: "Dobavit",
-    contacts_title: "Bystrye kontakty",
-    contacts_subtitle: "Klyuchevye lyudi dlya koordinacii.",
-    add_contact: "Dobavit",
-    alert_overdue: "zadachi prosrochili srok",
-    alert_due_soon: "zadachi so srokom do 48h",
-    alert_missing_phone: "uchastniki bez telefona",
-    alert_missing_plate: "uchastniki bez nomera",
-    alert_resources: "resursy zhduut podtverzhdeniya",
-    alert_all_good: "Na dannyy moment vse v poryadke.",
-    zone_arrived: "pribyli",
-    zone_invited: "priglasheny",
-    no_zone: "Bez zony",
-    empty_contacts: "Dobavte uchastnikov komandy dlya bystryh kontaktov.",
+    profile_photo_upload_error: "Фото не удалось загрузить в хранилище. Оно сохранено в данных приложения.",
+    home_eyebrow: "Главная",
+    home_title: "Главный центр Kultura",
+    home_subtitle: "Участники, задачи, зоны, команда и ресурсы для организации события.",
+    quick_add_car: "Добавить участника",
+    quick_add_task: "Добавить задачу",
+    quick_view_cars: "Авто",
+    quick_view_tasks: "Задачи",
+    ops_alerts_title: "Организационные алерты",
+    ops_alerts_subtitle: "Что нужно быстро проверить.",
+    add_alert: "Добавить",
+    zone_status_title: "Авто-зоны",
+    zone_status_subtitle: "Занятость и прибытие по зонам.",
+    timeline_title: "План дня",
+    timeline_subtitle: "Быстрые ориентиры для команды.",
+    add_plan_item: "Добавить",
+    contacts_title: "Быстрые контакты",
+    contacts_subtitle: "Ключевые люди для координации.",
+    add_contact: "Добавить",
+    alert_overdue: "задачи просрочены",
+    alert_due_soon: "задачи со сроком до 48 часов",
+    alert_missing_phone: "участники без телефона",
+    alert_missing_plate: "участники без номера",
+    alert_resources: "ресурсы ждут подтверждения",
+    alert_all_good: "На данный момент все в порядке.",
+    zone_arrived: "прибыли",
+    zone_invited: "приглашены",
+    no_zone: "Без зоны",
+    empty_contacts: "Добавьте участников команды для быстрых контактов.",
     event_plan: [
-      ["08:00", "Dostup komandy", "Briefing i proverka lokacii"],
-      ["09:30", "Priem uchastnikov", "Kontrol spiska avto i zon"],
-      ["11:00", "Otkrytie dlya publichnosti", "Koordinaciya dostupa i media"],
-      ["14:00", "Glavnye aktivnosti", "Kontrol srochnyh zadach"],
-      ["18:00", "Zakrytie", "Proverka resursov i vyezdov"],
+      ["08:00", "Доступ команды", "Брифинг и проверка локации"],
+      ["09:30", "Прием участников", "Контроль списка авто и зон"],
+      ["11:00", "Открытие для публики", "Координация доступа и медиа"],
+      ["14:00", "Главные активности", "Контроль срочных задач"],
+      ["18:00", "Закрытие", "Проверка ресурсов и выездов"],
     ],
     metric_events: "Активные события",
     metric_events_note: "2 в активной подготовке",
@@ -333,6 +339,12 @@ const dictionaries = {
     events_subtitle: "Статус, ответственный и прогресс по каждому событию.",
     view_all: "Все",
     priority_title: "Приоритеты сегодня",
+    priority_urgent_name: "Срочные",
+    priority_urgent_desc: "Требуют немедленного внимания",
+    priority_important_name: "Важные",
+    priority_important_desc: "Нужно завершить в ближайшее время",
+    priority_optional_name: "Необязательные",
+    priority_optional_desc: "Можно отложить",
     responsible: "Ответственный",
     task_due: "Срок",
     take_task: "Беру задачу",
@@ -386,9 +398,9 @@ const dictionaries = {
     ],
     cars: [
       ["BMW E36", "Алексей Русу", "+373 69 000 001", "KLT 036", "Зона A", "Дрифт", "Invitat"],
-      ["Toyota Supra MK4", "Дмитрий Чебан", "+373 69 000 002", "KLT 404", "Зона B", "Show car", "Sosit"],
-      ["Nissan Silvia S15", "Максим Морару", "+373 69 000 003", "KLT 015", "Зона A", "Track", "Invitat"],
-      ["Audi RS3", "Кристина Лунгу", "+373 69 000 004", "KLT 303", "Зона C", "Expo", "Plecat"],
+      ["Toyota Supra MK4", "Дмитрий Чебан", "+373 69 000 002", "KLT 404", "Зона B", "Шоу-кар", "Sosit"],
+      ["Nissan Silvia S15", "Максим Морару", "+373 69 000 003", "KLT 015", "Зона A", "Трек", "Invitat"],
+      ["Audi RS3", "Кристина Лунгу", "+373 69 000 004", "KLT 303", "Зона C", "Экспо", "Plecat"],
     ],
     tasks: [
       ["Подтвердить охрану и скорую помощь", "Анна", "Срочно"],
@@ -525,6 +537,12 @@ const dictionaries = {
     events_subtitle: "Status, owner and progress for each event.",
     view_all: "View all",
     priority_title: "Today priorities",
+    priority_urgent_name: "Urgent",
+    priority_urgent_desc: "Needs immediate attention",
+    priority_important_name: "Important",
+    priority_important_desc: "Finish soon",
+    priority_optional_name: "Optional",
+    priority_optional_desc: "Can be postponed",
     responsible: "Owner",
     task_due: "Due",
     take_task: "Take task",
@@ -705,7 +723,7 @@ function isDateValue(value) {
   return /^\d{4}-\d{2}-\d{2}$/.test(String(value || ""));
 }
 
-const taskPriorityOptions = ["🚨 Urgente", "⏳ Importante", "📋 Opționale"];
+const taskPriorityOptions = ["Urgente", "Importante", "Optionale"];
 
 function normalizeTaskPriority(value) {
   const raw = String(value || "").trim();
@@ -714,13 +732,13 @@ function normalizeTaskPriority(value) {
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "");
 
-  if (compact.includes("urgent") || compact.includes("🚨") || compact.includes("сроч")) {
+  if (compact.includes("urgent") || compact.includes("\u0441\u0440\u043e\u0447")) {
     return taskPriorityOptions[0];
   }
-  if (compact.includes("important") || compact.includes("mediu") || compact.includes("medium") || compact.includes("⏳") || compact.includes("сред")) {
+  if (compact.includes("important") || compact.includes("mediu") || compact.includes("medium") || compact.includes("\u0432\u0430\u0436\u043d") || compact.includes("\u0441\u0440\u0435\u0434")) {
     return taskPriorityOptions[1];
   }
-  if (compact.includes("optional") || compact.includes("option") || compact.includes("low") || compact.includes("normal") || compact.includes("📋")) {
+  if (compact.includes("optional") || compact.includes("option") || compact.includes("low") || compact.includes("normal") || compact.includes("\u043d\u0435\u043e\u0431\u044f\u0437")) {
     return taskPriorityOptions[2];
   }
   return taskPriorityOptions.includes(raw) ? raw : taskPriorityOptions[1];
@@ -735,6 +753,40 @@ function taskPriorityClass(priority) {
 
 function taskPriorityRank(priority) {
   return taskPriorityOptions.indexOf(normalizeTaskPriority(priority));
+}
+
+function taskPriorityLabel(priority) {
+  const normalized = normalizeTaskPriority(priority);
+  const labels = [t().priority_urgent_name, t().priority_important_name, t().priority_optional_name];
+  const index = taskPriorityOptions.indexOf(normalized);
+  return labels[index] || normalized;
+}
+
+function carStatusLabel(status) {
+  const statuses = t().car_statuses || ["Invitat", "Sosit", "Plecat"];
+  const index = ["Invitat", "Sosit", "Plecat"].indexOf(status);
+  return index >= 0 ? statuses[index] : status;
+}
+
+function optionDisplayLabel(kind, fieldIndex, option) {
+  if (kind === "tasks" && fieldIndex === 2) {
+    return taskPriorityLabel(option);
+  }
+  if (kind === "cars" && fieldIndex === 6) {
+    return carStatusLabel(option);
+  }
+  if (kind === "team" && fieldIndex === 2) {
+    return roleLabel(option);
+  }
+  if (kind === "ops_alerts" && fieldIndex === 2) {
+    const labels = {
+      ro: { info: "Info", warning: "Avertizare", danger: "Urgent", good: "OK" },
+      ru: { info: "Инфо", warning: "Предупреждение", danger: "Срочно", good: "OK" },
+      en: { info: "Info", warning: "Warning", danger: "Urgent", good: "OK" },
+    };
+    return labels[state.language]?.[option] || option;
+  }
+  return option;
 }
 
 function normalizeTaskRows() {
@@ -1145,9 +1197,9 @@ const formConfigs = {
     fields: [
       { label: { ro: "Nume", ru: "Название", en: "Name" }, placeholder: "Night Drive Meetup" },
       { label: { ro: "Locatie", ru: "Локация", en: "Location" }, placeholder: "Chisinau Arena" },
-      { label: { ro: "Tip", ru: "Тип", en: "Type" }, placeholder: "Logistica" },
+      { label: { ro: "Tip", ru: "Тип", en: "Type" }, placeholder: { ro: "Logistica", ru: "Логистика", en: "Logistics" } },
       { label: { ro: "Responsabil", ru: "Ответственный", en: "Owner" }, placeholder: "Victor" },
-      { label: { ro: "Status", ru: "Статус", en: "Status" }, placeholder: "In lucru" },
+      { label: { ro: "Status", ru: "Статус", en: "Status" }, placeholder: { ro: "In lucru", ru: "В работе", en: "In progress" } },
       { label: { ro: "Progres", ru: "Прогресс", en: "Progress" }, placeholder: "60", type: "number", min: 0, max: 100 },
     ],
   },
@@ -1158,7 +1210,7 @@ const formConfigs = {
       { label: { ro: "Masina", ru: "Машина", en: "Car" }, placeholder: "BMW E36" },
       { label: { ro: "Numar de telefon", ru: "Номер телефона", en: "Phone number" }, placeholder: "+373 69 000 000", type: "tel" },
       { label: { ro: "Numarul de inmatriculare", ru: "Регистрационный номер", en: "License plate" }, placeholder: "KLT 036" },
-      { label: { ro: "Zona", ru: "Зона", en: "Zone" }, placeholder: "Zona A / B / C" },
+      { label: { ro: "Zona", ru: "Зона", en: "Zone" }, placeholder: { ro: "Zona A / B / C", ru: "Зона A / B / C", en: "Zone A / B / C" } },
       { label: { ro: "Categorie", ru: "Категория", en: "Category" }, placeholder: "Drift" },
       { label: { ro: "Status", ru: "Статус", en: "Status" }, placeholder: "Invitat", type: "select", options: ["Invitat", "Sosit", "Plecat"] },
     ],
@@ -1166,7 +1218,7 @@ const formConfigs = {
   tasks: {
     title: { ro: "task", ru: "задачу", en: "task" },
     fields: [
-      { label: { ro: "Task", ru: "Задача", en: "Task" }, placeholder: "Confirmare securitate" },
+      { label: { ro: "Task", ru: "Задача", en: "Task" }, placeholder: { ro: "Confirmare securitate", ru: "Подтверждение безопасности", en: "Security confirmation" } },
       { label: { ro: "Responsabil", ru: "Ответственный", en: "Owner" }, placeholder: "Ana" },
       { label: { ro: "Prioritate", ru: "Приоритет", en: "Priority" }, placeholder: taskPriorityOptions[0], type: "select", options: taskPriorityOptions },
       { label: { ro: "Termen", ru: "Срок", en: "Due date" }, placeholder: "", type: "date" },
@@ -1176,41 +1228,41 @@ const formConfigs = {
     title: { ro: "membru", ru: "участника", en: "member" },
     fields: [
       { label: { ro: "Nume", ru: "Имя", en: "Name" }, placeholder: "Victor" },
-      { label: { ro: "Rol", ru: "Роль", en: "Role" }, placeholder: "Coordonator logistica" },
+      { label: { ro: "Rol", ru: "Роль", en: "Role" }, placeholder: { ro: "Coordonator logistica", ru: "Координатор логистики", en: "Logistics coordinator" } },
       { label: { ro: "Acces", ru: "Доступ", en: "Access" }, placeholder: "Admin general", type: "select", options: ["Admin general", "Admin", "Editor", "Viewer"] },
       { label: { ro: "Login", ru: "Логин", en: "Login" }, placeholder: "igor" },
     ],
   },
   ops_alerts: {
-    title: { ro: "alerta", ru: "alert", en: "alert" },
+    title: { ro: "alerta", ru: "алерт", en: "alert" },
     fields: [
       { label: { ro: "Indicator", ru: "Indicator", en: "Indicator" }, placeholder: "OK / 3 / 48h" },
-      { label: { ro: "Text", ru: "Text", en: "Text" }, placeholder: "Ce trebuie verificat" },
-      { label: { ro: "Tip", ru: "Tip", en: "Tone" }, placeholder: "info", type: "select", options: ["info", "warning", "danger", "good"] },
+      { label: { ro: "Text", ru: "Текст", en: "Text" }, placeholder: { ro: "Ce trebuie verificat", ru: "Что нужно проверить", en: "What needs to be checked" } },
+      { label: { ro: "Tip", ru: "Тип", en: "Tone" }, placeholder: "info", type: "select", options: ["info", "warning", "danger", "good"] },
     ],
   },
   event_plan: {
-    title: { ro: "punct plan", ru: "punkt plana", en: "plan item" },
+    title: { ro: "punct plan", ru: "пункт плана", en: "plan item" },
     fields: [
-      { label: { ro: "Ora", ru: "Vremya", en: "Time" }, placeholder: "09:30" },
-      { label: { ro: "Titlu", ru: "Nazvanie", en: "Title" }, placeholder: "Primire participanti" },
-      { label: { ro: "Descriere", ru: "Opisanie", en: "Description" }, placeholder: "Control lista auto si zone" },
+      { label: { ro: "Ora", ru: "Время", en: "Time" }, placeholder: "09:30" },
+      { label: { ro: "Titlu", ru: "Название", en: "Title" }, placeholder: { ro: "Primire participanti", ru: "Прием участников", en: "Participant arrival" } },
+      { label: { ro: "Descriere", ru: "Описание", en: "Description" }, placeholder: { ro: "Control lista auto si zone", ru: "Контроль списка авто и зон", en: "Check car list and zones" } },
     ],
   },
   quick_contacts: {
-    title: { ro: "contact", ru: "kontakt", en: "contact" },
+    title: { ro: "contact", ru: "контакт", en: "contact" },
     fields: [
-      { label: { ro: "Nume", ru: "Imya", en: "Name" }, placeholder: "Victor" },
-      { label: { ro: "Rol", ru: "Rol", en: "Role" }, placeholder: "Coordonator logistica" },
-      { label: { ro: "Contact", ru: "Kontakt", en: "Contact" }, placeholder: "telefon sau login" },
+      { label: { ro: "Nume", ru: "Имя", en: "Name" }, placeholder: "Victor" },
+      { label: { ro: "Rol", ru: "Роль", en: "Role" }, placeholder: { ro: "Coordonator logistica", ru: "Координатор логистики", en: "Logistics coordinator" } },
+      { label: { ro: "Contact", ru: "Контакт", en: "Contact" }, placeholder: { ro: "telefon sau login", ru: "телефон или логин", en: "phone or login" } },
     ],
   },
   resources: {
     title: { ro: "resursa", ru: "ресурс", en: "resource" },
     fields: [
-      { label: { ro: "Titlu", ru: "Название", en: "Title" }, placeholder: "Autorizatii" },
-      { label: { ro: "Descriere", ru: "Описание", en: "Description" }, placeholder: "Acte necesare pentru locatie" },
-      { label: { ro: "Status", ru: "Статус", en: "Status" }, placeholder: "In lucru" },
+      { label: { ro: "Titlu", ru: "Название", en: "Title" }, placeholder: { ro: "Autorizatii", ru: "Разрешения", en: "Permits" } },
+      { label: { ro: "Descriere", ru: "Описание", en: "Description" }, placeholder: { ro: "Acte necesare pentru locatie", ru: "Документы, необходимые для локации", en: "Documents needed for venue" } },
+      { label: { ro: "Status", ru: "Статус", en: "Status" }, placeholder: { ro: "In lucru", ru: "В работе", en: "In progress" } },
     ],
   },
 };
@@ -1632,7 +1684,10 @@ function uiText(key) {
 }
 
 function labelText(value) {
-  return value[state.language] || value.ro;
+  if (value && typeof value === "object") {
+    return value[state.language] || value.ro || value.en || Object.values(value)[0] || "";
+  }
+  return String(value ?? "");
 }
 
 function escapeHtml(value) {
@@ -2209,7 +2264,7 @@ function renderCars() {
         <span>${escapeHtml(category)}</span>
         <select class="status-select" data-car-status="${index}">
           ${["Invitat", "Sosit", "Plecat"]
-            .map((option) => `<option value="${escapeHtml(option)}" ${option === status ? "selected" : ""}>${escapeHtml(option)}</option>`)
+            .map((option) => `<option value="${escapeHtml(option)}" ${option === status ? "selected" : ""}>${escapeHtml(carStatusLabel(option))}</option>`)
             .join("")}
         </select>
         <div class="row-actions">
@@ -2257,7 +2312,7 @@ function buildTaskMarkup(task, owner, priority, dueDate, status, takenBy, index)
 
   return `
         <article class="task-item">
-          <div class="task-top"><strong>${escapeHtml(task)}</strong><span class="priority ${priorityClass}">${escapeHtml(normalizedPriority)}</span></div>
+          <div class="task-top"><strong>${escapeHtml(task)}</strong><span class="priority ${priorityClass}">${escapeHtml(taskPriorityLabel(normalizedPriority))}</span></div>
           <span>${t().responsible}: ${escapeHtml(owner)}</span>
           ${dueDate ? `<span class="task-due">${escapeHtml(t().task_due)}: ${escapeHtml(dueDate)}</span>` : ""}
           ${
@@ -2328,7 +2383,7 @@ function renderTeam() {
         <div class="avatar">${escapeHtml(initials(name))}</div>
         <div>
           <strong>${escapeHtml(name)}</strong>
-          <span>${escapeHtml(role)} - ${escapeHtml(access)}</span>
+          <span>${escapeHtml(role)} - ${escapeHtml(roleLabel(access))}</span>
           <span>${escapeHtml(authEmailToLogin(email))}</span>
         </div>
         <div class="row-actions">
@@ -2542,14 +2597,14 @@ function openEditor(kind, index = null) {
                 field.type === "select"
                   ? `<select name="field-${fieldIndex}" required>
                       ${field.options
-                        .map((option) => `<option value="${escapeHtml(option)}" ${option === values[fieldIndex] ? "selected" : ""}>${escapeHtml(option)}</option>`)
+                        .map((option) => `<option value="${escapeHtml(option)}" ${option === values[fieldIndex] ? "selected" : ""}>${escapeHtml(optionDisplayLabel(kind, fieldIndex, option))}</option>`)
                         .join("")}
                     </select>`
                   : `<input
                       type="${field.type || "text"}"
                       name="field-${fieldIndex}"
                       value="${escapeHtml(values[fieldIndex] ?? "")}"
-                      placeholder="${escapeHtml(field.placeholder)}"
+                      placeholder="${escapeHtml(labelText(field.placeholder))}"
                       ${field.min !== undefined ? `min="${field.min}"` : ""}
                       ${field.max !== undefined ? `max="${field.max}"` : ""}
                       required
