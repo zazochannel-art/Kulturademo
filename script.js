@@ -229,7 +229,7 @@ const dictionaries = {
     login_eyebrow: "Доступ команды",
     login_title: "Вход в панель организаторов",
     login_subtitle: "Управляйте событиями, задачами, командой и ресурсами в одном месте.",
-    email_label: "Email",
+    email_label: "Почта",
     login_label: "Логин",
     login_email_placeholder: "Введите логин или почту",
     password_label: "Пароль",
@@ -288,9 +288,9 @@ const dictionaries = {
     profile_saved: "Профиль сохранен.",
     profile_password_label: "Новый пароль",
     profile_change_photo: "Изменить фото профиля",
-    profile_photo_hint: "JPG, PNG или WEBP, максимум 5MB.",
+    profile_photo_hint: "JPG, PNG или WEBP, максимум 5 МБ.",
     profile_photo_invalid: "Выберите изображение JPG, PNG или WEBP.",
-    profile_photo_too_large: "Изображение должно быть максимум 5MB.",
+    profile_photo_too_large: "Изображение должно быть максимум 5 МБ.",
     profile_photo_upload_error: "Фото не удалось загрузить в хранилище. Оно сохранено в данных приложения.",
     home_eyebrow: "Главная",
     home_title: "Главный центр Kultura",
@@ -315,7 +315,7 @@ const dictionaries = {
     alert_missing_phone: "участники без телефона",
     alert_missing_plate: "участники без номера",
     alert_resources: "ресурсы ждут подтверждения",
-    alert_all_good: "На данный момент все в порядке.",
+    alert_all_good: "На данный момент всё в порядке.",
     zone_arrived: "прибыли",
     zone_invited: "приглашены",
     no_zone: "Без зоны",
@@ -649,6 +649,105 @@ const roleLabels = {
 const dataKeys = ["events", "cars", "tasks", "team", "resources", "ops_alerts", "event_plan", "quick_contacts"];
 const availableViews = ["dashboard", "cars", "events", "tasks", "team", "profile"];
 
+const transliteratedRussianTextFixes = [
+  ["Na dannyy moment vse v poryadke.", "На данный момент всё в порядке."],
+  ["Na danniy moment vse v poryadke.", "На данный момент всё в порядке."],
+  ["Na dannyi moment vse v poryadke.", "На данный момент всё в порядке."],
+  ["Na dannii moment vse v poryadke.", "На данный момент всё в порядке."],
+  ["Na dannyy moment vsyo v poryadke.", "На данный момент всё в порядке."],
+  ["Vse v poryadke.", "Всё в порядке."],
+  ["Vse horosho.", "Всё хорошо."],
+  ["Dobavit", "Добавить"],
+  ["Izmenit", "Изменить"],
+  ["Sohranit", "Сохранить"],
+  ["Soxranit", "Сохранить"],
+  ["Otmena", "Отмена"],
+  ["Zakryt", "Закрыть"],
+  ["Glavnaya", "Главная"],
+  ["Zadachi", "Задачи"],
+  ["Sobytiya", "События"],
+  ["Uchastniki", "Участники"],
+  ["Komanda", "Команда"],
+  ["Resursy", "Ресурсы"],
+  ["Plan dnya", "План дня"],
+  ["Kontakty", "Контакты"],
+  ["Bystrye kontakty", "Быстрые контакты"],
+  ["Organizatsionnye alerty", "Организационные алерты"],
+  ["Chto nuzhno bystro proverit.", "Что нужно быстро проверить."],
+  ["zadachi prosrocheny", "задачи просрочены"],
+  ["zadachi so srokom do 48 chasov", "задачи со сроком до 48 часов"],
+  ["uchastniki bez telefona", "участники без телефона"],
+  ["uchastniki bez nomera", "участники без номера"],
+  ["resursy zhdut podtverzhdeniya", "ресурсы ждут подтверждения"],
+  ["Dostup komandy", "Доступ команды"],
+  ["Pribytie uchastnikov", "Прибытие участников"],
+  ["Otkrytie dlya publiki", "Открытие для публики"],
+  ["Glavnye aktivnosti", "Главные активности"],
+  ["Zakrytie", "Закрытие"],
+  ["Koordinator logistiki", "Координатор логистики"],
+  ["Bezopasnost i trassa", "Безопасность и трасса"],
+  ["Media i kommunikatsiya", "Медиа и коммуникация"],
+  ["Partnery i razresheniya", "Партнеры и разрешения"],
+  ["V rabote", "В работе"],
+  ["Gotovo", "Готово"],
+  ["Pochti gotovo", "Почти готово"],
+  ["Est risk", "Есть риск"],
+  ["Podtverdit", "Подтвердить"],
+  ["Obnovleno", "Обновлено"],
+];
+
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function fixTransliteratedRussianText(value) {
+  if (typeof value !== "string") return value;
+  return transliteratedRussianTextFixes.reduce(
+    (text, [from, to]) => text.replace(new RegExp(escapeRegExp(from), "gi"), to),
+    value,
+  );
+}
+
+function cleanTransliteratedRussianValue(value) {
+  if (Array.isArray(value)) {
+    return value.map(cleanTransliteratedRussianValue);
+  }
+  return fixTransliteratedRussianText(value);
+}
+
+function cleanTransliteratedRussianData(keys = dataKeys) {
+  const selectedKeys = (Array.isArray(keys) ? keys : [keys]).filter((key) => dataKeys.includes(key));
+  let changed = false;
+
+  languageOrder.forEach((language) => {
+    const dictionary = dictionaries[language];
+    if (!dictionary) return;
+
+    Object.entries(dictionary).forEach(([key, value]) => {
+      if (typeof value !== "string") return;
+      const cleaned = fixTransliteratedRussianText(value);
+      if (cleaned !== value) {
+        dictionary[key] = cleaned;
+        changed = true;
+      }
+    });
+
+    selectedKeys.forEach((key) => {
+      if (!Array.isArray(dictionary[key])) return;
+      const cleaned = cleanTransliteratedRussianValue(dictionary[key]);
+      if (!dataCollectionsEqual(dictionary[key], cleaned)) {
+        dictionary[key] = cleaned;
+        changed = true;
+      }
+    });
+  });
+
+  if (changed) {
+    shouldSaveSyncedLanguageRows = true;
+  }
+  return changed;
+}
+
 function cloneDataCollection(collection) {
   return Array.isArray(collection) ? collection.map((row) => (Array.isArray(row) ? [...row] : row)) : [];
 }
@@ -707,6 +806,7 @@ function applyStoredData(storedData) {
     });
   });
 
+  cleanTransliteratedRussianData();
   syncDataAcrossLanguages(baseLanguage);
 }
 
@@ -897,6 +997,7 @@ function ensureDashboardEditableRows() {
 }
 
 ensureDashboardEditableRows();
+cleanTransliteratedRussianData();
 syncDataAcrossLanguages(baseLanguage);
 
 function splitCsvLine(line, separator) {
@@ -1309,7 +1410,7 @@ const formConfigs = {
   ops_alerts: {
     title: { ro: "alerta", ru: "алерт", en: "alert" },
     fields: [
-      { label: { ro: "Indicator", ru: "Indicator", en: "Indicator" }, placeholder: "OK / 3 / 48h" },
+      { label: { ro: "Indicator", ru: "Индикатор", en: "Indicator" }, placeholder: "OK / 3 / 48h" },
       { label: { ro: "Text", ru: "Текст", en: "Text" }, placeholder: { ro: "Ce trebuie verificat", ru: "Что нужно проверить", en: "What needs to be checked" } },
       { label: { ro: "Tip", ru: "Тип", en: "Tone" }, placeholder: "info", type: "select", options: ["info", "warning", "danger", "good"] },
     ],
@@ -1779,6 +1880,7 @@ function setSyncStatus(message, state = "") {
 }
 
 function buildDataPayload() {
+  cleanTransliteratedRussianData();
   const payload = { profileImages: state.profileImages };
   Object.keys(dictionaries).forEach((language) => {
     payload[language] = {};
