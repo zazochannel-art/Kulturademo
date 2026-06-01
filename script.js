@@ -97,12 +97,15 @@ const dictionaries = {
     quick_view_tasks: "Vezi sarcini",
     ops_alerts_title: "Alerte organizare",
     ops_alerts_subtitle: "Ce necesita atentie rapida.",
+    add_alert: "Adauga",
     zone_status_title: "Zone auto",
     zone_status_subtitle: "Ocupare si sosiri pe zone.",
     timeline_title: "Plan zi eveniment",
     timeline_subtitle: "Repere rapide pentru echipa.",
+    add_plan_item: "Adauga",
     contacts_title: "Contacte rapide",
     contacts_subtitle: "Persoane cheie pentru coordonare.",
+    add_contact: "Adauga",
     alert_overdue: "sarcini au depasit termenul",
     alert_due_soon: "sarcini au termen in 48h",
     alert_missing_phone: "participanti fara telefon",
@@ -278,12 +281,15 @@ const dictionaries = {
     quick_view_tasks: "Zadachi",
     ops_alerts_title: "Organizacionnye alerty",
     ops_alerts_subtitle: "Chto nuzhno proverit bistro.",
+    add_alert: "Dobavit",
     zone_status_title: "Avto zony",
     zone_status_subtitle: "Zanyatost i pribytie po zonam.",
     timeline_title: "Plan dnya",
     timeline_subtitle: "Bystrye orientiry dlya komandy.",
+    add_plan_item: "Dobavit",
     contacts_title: "Bystrye kontakty",
     contacts_subtitle: "Klyuchevye lyudi dlya koordinacii.",
+    add_contact: "Dobavit",
     alert_overdue: "zadachi prosrochili srok",
     alert_due_soon: "zadachi so srokom do 48h",
     alert_missing_phone: "uchastniki bez telefona",
@@ -459,12 +465,15 @@ const dictionaries = {
     quick_view_tasks: "View tasks",
     ops_alerts_title: "Operations alerts",
     ops_alerts_subtitle: "What needs quick attention.",
+    add_alert: "Add",
     zone_status_title: "Auto zones",
     zone_status_subtitle: "Capacity and arrivals by zone.",
     timeline_title: "Event day plan",
     timeline_subtitle: "Quick checkpoints for the team.",
+    add_plan_item: "Add",
     contacts_title: "Quick contacts",
     contacts_subtitle: "Key people for coordination.",
+    add_contact: "Add",
     alert_overdue: "tasks are overdue",
     alert_due_soon: "tasks are due in 48h",
     alert_missing_phone: "participants without phone",
@@ -594,7 +603,8 @@ const roleLabels = {
   en: { admin_general: "General admin", admin: "Admin", editor: "Event coordinator", viewer: "Observer" },
 };
 
-const dataKeys = ["events", "cars", "tasks", "team", "resources"];
+const dataKeys = ["events", "cars", "tasks", "team", "resources", "ops_alerts", "event_plan", "quick_contacts"];
+const availableViews = ["dashboard", "cars", "events", "tasks", "team", "profile"];
 
 function applyStoredData(storedData) {
   if (storedData?.profileImages && typeof storedData.profileImages === "object") {
@@ -717,6 +727,29 @@ function normalizeTaskRows() {
 }
 
 normalizeTaskRows();
+
+function ensureDashboardEditableRows() {
+  Object.values(dictionaries).forEach((dictionary) => {
+    if (!Array.isArray(dictionary.ops_alerts) || dictionary.ops_alerts.length === 0) {
+      dictionary.ops_alerts = [
+        ["OK", dictionary.alert_all_good || "Totul arata bine pentru moment.", "good"],
+        ["48h", dictionary.alert_due_soon || "sarcini au termen in 48h", "warning"],
+      ];
+    }
+
+    if (!Array.isArray(dictionary.event_plan)) {
+      dictionary.event_plan = [];
+    }
+
+    if (!Array.isArray(dictionary.quick_contacts) || dictionary.quick_contacts.length === 0) {
+      dictionary.quick_contacts = (dictionary.team || [])
+        .slice(0, 4)
+        .map(([name, role, access, email]) => [name, role || access || "", authEmailToLogin(email)]);
+    }
+  });
+}
+
+ensureDashboardEditableRows();
 
 function splitCsvLine(line, separator) {
   const values = [];
@@ -1123,6 +1156,30 @@ const formConfigs = {
       { label: { ro: "Rol", ru: "Роль", en: "Role" }, placeholder: "Coordonator logistica" },
       { label: { ro: "Acces", ru: "Доступ", en: "Access" }, placeholder: "Admin general", type: "select", options: ["Admin general", "Admin", "Editor", "Viewer"] },
       { label: { ro: "Login", ru: "Логин", en: "Login" }, placeholder: "igor" },
+    ],
+  },
+  ops_alerts: {
+    title: { ro: "alerta", ru: "alert", en: "alert" },
+    fields: [
+      { label: { ro: "Indicator", ru: "Indicator", en: "Indicator" }, placeholder: "OK / 3 / 48h" },
+      { label: { ro: "Text", ru: "Text", en: "Text" }, placeholder: "Ce trebuie verificat" },
+      { label: { ro: "Tip", ru: "Tip", en: "Tone" }, placeholder: "info", type: "select", options: ["info", "warning", "danger", "good"] },
+    ],
+  },
+  event_plan: {
+    title: { ro: "punct plan", ru: "punkt plana", en: "plan item" },
+    fields: [
+      { label: { ro: "Ora", ru: "Vremya", en: "Time" }, placeholder: "09:30" },
+      { label: { ro: "Titlu", ru: "Nazvanie", en: "Title" }, placeholder: "Primire participanti" },
+      { label: { ro: "Descriere", ru: "Opisanie", en: "Description" }, placeholder: "Control lista auto si zone" },
+    ],
+  },
+  quick_contacts: {
+    title: { ro: "contact", ru: "kontakt", en: "contact" },
+    fields: [
+      { label: { ro: "Nume", ru: "Imya", en: "Name" }, placeholder: "Victor" },
+      { label: { ro: "Rol", ru: "Rol", en: "Role" }, placeholder: "Coordonator logistica" },
+      { label: { ro: "Contact", ru: "Kontakt", en: "Contact" }, placeholder: "telefon sau login" },
     ],
   },
   resources: {
@@ -2234,25 +2291,18 @@ function renderDashboardHome() {
   }).length;
   const missingPhone = cars.filter(([, , phone]) => !phone || phone === "-").length;
   const missingPlate = cars.filter(([, , , plate]) => !plate || plate === "-").length;
-  const resourceNeeds = dictionary.resources.filter(([, , status]) => {
-    const value = String(status || "").toLowerCase();
-    return ["confirm", "lucru", "risk", "risc"].some((word) => value.includes(word));
-  }).length;
-
   if (opsAlerts) {
-    const alerts = [
-      [overdueTasks, dictionary.alert_overdue, "danger"],
-      [dueSoonTasks, dictionary.alert_due_soon, "warning"],
-      [missingPhone, dictionary.alert_missing_phone, "info"],
-      [missingPlate, dictionary.alert_missing_plate, "info"],
-      [resourceNeeds, dictionary.alert_resources, "warning"],
-    ].filter(([count]) => count > 0);
+    const alerts = Array.isArray(dictionary.ops_alerts) ? dictionary.ops_alerts : [];
 
     opsAlerts.innerHTML = alerts.length
-      ? alerts.map(([count, label, tone]) => `
+      ? alerts.map(([count, label, tone], index) => `
         <article class="ops-alert ${tone}">
           <strong>${escapeHtml(count)}</strong>
           <span>${escapeHtml(label)}</span>
+          <div class="row-actions">
+            <button class="small-action" type="button" data-edit="ops_alerts" data-index="${index}">${escapeHtml(dictionary.edit)}</button>
+            <button class="small-action danger-action" type="button" data-delete="ops_alerts" data-index="${index}">${escapeHtml(dictionary.delete)}</button>
+          </div>
         </article>
       `).join("")
       : `<article class="ops-alert good"><strong>OK</strong><span>${escapeHtml(dictionary.alert_all_good)}</span></article>`;
@@ -2281,12 +2331,16 @@ function renderDashboardHome() {
 
   if (eventTimeline) {
     eventTimeline.innerHTML = dictionary.event_plan
-      .map(([time, title, description]) => `
+      .map(([time, title, description], index) => `
         <article class="timeline-item">
           <strong>${escapeHtml(time)}</strong>
           <div>
             <span>${escapeHtml(title)}</span>
             <small>${escapeHtml(description)}</small>
+          </div>
+          <div class="row-actions">
+            <button class="small-action" type="button" data-edit="event_plan" data-index="${index}">${escapeHtml(dictionary.edit)}</button>
+            <button class="small-action danger-action" type="button" data-delete="event_plan" data-index="${index}">${escapeHtml(dictionary.delete)}</button>
           </div>
         </article>
       `)
@@ -2294,14 +2348,19 @@ function renderDashboardHome() {
   }
 
   if (quickContacts) {
-    quickContacts.innerHTML = dictionary.team.length
-      ? dictionary.team.slice(0, 4).map(([name, role, access, email]) => `
+    const contacts = Array.isArray(dictionary.quick_contacts) ? dictionary.quick_contacts : [];
+    quickContacts.innerHTML = contacts.length
+      ? contacts.map(([name, role, contact], index) => `
         <article class="contact-card">
           <div class="avatar">${escapeHtml(initials(name))}</div>
           <div>
             <strong>${escapeHtml(name)}</strong>
-            <span>${escapeHtml(role)} - ${escapeHtml(access)}</span>
-            <small>${escapeHtml(authEmailToLogin(email))}</small>
+            <span>${escapeHtml(role)}</span>
+            <small>${escapeHtml(contact)}</small>
+          </div>
+          <div class="row-actions">
+            <button class="small-action" type="button" data-edit="quick_contacts" data-index="${index}">${escapeHtml(dictionary.edit)}</button>
+            <button class="small-action danger-action" type="button" data-delete="quick_contacts" data-index="${index}">${escapeHtml(dictionary.delete)}</button>
           </div>
         </article>
       `).join("")
@@ -2469,12 +2528,14 @@ function render() {
   renderEvents();
   renderTasks();
   renderTeam();
-  renderResources();
   renderProfile();
   applyPermissions();
 }
 
 function showView(view) {
+  if (!availableViews.includes(view)) {
+    view = "dashboard";
+  }
   if (view === "team" && !canViewTeam()) {
     view = "dashboard";
   }
@@ -2488,7 +2549,9 @@ function showView(view) {
   document.querySelectorAll(".admin-view").forEach((panel) => {
     panel.classList.toggle("active", panel.dataset.viewPanel === view);
   });
-  viewTitle.textContent = t().views[view];
+  if (viewTitle) {
+    viewTitle.textContent = t().views[view];
+  }
   renderProfile();
 }
 
@@ -2961,6 +3024,7 @@ async function initializeApp() {
   normalizeTeamRows();
   normalizeCarStatuses();
   normalizeTaskRows();
+  ensureDashboardEditableRows();
   if (shouldSaveNormalizedTeamRows) {
     await saveData({ requireSupabase: Boolean(supabaseClient) });
     shouldSaveNormalizedTeamRows = false;
