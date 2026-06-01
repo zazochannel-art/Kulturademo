@@ -52,11 +52,11 @@
         <form class="login-form" id="login-form">
           <label>
             <span data-i18n="login_label">Login</span>
-            <input id="email" type="text" placeholder="igor" autocomplete="username" maxlength="80" required />
+            <input id="email" type="text" data-i18n-placeholder="login_email_placeholder" placeholder="igor" autocomplete="username" maxlength="80" required />
           </label>
           <label>
             <span data-i18n="password_label">Parola</span>
-            <input id="password" type="password" placeholder="Parola contului" autocomplete="current-password" minlength="6" required />
+            <input id="password" type="password" data-i18n-placeholder="login_password_placeholder" placeholder="Parola contului" autocomplete="current-password" minlength="6" required />
           </label>
           <p class="login-hint" data-i18n="login_hint">Introdu loginul si parola.</p>
           <button class="primary-action full" type="submit" data-i18n="login_button">Intra</button>
@@ -78,19 +78,19 @@
         <form class="login-form auth-register-form is-hidden" id="register-form">
           <label>
             <span data-i18n="name_label">Nume</span>
-            <input id="register-name" type="text" placeholder="Nume Prenume" autocomplete="name" minlength="2" maxlength="80" required />
+            <input id="register-name" type="text" data-i18n-placeholder="register_name_placeholder" placeholder="Nume Prenume" autocomplete="name" minlength="2" maxlength="80" required />
           </label>
           <label>
             <span data-i18n="username_label">Username</span>
-            <input id="register-email" type="text" placeholder="igor" autocomplete="username" maxlength="80" required />
+            <input id="register-email" type="text" data-i18n-placeholder="register_email_placeholder" placeholder="igor" autocomplete="username" maxlength="80" required />
           </label>
           <label>
             <span data-i18n="password_label">Parola</span>
-            <input id="register-password" type="password" placeholder="Alege o parola" autocomplete="new-password" minlength="6" required />
+            <input id="register-password" type="password" data-i18n-placeholder="register_password_placeholder" placeholder="Alege o parola" autocomplete="new-password" minlength="6" required />
           </label>
           <label>
             <span data-i18n="password_confirm_label">Confirma parola</span>
-            <input id="register-password-confirm" type="password" placeholder="Repeta parola" autocomplete="new-password" minlength="6" required />
+            <input id="register-password-confirm" type="password" data-i18n-placeholder="register_password_confirm_placeholder" placeholder="Repeta parola" autocomplete="new-password" minlength="6" required />
           </label>
           <p class="login-hint" data-i18n="register_hint">Contul se creeaza cu username si parola. Adminul poate modifica accesul din Echipa.</p>
           <button class="primary-action full" type="submit" data-i18n="register_submit">Creeaza cont</button>
@@ -108,7 +108,7 @@
           </button>
         </div>
 
-        <h1 class="sidebar-title">Moldova Auto Weekend Festival</h1>
+        <h1 class="sidebar-title" data-i18n="sidebar_title">Moldova Auto Weekend Festival</h1>
 
         <!-- mobile nav (icon-only) - duplicates topbar nav for small screens -->
         <nav class="nav-list mobile-nav mobile-only" id="nav-list-mobile">
