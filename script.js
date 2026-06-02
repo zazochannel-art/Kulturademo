@@ -74,6 +74,16 @@ const dictionaries = {
     public_register: "Inregistreaza-te",
     public_admin: "Logare",
     public_language_label: "Schimba limba",
+    public_nav_home: "Acasa",
+    public_nav_about: "Despre",
+    public_nav_program: "Program & Harta",
+    public_nav_hotels: "Hotels",
+    public_badge: "08-09 August - Arena Chisinau, Moldova",
+    public_title: "Moldova Auto Weekend Festival",
+    public_subtitle: "Festival auto de tip expozitie in aer liber care reuneste vehicule emblematice, cultura urbana si comunitatea pasionatilor de masini.",
+    public_ticket_title: "Tickets",
+    public_participant_title: "Become a participant",
+    public_participant_button: "Register",
     sidebar_title: "Moldova Auto Weekend Festival",
     nav_dashboard: "Dashboard",
     nav_cars: "Auto participanti",
@@ -282,6 +292,16 @@ const dictionaries = {
     public_register: "Зарегистрироваться",
     public_admin: "Вход",
     public_language_label: "Сменить язык",
+    public_nav_home: "Главная",
+    public_nav_about: "О фестивале",
+    public_nav_program: "Программа и карта",
+    public_nav_hotels: "Отели",
+    public_badge: "08-09 августа - Арена Кишинев, Молдова",
+    public_title: "Moldova Auto Weekend Festival",
+    public_subtitle: "Автофестиваль под открытым небом, который объединяет культовые автомобили, городскую культуру и сообщество любителей машин.",
+    public_ticket_title: "Билеты",
+    public_participant_title: "Стать участником",
+    public_participant_button: "Регистрация",
     nav_dashboard: "Панель",
     nav_cars: "Авто участников",
     nav_events: "События",
@@ -489,6 +509,16 @@ const dictionaries = {
     public_register: "Register",
     public_admin: "Login",
     public_language_label: "Change language",
+    public_nav_home: "Home",
+    public_nav_about: "About",
+    public_nav_program: "Program & Map",
+    public_nav_hotels: "Hotels",
+    public_badge: "08-09 August - Chisinau Arena, Moldova",
+    public_title: "Moldova Auto Weekend Festival",
+    public_subtitle: "An open-air auto exhibition festival bringing together iconic vehicles, urban culture and the community of car enthusiasts.",
+    public_ticket_title: "Tickets",
+    public_participant_title: "Become a participant",
+    public_participant_button: "Register",
     sidebar_title: "Moldova Auto Weekend Festival",
     nav_dashboard: "Dashboard",
     nav_cars: "Participant cars",
@@ -3221,7 +3251,13 @@ registerEntry?.addEventListener("click", () => {
 
 document.querySelectorAll(".ticket-action").forEach((button) => {
   button.addEventListener("click", () => {
-    if (button.dataset.authMode === "register") return;
+    if (button.dataset.authMode === "register") {
+      if (button.id !== "register-entry") {
+        showLogin();
+        setAuthMode("register");
+      }
+      return;
+    }
     showToast("In curand aici vom conecta formularul pentru participanti si bilete.", "info");
   });
 });

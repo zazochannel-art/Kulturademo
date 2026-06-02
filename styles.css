@@ -304,6 +304,639 @@ button:hover {
   }
 }
 
+/* Video-inspired Kultura redesign: black event shell, magenta/purple CTAs and motorsport typography. */
+:root {
+  --video-black: #000000;
+  --video-ink: #ffffff;
+  --video-card: #1a1a1a;
+  --video-card-soft: #202020;
+  --video-line: rgba(255, 255, 255, 0.13);
+  --video-muted: rgba(255, 255, 255, 0.68);
+  --video-pink: #ff4f9a;
+  --video-purple: #ba16ff;
+  --video-pink-rgb: 255 79 154;
+  --video-purple-rgb: 186 22 255;
+  --accent: var(--video-pink);
+  --accent-2: var(--video-purple);
+  --purple: var(--video-purple);
+  --pink: var(--video-pink);
+  --purple-rgb: 186 22 255;
+  --pink-rgb: 255 79 154;
+}
+
+body {
+  background:
+    radial-gradient(circle at 76% 16%, rgb(var(--video-purple-rgb) / 0.12), transparent 26rem),
+    radial-gradient(circle at 24% 82%, rgb(var(--video-pink-rgb) / 0.10), transparent 30rem),
+    linear-gradient(180deg, #000000 0%, #050505 48%, #000000 100%);
+}
+
+.public-home {
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: visible;
+  background: #000000;
+}
+
+.public-home::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.18;
+  pointer-events: none;
+  background:
+    linear-gradient(120deg, transparent 0 36%, rgba(255, 255, 255, 0.12) 36.15% 36.45%, transparent 36.6%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.045) 0 1px, transparent 1px 96px);
+}
+
+.public-nav {
+  grid-template-columns: auto minmax(280px, 1fr) auto;
+  min-height: 60px;
+  padding: 0 clamp(22px, 7vw, 118px);
+  background: rgba(0, 0, 0, 0.94);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: none;
+}
+
+.public-nav.is-solid {
+  min-height: 58px;
+  background: rgba(0, 0, 0, 0.98);
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.58);
+}
+
+.public-logo {
+  width: 104px;
+  height: 46px;
+  filter: drop-shadow(0 0 14px rgb(var(--video-pink-rgb) / 0.18));
+}
+
+.public-menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(22px, 3vw, 44px);
+  min-width: 0;
+}
+
+.public-menu a {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-decoration: none;
+  transition: color 260ms ease, text-shadow 260ms ease;
+}
+
+.public-menu a:first-child,
+.public-menu a:hover {
+  color: #ffffff;
+  text-shadow: 0 0 18px rgb(var(--video-pink-rgb) / 0.32);
+}
+
+.public-nav-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  min-width: 0;
+}
+
+.public-nav-actions .ticket-action,
+.public-nav-actions .admin-entry,
+.public-nav-actions .google-action,
+.public-language {
+  min-height: 36px;
+  border-radius: 0;
+  padding: 0 18px;
+  font-size: 0.76rem;
+  font-weight: 950;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.public-nav-actions .google-action {
+  max-width: 48px;
+  padding: 0 12px;
+}
+
+.public-nav-actions .google-action span:last-child {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.public-language {
+  min-width: 42px;
+  border: 0;
+  background: transparent;
+  color: #ffffff;
+  font-size: 1rem;
+}
+
+.public-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-content: center;
+  min-height: 100vh;
+  max-width: none;
+  margin: 0;
+  padding: 112px clamp(22px, 17vw, 220px) 214px;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.86) 0%, rgba(0, 0, 0, 0.56) 48%, rgba(0, 0, 0, 0.36) 100%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.34) 62%, #000000 100%),
+    url("./hero-bavaria.jpg") center/cover no-repeat;
+  isolation: isolate;
+}
+
+.public-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 72% 18%, rgba(255, 255, 255, 0.12), transparent 18rem),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.72), transparent 66%);
+}
+
+.public-hero::after {
+  height: 34%;
+  background: linear-gradient(180deg, transparent, #000000);
+}
+
+.hero-copy {
+  max-width: 660px;
+  gap: 18px;
+  text-align: left;
+  animation: kulturaSlideIn 620ms ease both;
+}
+
+.hero-date {
+  display: inline-flex;
+  width: fit-content;
+  margin: 0 0 6px;
+  padding: 9px 18px;
+  background: linear-gradient(90deg, var(--video-pink), var(--video-purple));
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-style: italic;
+  font-weight: 950;
+  line-height: 1;
+  box-shadow: 0 16px 40px rgb(var(--video-purple-rgb) / 0.26);
+}
+
+.hero-copy h1 {
+  max-width: 760px;
+  color: #ffffff;
+  font-size: clamp(2.8rem, 6.4vw, 5.85rem);
+  font-style: italic;
+  font-weight: 950;
+  letter-spacing: 0;
+  line-height: 0.91;
+  text-transform: uppercase;
+  text-shadow: 0 18px 52px rgba(0, 0, 0, 0.9);
+}
+
+.hero-description {
+  max-width: 610px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: clamp(0.98rem, 1.2vw, 1.12rem);
+  font-weight: 750;
+  line-height: 1.55;
+}
+
+.public-feature-grid {
+  position: absolute;
+  left: clamp(18px, 15vw, 200px);
+  right: clamp(18px, 15vw, 200px);
+  bottom: 42px;
+  display: grid;
+  grid-template-columns: minmax(260px, 1.05fr) minmax(260px, 0.95fr);
+  gap: 14px;
+  align-items: stretch;
+  z-index: 2;
+}
+
+.public-ticket-card,
+.public-participant-card {
+  min-height: 150px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.64);
+  animation: kulturaSlideIn 700ms ease 120ms both;
+}
+
+.public-ticket-card {
+  display: grid;
+  grid-template-columns: 1fr 0.72fr;
+  background:
+    linear-gradient(100deg, rgba(255, 79, 154, 0.94), rgba(186, 22, 255, 0.96)),
+    #161616;
+}
+
+.public-ticket-card strong,
+.public-ticket-card span,
+.public-participant-card strong {
+  display: flex;
+  align-items: center;
+  padding: 28px;
+  color: #ffffff;
+  font-size: clamp(1.6rem, 2.2vw, 2.35rem);
+  font-style: italic;
+  font-weight: 950;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.public-ticket-card span {
+  justify-content: center;
+  border-left: 2px solid rgba(0, 0, 0, 0.52);
+  text-align: center;
+}
+
+.public-participant-card {
+  position: relative;
+  display: grid;
+  align-content: center;
+  gap: 18px;
+  padding: 30px;
+  background:
+    radial-gradient(circle at 82% 50%, rgba(0, 0, 0, 0.92) 0 3rem, transparent 3.1rem),
+    linear-gradient(145deg, #202020, #171717);
+}
+
+.public-participant-card::before {
+  content: "";
+  width: 54px;
+  height: 4px;
+  background: #ffffff;
+}
+
+.public-participant-card strong {
+  display: block;
+  max-width: 330px;
+  padding: 0;
+}
+
+.public-participant-card .ticket-action {
+  width: fit-content;
+  min-height: 34px;
+  padding: 0 22px;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #111111;
+  font-size: 0.72rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.login-screen {
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.80), rgba(0, 0, 0, 0.64)),
+    url("./hero-bavaria.jpg") center/cover no-repeat;
+}
+
+.login-panel,
+.modal,
+.notifications-panel,
+.chat-widget-panel {
+  border-radius: 18px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.028)),
+    rgba(18, 18, 18, 0.92);
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 28px 86px rgba(0, 0, 0, 0.72);
+}
+
+.login-copy h1,
+.panel-header h2,
+.home-hero h2 {
+  font-style: italic;
+  font-weight: 950;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.primary-action:not(.icon-action),
+.ticket-action.yellow,
+.finish-action,
+.take-action {
+  border: 0;
+  border-radius: 0;
+  background: linear-gradient(100deg, var(--video-pink), var(--video-purple));
+  color: #ffffff;
+  box-shadow: 0 16px 42px rgb(var(--video-purple-rgb) / 0.26);
+}
+
+.primary-action:not(.icon-action):hover,
+.ticket-action.yellow:hover,
+.finish-action:hover,
+.take-action:hover {
+  background: linear-gradient(100deg, #ff77b4, #d349ff);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18), 0 22px 62px rgb(var(--video-pink-rgb) / 0.30);
+}
+
+.admin-entry,
+.ghost-action,
+.small-action,
+.auth-back-button {
+  border-radius: 0;
+  border-color: rgba(255, 255, 255, 0.36);
+  background: rgba(0, 0, 0, 0.22);
+  color: #ffffff;
+  font-weight: 950;
+}
+
+.admin-entry:hover,
+.ghost-action:hover,
+.small-action:hover,
+.auth-back-button:hover {
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.10);
+  box-shadow: 0 0 28px rgb(var(--video-pink-rgb) / 0.16);
+}
+
+#admin-app .sidebar {
+  background: rgba(0, 0, 0, 0.96) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07) !important;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.58) !important;
+}
+
+#admin-app .topbar,
+#admin-app .topbar .nav-list {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+#admin-app .nav-item {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.60);
+  box-shadow: none;
+  font-size: 0.78rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+#admin-app .nav-item:hover,
+#admin-app .nav-item.active {
+  background: transparent;
+  color: #ffffff;
+  box-shadow: inset 0 -2px 0 var(--video-pink);
+}
+
+#admin-app .nav-item.active span:first-child {
+  color: var(--video-pink);
+}
+
+.metric-card,
+.panel,
+.event-row,
+.table-row,
+.task-item,
+.team-member,
+.resource-card,
+.profile-card,
+.profile-form,
+.ops-alert,
+.zone-card,
+.timeline-item,
+.contact-card {
+  border-radius: 16px;
+  border-color: rgba(255, 255, 255, 0.10);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.058), rgba(255, 255, 255, 0.026) 52%, rgb(var(--video-purple-rgb) / 0.045)),
+    var(--video-card);
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.52);
+}
+
+.panel::before,
+.metric-card::before {
+  height: 2px;
+  background: linear-gradient(90deg, var(--video-pink), var(--video-purple), transparent 76%);
+}
+
+.metric-card:hover,
+.panel:hover,
+.task-item:hover,
+.team-member:hover,
+.event-row:hover,
+.table-row:hover {
+  border-color: rgb(var(--video-pink-rgb) / 0.30);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.032) 52%, rgb(var(--video-pink-rgb) / 0.055)),
+    var(--video-card-soft);
+  transform: translateY(-2px);
+  box-shadow: 0 28px 82px rgba(0, 0, 0, 0.62), 0 0 38px rgb(var(--video-purple-rgb) / 0.10);
+}
+
+.panel-header {
+  gap: 12px;
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+.panel-header h2::before {
+  background: linear-gradient(90deg, var(--video-pink), var(--video-purple));
+  box-shadow: 0 0 20px rgb(var(--video-pink-rgb) / 0.30);
+}
+
+.metric-card strong {
+  font-style: italic;
+}
+
+.progress-fill {
+  background: linear-gradient(90deg, var(--video-pink), var(--video-purple));
+  box-shadow: 0 0 24px rgb(var(--video-purple-rgb) / 0.30);
+}
+
+.priority-urgent,
+.ops-alert.danger strong,
+.notification-badge.visible {
+  background: rgb(var(--video-pink-rgb) / 0.20);
+  color: #ffffff !important;
+  border-color: rgb(var(--video-pink-rgb) / 0.42);
+}
+
+.priority-important,
+.task-due,
+.ops-alert.warning strong,
+.status-ready {
+  background: rgb(var(--video-purple-rgb) / 0.18);
+  color: #ffffff !important;
+  border-color: rgb(var(--video-purple-rgb) / 0.38);
+}
+
+.login-form input,
+.modal-form input,
+.modal-form select,
+.modal-form textarea,
+.profile-form input,
+.profile-form select,
+.status-select {
+  border-radius: 0;
+  border-color: rgba(255, 255, 255, 0.12);
+  background: #050505;
+}
+
+.login-form input:focus,
+.modal-form input:focus,
+.modal-form select:focus,
+.modal-form textarea:focus,
+.profile-form input:focus,
+.profile-form select:focus,
+.status-select:focus {
+  border-color: rgb(var(--video-pink-rgb) / 0.64);
+  box-shadow: 0 0 0 3px rgb(var(--video-pink-rgb) / 0.14);
+}
+
+.admin-view.active .panel,
+.admin-view.active .metric-card,
+.admin-view.active .task-item,
+.admin-view.active .table-row,
+.admin-view.active .team-member {
+  animation: kulturaSlideIn 360ms ease both;
+}
+
+@keyframes kulturaSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1080px) {
+  .public-nav {
+    grid-template-columns: auto 1fr auto;
+    padding-inline: 20px;
+  }
+
+  .public-menu {
+    gap: 18px;
+  }
+
+  .public-nav-actions .google-action {
+    display: none;
+  }
+
+  .public-hero {
+    padding-inline: 8vw;
+  }
+
+  .public-feature-grid {
+    left: 8vw;
+    right: 8vw;
+  }
+}
+
+@media (max-width: 720px) {
+  .public-nav {
+    display: flex;
+    min-height: auto;
+    padding: 8px 12px;
+    gap: 10px;
+  }
+
+  .public-logo {
+    width: 84px;
+    height: 38px;
+  }
+
+  .public-menu {
+    display: none;
+  }
+
+  .public-nav-actions {
+    flex: 1;
+    gap: 6px;
+  }
+
+  .public-nav-actions .ticket-action,
+  .public-nav-actions .admin-entry {
+    min-height: 32px;
+    padding-inline: 10px;
+    font-size: 0.66rem;
+  }
+
+  .public-language {
+    min-width: 36px;
+    padding-inline: 4px;
+    font-size: 0.86rem;
+  }
+
+  .public-hero {
+    min-height: 100svh;
+    padding: 92px 16px 26px;
+    align-content: end;
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.84) 64%, #000000 100%),
+      url("./hero-bavaria.jpg") center/cover no-repeat;
+  }
+
+  .hero-copy {
+    justify-items: start;
+    text-align: left;
+    gap: 12px;
+  }
+
+  .hero-date {
+    padding: 8px 12px;
+    font-size: 0.74rem;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(2.25rem, 13vw, 3.7rem);
+  }
+
+  .hero-description {
+    font-size: 0.88rem;
+    line-height: 1.45;
+  }
+
+  .public-feature-grid {
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 28px;
+  }
+
+  .public-ticket-card,
+  .public-participant-card {
+    min-height: 108px;
+    border-radius: 14px;
+  }
+
+  .public-ticket-card strong,
+  .public-ticket-card span,
+  .public-participant-card strong {
+    padding: 18px;
+    font-size: 1.4rem;
+  }
+
+  .public-participant-card {
+    padding: 18px;
+  }
+
+  #admin-app .nav-item:hover,
+  #admin-app .nav-item.active {
+    box-shadow: none;
+  }
+}
+
 @media (max-width: 980px) {
   .public-nav {
     grid-template-columns: 1fr auto;
@@ -4282,4 +4915,480 @@ body::after {
   .admin-view[data-view-panel="profile"] .panel {
     padding-top: max(10px, var(--card-top-inset-mobile, 10px));
   }
+}
+
+/* Final video-style lock: keeps the redesign above older compatibility overrides. */
+.public-home {
+  background: #000000 !important;
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
+.public-nav,
+.public-nav.is-solid {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  min-height: 60px !important;
+  padding: 0 clamp(22px, 7vw, 118px) !important;
+  background: rgba(0, 0, 0, 0.96) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07) !important;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.52) !important;
+}
+
+.public-logo {
+  width: 104px !important;
+  height: 46px !important;
+  filter: drop-shadow(0 0 14px rgb(var(--video-pink-rgb) / 0.18));
+}
+
+.public-menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(22px, 3vw, 44px);
+}
+
+.public-menu a {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.82rem;
+  font-weight: 950;
+  text-decoration: none;
+  transition: color 260ms ease, text-shadow 260ms ease;
+}
+
+.public-menu a:first-child,
+.public-menu a:hover {
+  color: #ffffff;
+  text-shadow: 0 0 18px rgb(var(--video-pink-rgb) / 0.32);
+}
+
+.public-nav-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  grid-column: 2;
+  gap: 10px;
+}
+
+.public-nav-actions .ticket-action,
+.public-nav-actions .admin-entry,
+.public-nav-actions .google-action,
+.public-language {
+  min-height: 36px !important;
+  border-radius: 0 !important;
+  padding: 0 18px;
+  font-size: 0.76rem;
+  font-weight: 950;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.public-nav-actions .google-action {
+  max-width: 48px;
+  padding-inline: 12px;
+}
+
+.public-nav-actions .google-action span:last-child {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.public-language {
+  min-width: 42px;
+  border: 0 !important;
+  background: transparent !important;
+  color: #ffffff !important;
+  font-size: 1rem;
+}
+
+.public-hero {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  align-content: center;
+  min-height: 100vh;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 112px clamp(22px, 17vw, 220px) 214px !important;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.86) 0%, rgba(0, 0, 0, 0.56) 48%, rgba(0, 0, 0, 0.36) 100%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.34) 62%, #000000 100%),
+    url("./hero-bavaria.jpg") center/cover no-repeat !important;
+}
+
+.hero-copy {
+  max-width: 660px !important;
+  justify-items: start !important;
+  gap: 18px !important;
+  text-align: left !important;
+}
+
+.hero-date {
+  display: inline-flex;
+  width: fit-content;
+  margin: 0 0 6px;
+  padding: 9px 18px;
+  background: linear-gradient(90deg, var(--video-pink), var(--video-purple));
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-style: italic;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.hero-copy h1 {
+  max-width: 760px !important;
+  font-size: clamp(2.8rem, 6.4vw, 5.85rem) !important;
+  font-style: italic;
+  font-weight: 950;
+  letter-spacing: 0 !important;
+  line-height: 0.91;
+  text-transform: uppercase;
+}
+
+.public-hero-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: clamp(8px, 1.8vw, 22px);
+}
+
+.public-hero-actions .ticket-action,
+.public-hero-actions .admin-entry,
+.public-hero-actions .google-action {
+  min-height: 54px !important;
+  border-radius: 4px !important;
+  padding: 0 28px !important;
+  font-size: 0.92rem !important;
+  font-weight: 950;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.public-hero-actions .ticket-action {
+  min-width: 190px;
+}
+
+.public-hero-actions .admin-entry {
+  min-width: 150px;
+  border: 1px solid rgba(255, 255, 255, 0.55) !important;
+  background: rgba(0, 0, 0, 0.42) !important;
+  color: #ffffff !important;
+  backdrop-filter: blur(16px);
+}
+
+.public-hero-actions .google-action {
+  min-width: 230px;
+  display: inline-flex;
+  border: 1px solid rgba(255, 255, 255, 0.28) !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  color: #111111 !important;
+  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.40);
+}
+
+.public-hero-actions .google-action:hover,
+.public-hero-actions .admin-entry:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18), 0 22px 62px rgb(var(--video-pink-rgb) / 0.24);
+}
+
+.hero-description {
+  max-width: 610px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: clamp(0.98rem, 1.2vw, 1.12rem);
+  font-weight: 750;
+  line-height: 1.55;
+}
+
+.public-feature-grid {
+  position: absolute;
+  left: clamp(18px, 15vw, 200px);
+  right: clamp(18px, 15vw, 200px);
+  bottom: 42px;
+  display: grid;
+  grid-template-columns: minmax(260px, 1.05fr) minmax(260px, 0.95fr);
+  gap: 14px;
+  z-index: 2;
+}
+
+.public-ticket-card,
+.public-participant-card {
+  min-height: 150px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.64);
+}
+
+.public-ticket-card {
+  display: grid;
+  grid-template-columns: 1fr 0.72fr;
+  background: linear-gradient(100deg, var(--video-pink), var(--video-purple));
+}
+
+.public-ticket-card strong,
+.public-ticket-card span,
+.public-participant-card strong {
+  display: flex;
+  align-items: center;
+  padding: 28px;
+  color: #ffffff;
+  font-size: clamp(1.6rem, 2.2vw, 2.35rem);
+  font-style: italic;
+  font-weight: 950;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.public-ticket-card span {
+  justify-content: center;
+  border-left: 2px solid rgba(0, 0, 0, 0.52);
+  text-align: center;
+}
+
+.public-participant-card {
+  display: grid;
+  align-content: center;
+  gap: 18px;
+  padding: 30px;
+  background:
+    radial-gradient(circle at 82% 50%, rgba(0, 0, 0, 0.92) 0 3rem, transparent 3.1rem),
+    linear-gradient(145deg, #202020, #171717);
+}
+
+.public-participant-card strong {
+  display: block;
+  max-width: 330px;
+  padding: 0;
+}
+
+.public-participant-card .ticket-action {
+  width: fit-content;
+  min-height: 34px !important;
+  border-radius: 999px !important;
+  background: #ffffff !important;
+  color: #111111 !important;
+  font-size: 0.72rem;
+}
+
+.primary-action:not(.icon-action),
+.ticket-action.yellow,
+.finish-action,
+.take-action {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: linear-gradient(100deg, var(--video-pink), var(--video-purple)) !important;
+  color: #ffffff !important;
+}
+
+.admin-entry,
+.ghost-action,
+.small-action,
+.auth-back-button {
+  border-radius: 0 !important;
+}
+
+#admin-app .sidebar {
+  background: rgba(0, 0, 0, 0.96) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07) !important;
+}
+
+#admin-app .nav-item,
+#admin-app .nav-item:hover,
+#admin-app .nav-item.active {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+#admin-app .nav-item.active {
+  color: #ffffff !important;
+  box-shadow: inset 0 -2px 0 var(--video-pink) !important;
+}
+
+.metric-card,
+.panel,
+.event-row,
+.table-row,
+.task-item,
+.team-member,
+.resource-card,
+.profile-card,
+.profile-form,
+.ops-alert,
+.zone-card,
+.timeline-item,
+.contact-card {
+  border-radius: 16px !important;
+  border-color: rgba(255, 255, 255, 0.10) !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.058), rgba(255, 255, 255, 0.026) 52%, rgb(var(--video-purple-rgb) / 0.045)),
+    var(--video-card) !important;
+}
+
+.panel-header h2,
+.login-copy h1,
+.home-hero h2 {
+  font-style: italic;
+  font-weight: 950;
+  letter-spacing: 0 !important;
+  text-transform: uppercase;
+}
+
+@media (max-width: 1080px) {
+  .public-nav {
+    padding-inline: 20px !important;
+  }
+
+  .public-menu {
+    gap: 18px;
+  }
+
+  .public-nav-actions .google-action {
+    display: none;
+  }
+
+  .public-hero {
+    padding-inline: 8vw !important;
+  }
+
+  .public-feature-grid {
+    left: 8vw;
+    right: 8vw;
+  }
+}
+
+@media (max-width: 720px) {
+  .public-nav,
+  .public-nav.is-solid {
+    display: flex;
+    min-height: auto !important;
+    padding: 8px 12px !important;
+    gap: 10px;
+  }
+
+  .public-logo {
+    width: 84px !important;
+    height: 38px !important;
+  }
+
+  .public-menu {
+    display: none;
+  }
+
+  .public-nav-actions {
+    flex: 1;
+    gap: 6px;
+  }
+
+  .public-nav-actions .ticket-action,
+  .public-nav-actions .admin-entry {
+    min-height: 32px !important;
+    padding-inline: 10px;
+    font-size: 0.66rem;
+  }
+
+  .public-language {
+    min-width: 36px;
+    padding-inline: 4px;
+    font-size: 0.86rem;
+  }
+
+  .public-hero {
+    min-height: 100svh;
+    padding: 92px 16px 42px !important;
+    align-content: end;
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.84) 64%, #000000 100%),
+      url("./hero-bavaria.jpg") center/cover no-repeat !important;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(2.25rem, 13vw, 3.7rem) !important;
+  }
+
+  .public-hero-actions {
+    width: 100%;
+    align-items: stretch;
+    gap: 9px;
+  }
+
+  .public-hero-actions .ticket-action,
+  .public-hero-actions .admin-entry,
+  .public-hero-actions .google-action {
+    width: min(100%, 340px);
+    min-height: 46px !important;
+    justify-content: center;
+    padding-inline: 18px !important;
+    font-size: 0.78rem !important;
+  }
+
+  .public-feature-grid {
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    grid-template-columns: 1fr;
+    margin-top: 28px;
+  }
+
+  .public-ticket-card,
+  .public-participant-card {
+    min-height: 108px;
+  }
+}
+
+/* Soft rounded buttons across all pages. */
+button,
+.primary-action,
+.ghost-action,
+.ticket-action,
+.admin-entry,
+.google-action,
+.small-action,
+.auth-back-button,
+.take-action,
+.finish-action,
+.cancel-take-action,
+.danger-action,
+.modal-close,
+.chat-close-button,
+.nav-item,
+.notifications-button,
+.profile-action,
+.logout-button,
+.icon-action {
+  border-radius: 12px !important;
+}
+
+.topbar-actions .notifications-button,
+.topbar-actions .profile-action,
+.topbar-actions .logout-button,
+#admin-app .sidebar .nav-item,
+#admin-app .sidebar .notifications-button,
+#admin-app .sidebar .profile-action,
+#admin-app .sidebar .logout-button {
+  border-radius: 14px !important;
+}
+
+.public-hero-actions .ticket-action,
+.public-hero-actions .admin-entry,
+.public-hero-actions .google-action,
+.public-nav-actions .ticket-action,
+.public-nav-actions .admin-entry,
+.public-nav-actions .google-action,
+.public-language {
+  border-radius: 12px !important;
+}
+
+.chat-fab,
+.profile-photo-preview,
+.avatar {
+  border-radius: 999px !important;
 }
